@@ -1,0 +1,16 @@
+<svg
+                width="15"
+                height="15"
+                viewBox="0 0 11 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="mr-2"
+              >
+                <path
+                  d="M0.8125 6.14987L2.75496 8.81035C3.36378 9.6442 4.61343 9.628 5.20045 8.77863L10.1875 1.5625"
+                  stroke="#28B8CD"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
