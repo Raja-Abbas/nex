@@ -1,14 +1,75 @@
+// src/components/GithubDeployment.js
 import React from "react";
-import { MultiStepLoader } from "./aceternitycomponents/multi-step-loader";
+import { MultiStepLoader } from "./aceternityComponents/multi-step-loader";
 import { steps } from "../constants/Framework";
 
+export default function GithubDeployment({
+  toggleBuildPageDetails,
+  selectedCard,
+}) {
+  const updatedSteps = steps.map((step) => {
+    if (selectedCard) {
+      if (step.id === 2) {
+        // Update the Build step
+        return {
+          ...step,
+          details: step.details.map((detail) => {
+            if (detail.label === "Project Name") {
+              return { ...detail, value: selectedCard.title };
+            } else if (detail.value === "nodejs-template-patch-1") {
+              return {
+                ...detail,
+                value: `${selectedCard.title.toLowerCase()}-template-patch-1`,
+              };
+            }
+            return detail;
+          }),
+        };
+      } else if (step.id === 4) {
+        // Update the Deploy step
+        return {
+          ...step,
+          details: step.details.map((detail) => {
+            if (detail.value === "sasdeployer /ndejs:latest") {
+              return {
+                ...detail,
+                value: `sasdeployer /${selectedCard.title.toLowerCase()}:latest`,
+              };
+            }
+            return detail;
+          }),
+        };
+      } else if (step.id === 5) {
+        // Update the final step with the live URL and logo
+        return {
+          ...step,
+          details: step.details.map((detail) => {
+            if (detail.label === "") {
+              return {
+                ...detail,
+                value: selectedCard.title,
+                image: selectedCard.logo,
+              };
+            } else if (detail.label === "Link") {
+              return {
+                ...detail,
+                url: `https://${selectedCard.title.toLowerCase()}-3hp0.ondeployx.com`,
+              };
+            }
+            return detail;
+          }),
+        };
+      }
+    }
+    return step;
+  });
 
-
-export default function GithubDeployment({ toggleBuildPageDetails }) {
   return (
-    <div className={`lg:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}>
+    <div
+      className={`lg:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}
+    >
       <MultiStepLoader
-        steps={steps}
+        steps={updatedSteps}
         loading={true}
         duration={3000}
         toggleBuildPageDetails={toggleBuildPageDetails}
