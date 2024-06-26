@@ -5,7 +5,7 @@ import BuildComponent from './BuildComponent';
 import StarComponent from './StarComponent';
 import { logsData } from '../constants/Framework';
 
-const Layout = ({ toggleBuildPageDetailsHide }) => {
+const Layout = ({ toggleBuildPageDetailsHide, selectedCard }) => {
   const [selectedMenu, setSelectedMenu] = useState('Details');
   const [logs, setLogs] = useState([]);
   const [showLayout, setShowLayout] = useState(true);
@@ -40,11 +40,12 @@ const Layout = ({ toggleBuildPageDetailsHide }) => {
         <DeploymentDetails
           handleMenuClick={handleMenuClick}
           hideLayout={hideLayout}
+          selectedCard={selectedCard}
           toggleBuildPageDetailsHide={toggleBuildPageDetailsHide}
         />
       </div>
       <div>
-        {selectedMenu === 'Details' && <DetailsComponent />}
+        {selectedMenu === 'Details' && <DetailsComponent selectedCard={selectedCard} />}
         {selectedMenu === 'Build' && <BuildComponent logs={logs} />}
         {selectedMenu === 'Star' && <StarComponent />}
       </div>
