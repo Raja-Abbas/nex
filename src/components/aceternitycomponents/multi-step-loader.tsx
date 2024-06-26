@@ -247,7 +247,7 @@ const StepComponent: React.FC<{
                     <img
                       src={detail.image}
                       alt={detail.label}
-                      className={`mr-[-4px] ${step.id === 5 ? "w-[30px] h-[30px]" : "w-5 h-5"
+                      className={`ml-[-14px] ${step.id === 5 ? "w-[100px] h-[30px]" : "w-5 h-5"
                         }`}
                     />
                   )}

@@ -1,4 +1,3 @@
-// src/components/GithubDeployment.js
 import React from "react";
 import { MultiStepLoader } from "./aceternityComponents/multi-step-loader";
 import { steps } from "../constants/Framework";
@@ -10,7 +9,7 @@ export default function GithubDeployment({
   const updatedSteps = steps.map((step) => {
     if (selectedCard) {
       if (step.id === 2) {
-        // Update the Build step
+       
         return {
           ...step,
           details: step.details.map((detail) => {
@@ -26,7 +25,7 @@ export default function GithubDeployment({
           }),
         };
       } else if (step.id === 4) {
-        // Update the Deploy step
+       
         return {
           ...step,
           details: step.details.map((detail) => {
@@ -40,7 +39,7 @@ export default function GithubDeployment({
           }),
         };
       } else if (step.id === 5) {
-        // Update the final step with the live URL and logo
+        
         return {
           ...step,
           details: step.details.map((detail) => {
