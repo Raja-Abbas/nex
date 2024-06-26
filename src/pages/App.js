@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import BuildPage from "./BuildPage";
-import HomePage from "../components/HomePageComponent";
+import HomePage from "./HomePage";
 import Footer from "../components/common/Footer"; 
 import BrokenPage from "../components/common/404";
 import '../App.css';

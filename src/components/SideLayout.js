@@ -1,8 +1,9 @@
+// src/components/SideLayout.js
 import React, { useState } from "react";
 import Sidebar from "./LeftSidebar";
 import CardsContent from "../components/CardsContent";
 
-const Layout = () => {
+const SideLayout = ({ onCardSelect }) => {
   const [selectedMenu, setSelectedMenu] = useState("All");
   const [, setActiveMenu] = useState("All");
 
@@ -17,10 +18,10 @@ const Layout = () => {
         <Sidebar handleMenuClick={handleMenuClick} />
       </div>
       <div className="bg-background h-[100vh] xl:h-[80vh] w-full md:w-[75%] overflow-y-auto overflow-hidden scrollbar">
-          <CardsContent selectedMenu={selectedMenu} />
+        <CardsContent selectedMenu={selectedMenu} onCardSelect={onCardSelect} />
       </div>
     </div>
   );
 };
 
-export default Layout;
+export default SideLayout;
