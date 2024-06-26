@@ -11,7 +11,7 @@ import BlueSvg from "../../assets/svgs/blueSvg.svg";
 import TickBlueSvg from "../../assets/svgs/tick-circle-blue.svg";
 import Loading from '../spinner';
 import Waitlist from '../WaitlistComponent';
-
+import TemplateWaitlistModal from "../TemplateWaitlistModal";
 interface DeploymentAlertProps {
   isOpen: boolean;
   heading: string;
@@ -109,7 +109,6 @@ const ModalAlert: React.FC<ModalAlertProps> = ({
     </div>
   );
 };
-
 const images = {
   SourceLoadingState,
   BuildLoadingState,
@@ -151,6 +150,7 @@ interface MultiStepLoaderProps {
   loading: boolean;
   duration: number;
   toggleBuildPageDetails: () => void;
+  selectedCard?: any; // Add selectedCard prop to handle the template waitlist modal
 }
 
 const StepComponent: React.FC<{
@@ -351,6 +351,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   loading,
   duration,
   toggleBuildPageDetails,
+  selectedCard,
 }) => {
   const [visibleSteps, setVisibleSteps] = useState<Step[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -422,43 +423,39 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
         </div>
       ))}
       <style>{`
-          @keyframes fill {
-            from {
-              height: 0;
-              top:0;
-            }
-            to {
-              height: 100%;
-              bottom:0;
-            }
+        @keyframes fill {
+          from {
+            height: 0;
+            top:0;
           }
-  
-          .animate-fill {
-            animation: fill 0.5s forwards;
+          to {
+            height: 100%;
+            bottom:0;
           }
-  
-          @keyframes fade-in {
-            from {
-              opacity: 0;
-            }
-            to {
-              opacity: 1;
-            }
+        }
+
+        .animate-fill {
+          animation: fill 0.5s forwards;
+        }
+
+        @keyframes fade-in {
+          from {
+            opacity: 0;
           }
-  
-          .animate-fade-in {
-            animation: fade-in 2s forwards;
+          to {
+            opacity: 1;
           }
-        `}</style>
-      <Waitlist isOpen={showModal} onClose={closeModal} />
-      <ModalAlert
-        isOpen={showModal}
-        heading="NodeJs"
-        message="Deployment Succesful"
-        time="2 min ago"
-        onClose={closeModal}
-      />
+        }
+
+        .animate-fade-in {
+          animation: fade-in 2s forwards;
+        }
+      `}</style>
+      {selectedCard ? (
+        <TemplateWaitlistModal isOpen={showModal} onClose={closeModal} selectedCard={selectedCard}/>
+      ) : (
+        <Waitlist isOpen={showModal} onClose={closeModal} />
+      )}
     </div>
   );
 };
-

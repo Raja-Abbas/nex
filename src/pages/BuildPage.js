@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import GithubDeployment from "../components/GithubDeployment";
 import DeploymentDetailsLayout from "../components/DeploymentDetailsLayout";
+import ChatBotComponent from "../components/ChatBotComponent";
 
 export default function BuildPage() {
   const [showDeploymentDetails, setShowDeploymentDetails] = useState(false);
@@ -25,6 +26,7 @@ export default function BuildPage() {
           : "max-lg:grid-cols-1 max-lg:grid-rows-2"
       }`}
     >
+      <ChatBotComponent/>
       <GithubDeployment
         toggleBuildPageDetails={toggleBuildPageDetails}
         selectedCard={selectedCard}

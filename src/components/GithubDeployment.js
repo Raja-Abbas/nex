@@ -72,6 +72,7 @@ export default function GithubDeployment({
         loading={true}
         duration={3000}
         toggleBuildPageDetails={toggleBuildPageDetails}
+        selectedCard={selectedCard}
       />
     </div>
   );
