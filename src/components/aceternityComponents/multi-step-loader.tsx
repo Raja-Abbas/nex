@@ -11,7 +11,7 @@ import BlueSvg from "../../assets/svgs/blueSvg.svg";
 import TickBlueSvg from "../../assets/svgs/tick-circle-blue.svg";
 import Loading from '../spinner';
 import Waitlist from '../WaitlistComponent';
-
+import TemplateWaitlistModal from "../TemplateWaitlistModal";
 interface DeploymentAlertProps {
   isOpen: boolean;
   heading: string;
@@ -34,7 +34,6 @@ const DeploymentAlert: React.FC<DeploymentAlertProps> = ({
       setShowModal(true);
       timer = setTimeout(() => {
         setShowModal(false);
-        onClose();
       }, 5000);
     } else {
       setShowModal(false);
@@ -98,8 +97,7 @@ const ModalAlert: React.FC<ModalAlertProps> = ({
       setShowModal(true);
       timer = setTimeout(() => {
         setShowModal(false);
-        onClose();
-      }, 5000); 
+      }, 5000);
     } else {
       setShowModal(false);
     }
@@ -134,7 +132,6 @@ const ModalAlert: React.FC<ModalAlertProps> = ({
     </div>
   );
 };
-
 const images = {
   SourceLoadingState,
   BuildLoadingState,
@@ -176,6 +173,7 @@ interface MultiStepLoaderProps {
   loading: boolean;
   duration: number;
   toggleBuildPageDetails: () => void;
+  selectedCard?: any;
 }
 
 const StepComponent: React.FC<{
@@ -202,7 +200,7 @@ const StepComponent: React.FC<{
   }
 
   const Image = images[step.image];
-
+console.log(toggleBuildPageDetails,"toggle")
   return (
     <div className="flex gap-[12px] pb-[45px]">
       {index !== 0 && isLoading ? (
@@ -272,13 +270,13 @@ const StepComponent: React.FC<{
                     <img
                       src={detail.image}
                       alt={detail.label}
-                      className={`mr-[-4px] ${step.id === 5 ? "w-[30px] h-[30px]" : "w-5 h-5"
+                      className={`ml-[0px] ${step.id === 5 ? "w-auto h-auto" : "w-5 h-5"
                         }`}
                     />
                   )}
                   {detail.label && <span className={`${detail.label === "Time" ? "hidden" : ""} ${detail.text === "white" ? "text-white text-base font-semibold" : "text-description-color text-base font-semibold"}`} >{detail.label}:</span>}
                   <span
-                    className={` ${detail.text === "white" ? "text-white text-base font-normal" : "text-description-color text-base font-normal"
+                    className={`${detail.text === "white" ? "text-white text-base font-normal" : "text-description-color text-base font-normal"
                       }`}
                   >
                     {detail.value}
@@ -289,7 +287,7 @@ const StepComponent: React.FC<{
                 <div className="flex flex-row mt-[8px] gap-[56px]">
                   {step.details.some((detail) => detail.label === "Feedback") && (
                     <div className="mr-4">
-                      <p className="text-description-color text-base leading-[24px]">
+                      <p className="text-description-color text-tiny leading-[24px]">
                         Feedback
                       </p>
                       <p className="border mt-[1px] text-base leading-[24px] rounded-full text-center border-dark-blue bg-medium-grey-color text-dark-blue py-[1px] px-[14px]">
@@ -305,10 +303,10 @@ const StepComponent: React.FC<{
                     (detail) => detail.label === "Environment"
                   ) && (
                       <div className="mr-4">
-                        <p className="text-description-color text-base leading-[24px]">
+                        <p className="text-description-color text-tiny leading-[24px]">
                           Environment
                         </p>
-                        <p className="text-white mt-[1px] leading-[24px] text-base rounded-full py-[1px]">
+                        <p className="text-white mt-[1px] leading-[24px] text-lg rounded-full py-[1px]">
                           {
                             step.details.find(
                               (detail) => detail.label === "Environment"
@@ -319,10 +317,10 @@ const StepComponent: React.FC<{
                     )}
                   {step.details.some((detail) => detail.label === "Cluster") && (
                     <div>
-                      <p className="text-description-color text-base leading-[24px]">
+                      <p className="text-description-color text-tiny leading-[24px]">
                         Cluster
                       </p>
-                      <p className="text-white mt-[1px] leading-[24px] text-base rounded-full py-[1px]">
+                      <p className="text-white mt-[1px] leading-[24px] text-lg rounded-full py-[1px]">
                         {
                           step.details.find((detail) => detail.label === "Cluster")
                             ?.value
@@ -376,14 +374,21 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   loading,
   duration,
   toggleBuildPageDetails,
+  selectedCard,
 }) => {
   const [visibleSteps, setVisibleSteps] = useState<Step[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(true);
+  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
+  const [showModalAlert, setShowModalAlert] = useState<boolean>(false);
+  const [hasModalAlertShown, setHasModalAlertShown] = useState<boolean>(false);
 
   useEffect(() => {
     if (loading) {
+      setIsAlertOpen(false);
+      setShowModalAlert(false);
+      setHasModalAlertShown(false);
+
       let index = 0;
       const interval = setInterval(() => {
         if (index < steps.length) {
@@ -391,9 +396,11 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
           index++;
         } else {
           clearInterval(interval);
-          setShowModal(true);
+          setTimeout(() => setShowModal(true), 2000);
         }
       }, duration);
+
+      setTimeout(() => setIsAlertOpen(true), 2000);
 
       return () => clearInterval(interval);
     }
@@ -401,7 +408,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
 
   useEffect(() => {
     if (loading) {
-      setIsAlertOpen(true);
+      setCurrentStep(0);
       const interval = setInterval(() => {
         setCurrentStep((prevStep) => prevStep + 1);
       }, duration);
@@ -413,25 +420,37 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   }, [loading, duration]);
 
   useEffect(() => {
-    if (currentStep >= steps.length) {
-      setIsAlertOpen(false);
+    if (currentStep >= steps.length && !hasModalAlertShown) {
+      setTimeout(() => {
+        setShowModalAlert(true);
+      }, 2000);
     }
-  }, [currentStep, steps.length]);
+  }, [currentStep, steps.length, hasModalAlertShown]);
 
   if (!loading) return null;
 
-  const closeModal = () => {
+  const closeDeploymentAlert = () => {
+    setIsAlertOpen(false);
+  };
+
+  const closeModalAlert = () => {
+    setShowModalAlert(false);
+  };
+
+  const closeSelectedCardModal = () => {
     setShowModal(false);
   };
 
   return (
     <div>
-      <DeploymentAlert
-        isOpen={isAlertOpen}
-        heading="Deployment started"
-        message="The build for your new project has started."
-        onClose={closeModal}
-      />
+      {isAlertOpen && (
+        <DeploymentAlert
+          isOpen={isAlertOpen}
+          heading="Deployment started"
+          message="The build for your new project has started."
+          onClose={closeDeploymentAlert}
+        />
+      )}
       {visibleSteps.map((step, index) => (
         <div key={index} className="relative flex gap-4 items-center">
           {index < visibleSteps.length - 1 && (
@@ -446,44 +465,49 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
           </div>
         </div>
       ))}
+      {showModalAlert && (
+        <ModalAlert
+          isOpen={showModalAlert}
+          heading="Node Js"
+          message="Deployment Successful"
+          time="2 min ago"
+          onClose={closeModalAlert}
+        />
+      )}
       <style>{`
-          @keyframes fill {
-            from {
-              height: 0;
-              top:0;
-            }
-            to {
-              height: 100%;
-              bottom:0;
-            }
+        @keyframes fill {
+          from {
+            height: 0;
+            top:0;
           }
-  
-          .animate-fill {
-            animation: fill 0.5s forwards;
+          to {
+            height: 100%;
+            bottom:0;
           }
-  
-          @keyframes fade-in {
-            from {
-              opacity: 0;
-            }
-            to {
-              opacity: 1;
-            }
+        }
+
+        .animate-fill {
+          animation: fill 0.5s forwards;
+        }
+
+        @keyframes fade-in {
+          from {
+            opacity: 0;
           }
-  
-          .animate-fade-in {
-            animation: fade-in 2s forwards;
+          to {
+            opacity: 1;
           }
-        `}</style>
-      <Waitlist isOpen={showModal} onClose={closeModal} />
-      <ModalAlert
-        isOpen={showModal}
-        heading="NodeJs"
-        message="Deployment Succesful"
-        time="2 min ago"
-        onClose={closeModal}
-      />
+        }
+
+        .animate-fade-in {
+          animation: fade-in 2s forwards;
+        }
+      `}</style>
+      {selectedCard ? (
+        <TemplateWaitlistModal isOpen={showModal} onClose={closeSelectedCardModal} selectedCard={selectedCard}/>
+      ) : (
+        <Waitlist isOpen={showModal} onClose={closeSelectedCardModal} />
+      )}
     </div>
   );
 };
-

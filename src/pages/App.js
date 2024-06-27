@@ -13,7 +13,7 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen max-h-screen flex flex-col">
-      <Navbar/>
+      <Navbar />
       <Routes>
       </Routes>
         <div className="relative flex-1 overflow-y-auto scrollbar bg-background background-svg flex justify-center">

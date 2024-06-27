@@ -64,7 +64,7 @@ export const steps = [
     details: [
       { label: "Deploying", value: "(0:10)", text:"white" },
       { label: "", value: "sasdeployer /ndejs:latest", image: GithubLogoCard, text:'white' },
-      { label: "Time", value: "10 seconds ago" },
+      { label: "", value: "10 seconds ago" },
       { label: "", value: "Docterhub", image: ProjectXBox },
     ],
   },
@@ -75,7 +75,7 @@ export const steps = [
     description: "",
     image: "DeployLoadingState",
     details: [
-      { label: "", value: "NodeJs", image: JsLogo },
+      { label: "", value: "NodeJs", image: JsLogo, text:"white" },
       { label: "Feedback", value: "Live" },
       { label: "Environment", value: "Production" },
       { label: "Cluster", value: "Kubernetes" },
