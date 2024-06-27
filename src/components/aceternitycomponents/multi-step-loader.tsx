@@ -28,8 +28,21 @@ const DeploymentAlert: React.FC<DeploymentAlertProps> = ({
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    setShowModal(isOpen);
+    let timer: NodeJS.Timeout;
+
+    if (isOpen) {
+      setShowModal(true);
+      timer = setTimeout(() => {
+        setShowModal(false);
+        onClose();
+      }, 5000);
+    } else {
+      setShowModal(false);
+    }
+
+    return () => clearTimeout(timer);
   }, [isOpen]);
+
   const closeModal = () => {
     setShowModal(false);
     onClose();
@@ -76,10 +89,22 @@ const ModalAlert: React.FC<ModalAlertProps> = ({
   time,
   onClose,
 }) => {
-  const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    setShowModal(isOpen);
+    let timer: NodeJS.Timeout;
+
+    if (isOpen) {
+      setShowModal(true);
+      timer = setTimeout(() => {
+        setShowModal(false);
+        onClose();
+      }, 5000); 
+    } else {
+      setShowModal(false);
+    }
+
+    return () => clearTimeout(timer);
   }, [isOpen]);
 
   const closeModal = () => {

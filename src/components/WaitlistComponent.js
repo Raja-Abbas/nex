@@ -7,7 +7,7 @@ const Waitlist = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed w-full h-full bg-[#070707] bg-opacity-75 inset-0 z-[1000] flex items-center justify-center">
-      <div className="bg-background relative text-center bg-opacity-100 z-[1000] p-6 rounded-md shadow-xl my-[45px] mx-[55px] max-md:w-full md:w-[663px] max-md:h-full md:h-[477px]">
+      <div className="bg-background relative text-center bg-opacity-100 z-[1000] p-6 rounded-md shadow-xl my-[45px] mx-[55px] max-md:w-full md:w-[663px] max-md:h-auto md:h-auto">
         <Loading />
         <h2 className="text-light-blue text-3xl mb-[15px] mt-[25px] font-bold leading-[150%]">Join the waitlist!</h2>
         <p className="text-white text-lg leading-[150%]">
