@@ -6,7 +6,6 @@ const Navbar = () => {
   const location = useLocation();
   const [navbarContent, setNavbarContent] = useState(null);
   useEffect(() => {
-    console.log("Location changed to:", location.pathname);
     if (location.pathname === "/") {
       setNavbarContent(
     <HomeNavbar />
