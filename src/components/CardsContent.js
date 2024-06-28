@@ -1,4 +1,3 @@
-// src/components/CardsContent.js
 import React from "react";
 import { cardsData } from "../constants/Framework";
 import NexLayer from "../assets/svgs/nexLayer.svg";

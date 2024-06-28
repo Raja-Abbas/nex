@@ -1,4 +1,3 @@
-// src/components/SideLayout.js
 import React, { useState } from "react";
 import Sidebar from "./LeftSidebar";
 import CardsContent from "../components/CardsContent";
