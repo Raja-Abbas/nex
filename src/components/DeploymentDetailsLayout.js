@@ -32,7 +32,7 @@ const Layout = ({ toggleBuildPageDetailsHide, selectedCard }) => {
   if (!showLayout) {
     return null;
   }
-
+  
   return (
     <div className="rounded-[10px] animation-detailsSlideIn">
       <div className="bg-background pt-[20px]">

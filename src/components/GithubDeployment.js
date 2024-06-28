@@ -70,7 +70,7 @@ export default function GithubDeployment({
       <MultiStepLoader
         steps={updatedSteps}
         loading={true}
-        duration={3000}
+        duration={2500}
         toggleBuildPageDetails={toggleBuildPageDetails}
         selectedCard={selectedCard}
       />

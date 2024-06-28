@@ -500,7 +500,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
         }
 
         .animate-fade-in {
-          animation: fade-in 2s forwards;
+          animation: fade-in 0.5s forwards;
         }
       `}</style>
       {selectedCard ? (
