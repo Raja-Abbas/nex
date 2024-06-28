@@ -2,8 +2,9 @@ import React from 'react';
 import Globe from "../assets/svgs/globe.svg";
 import StarSVG from "../assets/svgs/starSVG.svg";
 import { deploymentData } from "../constants/Framework";
+import NodeJs from "../assets/svgs/node.svg";
 
-const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, selectedCard  }) => {
+const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, selectedCard }) => {
   const [activeMenu, setActiveMenu] = React.useState("Details");
 
   const menuItems = [
@@ -15,6 +16,14 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
     toggleBuildPageDetailsHide();
   };
 
+ 
+  const defaultCard = {
+    logo: NodeJs, 
+    title: "Node.js",
+  };
+
+  const cardToDisplay = selectedCard || defaultCard;
+
   return (
     <aside
       id="logo-DeploymentDetails"
@@ -24,19 +33,15 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
       <div className="max-lg:w-full">
         <div className="flex justify-between items-center">
           <div className="flex gap-[10px] items-center">
-            {selectedCard && (
-              <img
-                width={30}
-                height={30}
-                src={selectedCard.logo} 
-                alt="Node Icon"
-              />
-            )}
-            {selectedCard && (
-              <p className="font-normal text-xl text-white">
-                {selectedCard.title}
-              </p>
-            )}
+            <img
+              width={30}
+              height={30}
+              src={cardToDisplay.logo}
+              alt="Node Icon"
+            />
+            <p className="font-normal text-xl text-white">
+              {cardToDisplay.title}
+            </p>
           </div>
           <p
             className="font-light text-base text-description-color hover:text-[#94949489]  cursor-pointer hover:scale-110 transition-all"
@@ -74,7 +79,7 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
         <a href={deploymentData.url} target='_blank' rel="noreferrer" className="pt-[15px] w-fit flex gap-[10px] items-center">
           <img src={Globe} alt="Globe Icon" />
           <p className="font-normal text-base text-dark-blue cursor-pointer">
-            https://{selectedCard.title.toLowerCase()}-3hp0.ondeployx.com
+            https://{cardToDisplay.title}-3hp0.ondeployx.com
           </p>
         </a>
       </div>
