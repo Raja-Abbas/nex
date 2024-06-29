@@ -16,7 +16,7 @@ const Waitlist = ({ isOpen, onClose }) => {
         <input
               type="search"
               id="repo-url"
-              className="z-10 text-center mt-[45px] mb-[15px] text-tiny w-full block p-[13px] max-md:w-auto md:w-[435px] border-light-black bg-light-black rounded-[5px] mx-auto"
+              className="z-10 text-center mt-[45px] mb-[15px] text-tiny text-white w-full block p-[13px] max-md:w-auto md:w-[435px] border-light-black bg-light-black rounded-[5px] mx-auto"
               placeholder="Enter your email address..."
             />
             <button
