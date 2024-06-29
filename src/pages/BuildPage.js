@@ -1,5 +1,5 @@
 // src/pages/BuildPage.js
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import GithubDeployment from "../components/GithubDeployment";
 import DeploymentDetailsLayout from "../components/DeploymentDetailsLayout";
@@ -10,13 +10,13 @@ export default function BuildPage() {
   const location = useLocation();
   const { selectedCard } = location.state || {};
 
-  const toggleBuildPageDetails = () => {
+  const toggleBuildPageDetails = useCallback(() => {
     setShowDeploymentDetails(true);
-  };
+  }, []);
 
-  const toggleBuildPageDetailsHide = () => {
+  const toggleBuildPageDetailsHide = useCallback(() => {
     setShowDeploymentDetails(false);
-  };
+  }, []);
 
   return (
     <div
@@ -26,7 +26,7 @@ export default function BuildPage() {
           : "max-lg:grid-cols-1 max-lg:grid-rows-2"
       }`}
     >
-      <ChatBotComponent/>
+      <ChatBotComponent />
       <GithubDeployment
         toggleBuildPageDetails={toggleBuildPageDetails}
         selectedCard={selectedCard}
