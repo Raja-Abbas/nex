@@ -6,7 +6,6 @@ const DeployComponent = () => {
   const [showGithubDeployment] = useState(false);
   let navigate = useNavigate();
   const handleDeploy = () => {
-    console.log(`Deploying repository: ${repoUrl}`);
     navigate("/build");
   };
 

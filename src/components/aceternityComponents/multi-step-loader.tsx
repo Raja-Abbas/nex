@@ -12,6 +12,7 @@ import TickBlueSvg from "../../assets/svgs/tick-circle-blue.svg";
 import Loading from '../spinner';
 import Waitlist from '../WaitlistComponent';
 import TemplateWaitlistModal from "../TemplateWaitlistModal";
+
 interface DeploymentAlertProps {
   isOpen: boolean;
   heading: string;
@@ -75,20 +76,20 @@ const DeploymentAlert: React.FC<DeploymentAlertProps> = ({
 
 interface ModalAlertProps {
   isOpen: boolean;
-  heading: string;
   message: string;
   time: string;
   onClose: () => void;
+  selectedCard?: any;
 }
 
 const ModalAlert: React.FC<ModalAlertProps> = ({
   isOpen,
-  heading,
   message,
   time,
   onClose,
+  selectedCard,
 }) => {
-    const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -112,13 +113,15 @@ const ModalAlert: React.FC<ModalAlertProps> = ({
 
   return (
     <div
-      className={`fixed max-md:top-[84px] md:top-[84px] right-1 z-[100] inset-0 flex h-fit justify-end ${showModal ? "animation-toastSlideIn" : "hidden"
+      className={`fixed max-md:top-[84px] md:top-[84px] right-1 z-[100] inset-0 flex h-fit justify-end ${showModal? "animation-toastSlideIn" : "hidden"
         }`}
     >
       <div className="bg-card-color flex items-start gap-[10px] w-[346px] border border-dark-blue border-opacity-50 relative rounded-[7px] px-[15px] pt-[10px] pb-[10px] shadow-xl">
         <img src={TickBlueSvg} alt="TickBlueSvg" className="mt-[3px] w-[19px] h-[19px]" />
         <div className="text-start flex flex-col">
-          <p className="text-lg text-white mb-[4px] tracking-0">{heading}</p>
+          <p className="text-lg text-white mb-[4px] tracking-0">
+            {selectedCard? selectedCard.title : 'Node.js'}
+          </p>
           <p className="text-base text-description-color mb-[4px] leading-[24px]">{message}</p>
           <p className="text-tiny text-description-color leading-[24px]">{time}</p>
           <button
@@ -200,7 +203,6 @@ const StepComponent: React.FC<{
   }
 
   const Image = images[step.image];
-console.log(toggleBuildPageDetails,"toggle")
   return (
     <div className="flex gap-[12px] pb-[45px]">
       {index !== 0 && isLoading ? (
@@ -466,12 +468,12 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
         </div>
       ))}
       {showModalAlert && (
-        <ModalAlert
+       <ModalAlert
           isOpen={showModalAlert}
-          heading="Node Js"
           message="Deployment Successful"
           time="2 min ago"
           onClose={closeModalAlert}
+          selectedCard={selectedCard}
         />
       )}
       <style>{`
