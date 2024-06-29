@@ -4,13 +4,12 @@ import { steps } from "../constants/Framework";
 
 const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
   const updatedSteps = useMemo(() => {
-    // Create a set to keep track of processed step IDs
     const processedStepIds = new Set();
 
     return steps
       .map((step) => {
         if (selectedCard && !processedStepIds.has(step.id)) {
-          processedStepIds.add(step.id); // Mark step as processed
+          processedStepIds.add(step.id);
 
           if (step.id === 2) {
             return {

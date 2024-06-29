@@ -5,6 +5,8 @@ import DeploymentAlert from "./DeploymentAlert"
 import ModalAlert from "./ModalAlert"
 import StepComponent from "./StepComponent"
 import { Step } from "./StepComponent"
+import ModalAfterWaitlist from "./ModalAfterWaitlist";
+
 
 interface MultiStepLoaderProps {
   steps: Step[];
@@ -23,6 +25,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
 }) => {
   const [visibleSteps, setVisibleSteps] = useState<Step[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [showModalAfterWaitlist, setShowModalAfterWaitlist] = useState(false);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [showModalAlert, setShowModalAlert] = useState<boolean>(false);
@@ -84,6 +87,11 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
 
   const closeSelectedCardModal = () => {
     setShowModal(false);
+    setShowModalAfterWaitlist(true); // Open the ModalAfterWaitlist
+  };
+
+  const closeModalAfterWaitlist = () => {
+    setShowModalAfterWaitlist(false);
   };
 
   return (
@@ -153,6 +161,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
       ) : (
         <Waitlist isOpen={showModal} onClose={closeSelectedCardModal} />
       )}
+      <ModalAfterWaitlist isOpen={showModalAfterWaitlist} onClose={closeModalAfterWaitlist} />
     </div>
   );
 };
