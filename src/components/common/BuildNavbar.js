@@ -3,6 +3,7 @@ import Logo from "../../assets/images/logoBuild.png";
 import Avatar from 'react-avatar';
 import { Link, useLocation } from "react-router-dom";
 import { useCredit } from '../../context/CreditContext';
+import ModalAfterWaitlist from '../aceternityComponents/ModalAfterWaitlist';
 
 const BuildNavbar = () => {
   const location = useLocation();
@@ -11,27 +12,31 @@ const BuildNavbar = () => {
   const cardTitle = selectedCard ? selectedCard.title.toLowerCase() : "nodejs";
   const { credit } = useCredit();
 
- 
   const [animatedCredit, setAnimatedCredit] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
- 
   useEffect(() => {
     const animationDuration = 1000;
     const framesPerSecond = 60;
     const increment = credit / (animationDuration / 1000) / framesPerSecond;
     let currentCredit = 0;
+
     const interval = setInterval(() => {
       currentCredit += increment;
-      if (currentCredit >= credit) {
-        currentCredit = credit;
-        clearInterval(interval);
-      }
       setAnimatedCredit(currentCredit);
+
+      if (currentCredit > credit) {
+        clearInterval(interval);
+        setIsModalOpen(true);
+      }
     }, 1000 / framesPerSecond);
 
-    
     return () => clearInterval(interval);
-  }, [credit]); 
+  }, [credit]);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="bg-background border-b border-line-color">
@@ -54,6 +59,8 @@ const BuildNavbar = () => {
           <Avatar facebookId="10000" size="40" round={true} />
         </div>
       </div>
+
+      {isModalOpen && <ModalAfterWaitlist isOpen={isModalOpen} onClose={closeModal} />}
     </div>
   );
 };

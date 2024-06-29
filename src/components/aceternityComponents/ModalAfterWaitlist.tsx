@@ -1,6 +1,5 @@
 import React from "react";
 import WoohooImage from "../../assets/images/WoohooImage.png";
-import { useCredit } from '../../context/CreditContext';
 
 interface ModalAfterWaitlistProps {
   isOpen: boolean;
@@ -8,12 +7,10 @@ interface ModalAfterWaitlistProps {
 }
 
 const ModalAfterWaitlist: React.FC<ModalAfterWaitlistProps> = ({ isOpen, onClose }) => {
-  const { setCredit } = useCredit();
 
   if (!isOpen) return null;
 
   const handleShareIdeasClick = () => {
-    setCredit(100);
     onClose();
   };
 

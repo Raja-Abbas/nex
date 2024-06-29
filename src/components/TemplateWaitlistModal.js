@@ -2,7 +2,16 @@
 import React from "react";
 import Modal from "./Modal";
 import githubIcon from "../assets/svgs/github.svg";
+import { useCredit } from '../context/CreditContext';
+
 const TemplateWaitlistModal = ({ isOpen, onClose, selectedCard }) => {
+  const { setCredit } = useCredit();
+
+
+  const handleShareIdeasClick = () => {
+    setCredit(100);
+    onClose();
+  };
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="background-svg md:w-[489px] md:mx-auto flex flex-col items-center justify-center p-8 bg-dark-background rounded-lg shadow-lg text-center">
@@ -24,8 +33,8 @@ const TemplateWaitlistModal = ({ isOpen, onClose, selectedCard }) => {
           <div className="flex justify-center">
             <button
               className="text-gray-500 hover:text-gray-300 bg-white flex items-center gap-[10px] justify-center p-[8px] px-[20px] rounded-[5px]"
-              onClick={onClose}
-            >
+              onClick={handleShareIdeasClick}
+              >
               <img
                 src={githubIcon}
                 alt="Github logo"

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import Loading from './SpinnerWaitlist';
+import { useCredit } from '../context/CreditContext';
 
 const Waitlist = ({ isOpen, onClose }) => {
+  const { setCredit } = useCredit();
+
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
 
@@ -24,10 +27,13 @@ const Waitlist = ({ isOpen, onClose }) => {
       setEmailError('Please enter a valid email.');
     } else {
       onClose();
+      setCredit(100);
     }
   };
 
   if (!isOpen) return null;
+
+
 
   return (
     <div className="fixed w-full h-full bg-[#070707] bg-opacity-75 inset-0 z-[1000] flex items-center justify-center">
