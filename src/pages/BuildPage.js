@@ -26,7 +26,7 @@ export default function BuildPage() {
           : "max-lg:grid-cols-1 max-lg:grid-rows-2"
       }`}
     >
-      <ChatBotComponent />
+      {!showDeploymentDetails && <ChatBotComponent />}
       <GithubDeployment
         toggleBuildPageDetails={toggleBuildPageDetails}
         selectedCard={selectedCard}
