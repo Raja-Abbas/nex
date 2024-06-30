@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Waitlist from '../WaitlistComponent';
 import TemplateWaitlistModal from "../TemplateWaitlistModal";
-import DeploymentAlert from "./DeploymentAlert"
-import ModalAlert from "./ModalAlert"
-import StepComponent from "./StepComponent"
-import { Step } from "./StepComponent"
-
+import DeploymentAlert from "./DeploymentAlert";
+import ModalAlert from "./ModalAlert";
+import StepComponent from "./StepComponent";
+import { Step } from "./StepComponent";
 
 interface MultiStepLoaderProps {
   steps: Step[];
@@ -24,7 +23,6 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
 }) => {
   const [visibleSteps, setVisibleSteps] = useState<Step[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [currentStep, setCurrentStep] = useState<number>(0);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [showModalAlert, setShowModalAlert] = useState<boolean>(false);
   const [hasModalAlertShown, setHasModalAlertShown] = useState<boolean>(false);
@@ -34,11 +32,17 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
       setIsAlertOpen(false);
       setShowModalAlert(false);
       setHasModalAlertShown(false);
+      setVisibleSteps([]);
 
       let index = 0;
       const interval = setInterval(() => {
         if (index < steps.length) {
-          setVisibleSteps((prevSteps) => [...prevSteps, steps[index]]);
+          setVisibleSteps((prevSteps) => {
+            if (!prevSteps.some(step => step.id === steps[index].id)) {
+              return [...prevSteps, steps[index]];
+            }
+            return prevSteps;
+          });
           index++;
         } else {
           clearInterval(interval);
@@ -53,25 +57,33 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   }, [loading, duration, steps]);
 
   useEffect(() => {
+    let interval: NodeJS.Timeout;
     if (loading) {
-      setCurrentStep(0);
-      const interval = setInterval(() => {
-        setCurrentStep((prevStep) => prevStep + 1);
+      setVisibleSteps([]);
+      interval = setInterval(() => {
+        setVisibleSteps((prevSteps) => {
+          const nextStepIndex = prevSteps.length;
+          if (nextStepIndex < steps.length) {
+            return [...prevSteps, steps[nextStepIndex]];
+          } else {
+            clearInterval(interval);
+            return prevSteps;
+          }
+        });
       }, duration);
 
       return () => clearInterval(interval);
-    } else {
-      setCurrentStep(0);
     }
-  }, [loading, duration]);
+  }, [loading, duration, steps]);
 
   useEffect(() => {
-    if (currentStep >= steps.length && !hasModalAlertShown) {
+    if (visibleSteps.length === steps.length && !hasModalAlertShown) {
       setTimeout(() => {
         setShowModalAlert(true);
+        setHasModalAlertShown(true);
       }, 2000);
     }
-  }, [currentStep, steps.length, hasModalAlertShown]);
+  }, [visibleSteps, steps.length, hasModalAlertShown]);
 
   if (!loading) return null;
 
@@ -87,8 +99,6 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
     setShowModal(false);
   };
 
-
-  
   return (
     <div>
       {isAlertOpen && (
@@ -114,7 +124,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
         </div>
       ))}
       {showModalAlert && (
-       <ModalAlert
+        <ModalAlert
           isOpen={showModalAlert}
           message="Deployment Successful"
           time="2 min ago"

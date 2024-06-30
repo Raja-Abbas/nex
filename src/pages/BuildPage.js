@@ -20,10 +20,10 @@ export default function BuildPage() {
 
   return (
     <div
-      className={`grid max-lg:px-4 w-full max-lg:h-full lg:h-auto scrollbar overflow-x-hidden gap-[50px] justify-center ${
+      className={`grid max-lg:px-4 w-full scrollbar overflow-x-hidden gap-[50px] justify-center ${
         showDeploymentDetails
-          ? "lg:grid-cols-2 max-lg:grid-cols-1 max-lg:grid-rows-2"
-          : "max-lg:grid-cols-1 max-lg:grid-rows-2"
+          ? "lg:grid-cols-2 max-lg:grid-cols-1 max-lg:grid-rows-2 max-lg:h-full lg:h-auto"
+          : "max-lg:grid-cols-1 max-lg:grid-rows-2 h-auto"
       }`}
     >
       {!showDeploymentDetails && <ChatBotComponent />}

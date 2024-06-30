@@ -16,7 +16,7 @@ const ModalAfterWaitlist: React.FC<ModalAfterWaitlistProps> = ({ isOpen, onClose
 
   return (
     <div className="fixed w-full h-full bg-[#070707] bg-opacity-75 inset-0 z-[1000] flex items-center justify-center">
-      <div className="bg-background relative text-center bg-opacity-100 z-[1000] p-[26px] pt-[48px] rounded-md shadow-xl my-[45px] mx-[55px] max-md:w-full md:w-auto h-full md:h-auto md:max-h-[80vh] overflow-y-auto scrollbar">
+      <div className="bg-background relative text-center bg-opacity-100 z-[1000] p-[26px] pt-[48px] rounded-md shadow-xl my-[45px] mx-[55px] max-md:w-full md:w-auto h-full md:h-auto max-h-[80vh] overflow-y-auto scrollbar">
         <img src={WoohooImage} alt="WoohooImage" className="w-auto h-[100px] mx-auto" />
         <p className="text-4xl font-bold text-white mt-[10px]">Woohoo!</p>
         <div className="mt-[45px] text-white">

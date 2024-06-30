@@ -130,20 +130,20 @@ const StepComponent: React.FC<{
           )}
           {step.details && (
             <div
-              className={`max-lg:w-auto ${
+              className={`max-md:w-auto ${
                 step.id === 5 ? "flex flex-col" : "grid grid-cols-2 grid-rows-2"
-              } md:w-[600px] md:min-h-[77px] gap-y-[8px] border border-[#363838] hover:shadow-xl cardDetails cursor-pointer 2xl:w-[700px] bg-medium-grey-color bg-opacity/50 max-md:ml-[-50px] md:ml-[-50px] z-[1000] mt-[10px] md:py-[15px] md:px-[50px] max-md:p-4 max-md:py-8 rounded-lg relative`}
+              } md:w-[600px] md:min-h-[77px] gap-y-[8px] border border-[#363838] hover:shadow-xl cardDetails cursor-pointer 2xl:w-[700px] bg-medium-grey-color bg-opacity/50 max-md:ml-[-50px] md:ml-[-50px] z-[1000] mt-[10px] md:py-[15px] md:px-[50px] max-md:p-3 max-md:py-8 rounded-lg relative`}
               onClick={toggleBuildPageDetails}
             >
               <img
                 src={BlueSvg}
                 alt="BlueSvg"
-                className="absolute top-[15px] right-[15px] rounded-full bluesvg p-1 border border-medium-grey-color transition-all"
+                className="absolute max-md:top-[10px] max-md:right-[10px] md:top-[15px] md:right-[15px] rounded-full bluesvg p-1 border border-medium-grey-color transition-all"
               />
               {step.details.map((detail, index) => (
                 <div
                   key={index}
-                  className={`text-description-color flex gap-[12px] items-center mb-0 ${
+                  className={`text-description-color flex max-md:gap-[4px] md:gap-[12px] items-center mb-0 ${
                     step.id === 5 && detail.label ? "hidden" : ""
                   }`}
                 >
@@ -160,8 +160,8 @@ const StepComponent: React.FC<{
                     <span
                       className={`${detail.label === "Time" ? "hidden" : ""} ${
                         detail.text === "white"
-                          ? "text-white text-base font-semibold"
-                          : "text-description-color text-base font-semibold"
+                          ? "text-white max-md:text-tiny md:text-base font-semibold"
+                          : "text-description-color max-md:text-tiny md:text-base font-semibold"
                       }`}
                     >
                       {detail.label}:
@@ -170,8 +170,8 @@ const StepComponent: React.FC<{
                   <span
                     className={`${
                       detail.text === "white"
-                        ? "text-white text-base font-normal"
-                        : "text-description-color text-base font-normal"
+                        ? "text-white max-md:text-tiny md:text-base font-normal"
+                        : "text-description-color max-md:text-tiny md:text-base font-normal"
                     }`}
                   >
                     {detail.value}
@@ -179,7 +179,7 @@ const StepComponent: React.FC<{
                 </div>
               ))}
               {step.id === 5 && (
-                <div className="flex flex-row mt-[8px] gap-[56px]">
+                <div className="flex flex-row mt-[8px] max-md:gap-[10px] md:gap-[56px]">
                   {step.details.some(
                     (detail) => detail.label === "Feedback"
                   ) && (
