@@ -57,26 +57,6 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   }, [loading, duration, steps]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (loading) {
-      setVisibleSteps([]);
-      interval = setInterval(() => {
-        setVisibleSteps((prevSteps) => {
-          const nextStepIndex = prevSteps.length;
-          if (nextStepIndex < steps.length) {
-            return [...prevSteps, steps[nextStepIndex]];
-          } else {
-            clearInterval(interval);
-            return prevSteps;
-          }
-        });
-      }, duration);
-
-      return () => clearInterval(interval);
-    }
-  }, [loading, duration, steps]);
-
-  useEffect(() => {
     if (visibleSteps.length === steps.length && !hasModalAlertShown) {
       setTimeout(() => {
         setShowModalAlert(true);

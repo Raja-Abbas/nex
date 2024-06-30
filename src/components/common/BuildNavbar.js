@@ -1,15 +1,16 @@
+// components/BuildNavbar.js
 import React, { useState, useEffect } from "react";
 import Logo from "../../assets/images/logoBuild.png";
 import Avatar from 'react-avatar';
 import { Link, useLocation } from "react-router-dom";
 import { useCredit } from '../../context/CreditContext';
+import { useCardTitle } from '../../context/CardTitleContext';
 import ModalAfterWaitlist from '../aceternityComponents/ModalAfterWaitlist';
 
 const BuildNavbar = () => {
   const location = useLocation();
   const isDashboardActive = location.pathname === "/dashboard";
-  const { selectedCard } = location.state || {};
-  const cardTitle = selectedCard ? selectedCard.title.toLowerCase() : "nodejs";
+  const { cardTitle, setCardTitle } = useCardTitle();
   const { credit } = useCredit();
 
   const [animatedCredit, setAnimatedCredit] = useState(0);
@@ -34,6 +35,13 @@ const BuildNavbar = () => {
     return () => clearInterval(interval);
   }, [credit]);
 
+  useEffect(() => {
+    const { selectedCard } = location.state || {};
+    if (selectedCard && selectedCard.title.toLowerCase() !== cardTitle) {
+      setCardTitle(selectedCard.title.toLowerCase());
+    }
+  }, [location.state, setCardTitle]);
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -41,7 +49,7 @@ const BuildNavbar = () => {
   return (
     <div className="bg-background border-b border-line-color">
       <div className="px-2 max-md:px-3 container mx-auto flex justify-between items-center py-[18.5px]">
-        <a className="flex max-md:gap-[2px] md:gap-5" href="/build">
+        <a className="flex max-md:gap-[2px] md:gap-5" href="/">
           <img className="w-[29px] h-[28px]" src={Logo} alt="Logo" />
           <p className="text-lg leading-[24px] text-white font-thin max-md:hidden">sasdeployer / {cardTitle} / production</p>
         </a>
