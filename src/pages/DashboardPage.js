@@ -33,9 +33,16 @@ function DashboardPage({ selectedCard }) {
       </div>
       <div className="grid max-md:gris-cols-1 max-lg:grid-cols-2 lg:grid-cols-3 lg:grid-rows-3 pb-10">
         <div className="bg-card-color flex flex-col justify-center items-start gap-3 max-md:text-nowrap max-md:w-[280px] md:w-[380px] border border-[#32474C] relative rounded-lg py-4 max-md:px-2 md:px-6 shadow-xl">
-          <p className="text-lg text-white tracking-0 font-[300]">
-            {cardToDisplay.title} Application
-          </p>
+          <div className="flex w-full justify-between">
+            <div className="text-lg text-white tracking-0 font-[300]">
+              {cardToDisplay.title} Application
+            </div>
+            <div>
+              <a href="/build" className="text-white text-lg text-white tracking-0 font-[300] text-lg z-20 lg:mx-5 text-black absolute end-1 bg-light-blue hover:bg-opacity-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md max-md:text-xs md:text-lg px-4 py-[1px] dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Redeploy
+              </a>
+            </div>
+          </div>
           <a
             href={deploymentData.url}
             className="flex gap-2 items-center"
