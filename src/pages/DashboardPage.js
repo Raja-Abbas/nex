@@ -38,7 +38,7 @@ function DashboardPage({ selectedCard }) {
               {cardToDisplay.title} Application
             </div>
             <div>
-              <a href="/build" className="text-white text-lg text-white tracking-0 font-[300] text-lg z-20 lg:mx-5 text-black absolute end-1 bg-light-blue hover:bg-opacity-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md max-md:text-xs md:text-lg px-4 py-[1px] dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <a href="/build" className="text-white text-lg text-white tracking-0 font-[300] text-lg z-20 lg:mx-5 text-black absolute end-1 bg-light-blue hover:bg-opacity-50 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-md max-md:text-xs md:text-lg px-4 py-[1px] dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Redeploy
               </a>
             </div>
