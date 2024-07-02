@@ -21,7 +21,7 @@ const DeployComponent = () => {
 
     if (!isValidGitHubUrl(repoUrl)) {
       setErrorMessage("Please enter a valid GitHub repository URL.");
-      return;
+      return
     }
 
     setErrorMessage("");
