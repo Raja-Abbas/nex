@@ -1,11 +1,30 @@
 import React, { useState } from "react";
 import GithubDeployment from "./GithubDeployment";
 import { useNavigate } from "react-router-dom";
+
 const DeployComponent = () => {
   const [repoUrl, setRepoUrl] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [showGithubDeployment] = useState(false);
   let navigate = useNavigate();
+
+  const isValidGitHubUrl = (url) => {
+    const pattern = /^(https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/?)$/;
+    return pattern.test(url);
+  };
+
   const handleDeploy = () => {
+    if (!repoUrl) {
+      setErrorMessage("Repository URL cannot be empty.");
+      return;
+    }
+
+    if (!isValidGitHubUrl(repoUrl)) {
+      setErrorMessage("Please enter a valid GitHub repository URL.");
+      return;
+    }
+
+    setErrorMessage("");
     navigate("/build");
   };
 
@@ -21,7 +40,6 @@ const DeployComponent = () => {
           Deploy from a public repository by entering the URL below.
           <div className="relative bg-light-black border border-[#232323] rounded mt-8 flex items-center">
             <input
-              type="search"
               id="repo-url"
               className="z-10 text-tiny w-full block p-2 py-3 border-light-black bg-light-black"
               placeholder="https://github.com/nexlayer-examples/express-hello-world"
@@ -37,6 +55,9 @@ const DeployComponent = () => {
             </button>
           </div>
         </label>
+        {errorMessage && (
+          <div className="text-base text-dark-blue mt-2 text-center">{errorMessage}</div>
+        )}
       </div>
     </div>
   );
