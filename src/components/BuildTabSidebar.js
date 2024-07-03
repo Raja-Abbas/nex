@@ -52,16 +52,16 @@ export default function BuildTabSidebar({ logs }) {
     <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5">
       <div className="flex gap-2 items-center">
         <input
-          className="w-full h-8 pl-[10px] py-[6.5px] text-white font-normal text-tiny border-[2px] rounded-[7px] border-dark-gray bg-background"
+          className="w-full h-8 p-[10px] py-[6.5px] text-white font-normal text-tiny border-[2px] rounded-[7px] border-dark-gray bg-background"
           type="search"
           placeholder="Natural language search....."
         />
-        <div className="relative w-60 xl:w-56">
+        <div className="relative max-[440px]:w-[270px] w-60 xl:w-56">
           <div
-            className="px-[10px] h-8 bg-gray-800 text-white cursor-pointer flex justify-between items-center border-[2px] rounded-[7px] border-dark-gray bg-background"
+            className="px-1 sm:px-[10px] h-8 bg-gray-800 text-white cursor-pointer flex justify-between items-center border-[2px] rounded-[7px] border-dark-gray bg-background"
             onClick={handleToggle}
           >
-            <div className="flex gap-3 items-center">
+            <div className="flex gap-1 sm:gap-3 items-center">
               <img src={LiveLogsLogo} alt="Live Logs" />
               <span className="font-normal text-tiny">{selectedOption}</span>
             </div>
@@ -107,7 +107,7 @@ export default function BuildTabSidebar({ logs }) {
             </div>
           )}
         </div>
-        <div className="px-4 py-[6.5px] border-[2px] rounded-[7px] border-dark-gray bg-background cursor-pointer">
+        <div className="px-4 py-[10px] sm:py-[6.5px] border-[2px] rounded-[7px] border-dark-gray bg-background cursor-pointer">
           <img src={DoubleArrow} alt="Double Arrow" />
         </div>
       </div>
