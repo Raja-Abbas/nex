@@ -6,7 +6,7 @@ import HomeSvg from "../assets/svgs/homeSvg.svg";
 import GithubSvg from "../assets/svgs/githubLogo.svg";
 import GridSvg from "../assets/svgs/gridLogo.svg";
 import ArrowRightSvg from "../assets/svgs/arrowRight.svg";
-import Modal from "./Modal";
+import Modal from "./common/Modal";
 import ModalGithubDeployment from "./ModalGithubDeployment";
 
 const StartProject = () => {

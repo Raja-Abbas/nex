@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BlueSvg from "../../assets/svgs/blueSvg.svg";
-import Loading from '../spinner';
+import Loading from '../common/Spinner';
 import SourceLoadingState from "../../assets/svgs/sourceLoadingState.svg";
 import BuildLoadingState from "../../assets/svgs/buildLoadingState.svg";
 import PackageLoadingState from "../../assets/svgs/packageLoadingState.svg";
