@@ -80,7 +80,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   };
 
   return (
-    <div>
+    <div className="max-lg:ml-7">
       {isAlertOpen && (
         <DeploymentAlert
           isOpen={isAlertOpen}

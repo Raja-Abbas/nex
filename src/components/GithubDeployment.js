@@ -66,7 +66,7 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
   }, [selectedCard]);
 
   return (
-    <div className={`lg:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}>
+    <div className={`w-full lg:w-[450px] xl:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}>
       <MultiStepLoader
         steps={updatedSteps}
         loading={true}
