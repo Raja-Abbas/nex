@@ -1,4 +1,3 @@
-// src/components/TemplateWaitlistModal.js
 import React from "react";
 import Modal from "./common/Modal";
 import githubIcon from "../assets/svgs/github.svg";

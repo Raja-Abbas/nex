@@ -3,7 +3,7 @@ import { starsCardData } from "../constants/Framework";
 import StarSVG from "../assets/svgs/starSVG.svg";
 import Send from "../assets/svgs/send.svg";
 
-export default function StarComponent() {
+export default function ChatbotTabSidebar() {
   return (
     <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5">
       <div className="bg-background rounded-[7px] py-20">

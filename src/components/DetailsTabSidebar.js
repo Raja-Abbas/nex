@@ -2,7 +2,7 @@ import React from "react";
 import { detailsData } from "../constants/Framework";
 import NodeJs from "../assets/svgs/node.svg";
 
-export default function DetailsComponent({ selectedCard }) {
+export default function DetailsTabSidebar({ selectedCard }) {
   const defaultCard = {
     logo: NodeJs,
     title: "Node.js",

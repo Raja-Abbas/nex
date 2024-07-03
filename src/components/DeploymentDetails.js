@@ -68,14 +68,14 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
               {deploymentData.environment}
             </p>
           </div>
-          <div>
+          {/* <div>
             <label className="font-normal text-tiny text-light-grey-color">
               Cluster
             </label>
             <p className="font-normal text-lg text-white">
               {deploymentData.cluster}
             </p>
-          </div>
+          </div> */}
         </div>
         <a href={deploymentData.url} target='_blank' rel="noreferrer" className="pt-[15px] w-fit flex gap-[10px] items-center">
           <img src={Globe} alt="Globe Icon" />

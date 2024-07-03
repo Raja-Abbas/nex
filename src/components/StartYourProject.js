@@ -1,13 +1,13 @@
 // src/components/StartYourProject.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SideLayout from "./SideLayout";
+import TemplateSideLayout from "./layouts/TemplateSideLayout";
 import HomeSvg from "../assets/svgs/homeSvg.svg";
 import GithubSvg from "../assets/svgs/githubLogo.svg";
 import GridSvg from "../assets/svgs/gridLogo.svg";
 import ArrowRightSvg from "../assets/svgs/arrowRight.svg";
 import Modal from "./common/Modal";
-import ModalGithubDeployment from "./ModalGithubDeployment";
+import ModalGithubDeployment from "./GithubDeploymentModal";
 
 const StartProject = () => {
   const [showModal, setShowModal] = useState(false);
@@ -82,7 +82,7 @@ const StartProject = () => {
         ) : (
           <div className="lg:w-[80vw] lg:h-[80vh]">
             <div>
-              <SideLayout onCardSelect={handleCardSelect} />
+              <TemplateSideLayout onCardSelect={handleCardSelect} />
             </div>
           </div>
         )}

@@ -1,40 +1,39 @@
 import React, { useState } from "react";
-import StarChatbotImage from '../assets/svgs/StarChatbot.svg';
-import WHiteStarChatbotImage from '../assets/svgs/StarImage.svg';
+import StarChatbotImage from "../assets/svgs/StarChatbot.svg";
+import WHiteStarChatbotImage from "../assets/svgs/StarImage.svg";
 import Send from "../assets/svgs/send.svg";
 
-
-const ChatBot = ({ onClose }) => {
+const MiniChatbotDetails = ({ onClose }) => {
   const [messages, setMessages] = useState([
     {
       sender: "Liz",
-      text: "I'm Liz, your AI assistant. Congratulations on successfully deploying your project and joining our private alpha! You've earned $100 in credits to explore our platform. As we're in the early stages, I'm here to help you make the most of your credits and experience."
-    }
+      text: "I'm Liz, your AI assistant. Congratulations on successfully deploying your project and joining our private alpha! You've earned $100 in credits to explore our platform. As we're in the early stages, I'm here to help you make the most of your credits and experience.",
+    },
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
   const handleSend = () => {
     if (input.trim()) {
-      setMessages([
-        ...messages,
-        { sender: "User", text: input }
-      ]);
+      setMessages([...messages, { sender: "User", text: input }]);
       setInput("");
       setIsTyping(true);
 
       setTimeout(() => {
-        setMessages(prevMessages => [
+        setMessages((prevMessages) => [
           ...prevMessages,
-          { sender: "Liz", text: "I'm Liz, your AI assistant. I'm here to assist you with any queries you have." }
+          {
+            sender: "Liz",
+            text: "I'm Liz, your AI assistant. I'm here to assist you with any queries you have.",
+          },
         ]);
         setIsTyping(false);
-      }, 2000); 
+      }, 2000);
     }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSend();
     }
   };
@@ -45,23 +44,40 @@ const ChatBot = ({ onClose }) => {
         <img src={StarChatbotImage} alt="StarChatbotImage" />
       </div>
       <div className="p-2">
-        <p className="text-[20px] leading-[30px] text-white text-center my-[30px]">Welcome to NexLayer!</p>
-        <div className="lg:flex gap-2 text-white">
-        </div>
+        <p className="text-[20px] leading-[30px] text-white text-center my-[30px]">
+          Welcome to NexLayer!
+        </p>
+        <div className="lg:flex gap-2 text-white"></div>
         <div className="flex flex-col gap-2 rounded-[7px] max-h-[300px] overflow-y-auto">
           {messages.map((message, index) => (
             <div key={index} className="flex gap-2">
               <div className="lg:flex">
-                <img src={WHiteStarChatbotImage} alt="StarChatbotImage" className="w-[16px] h-[16px] mt-1" />
-                <p className={`text-${message.sender === "Liz" ? "light-blue" : "light-blue"}`}>{message.sender}:</p>
+                <img
+                  src={WHiteStarChatbotImage}
+                  alt="StarChatbotImage"
+                  className="w-[16px] h-[16px] mt-1"
+                />
+                <p
+                  className={`text-${
+                    message.sender === "Liz" ? "light-blue" : "light-blue"
+                  }`}
+                >
+                  {message.sender}:
+                </p>
               </div>
-              <p className="md:w-[388px] pr-11 text-base text-white">{message.text}</p>
+              <p className="md:w-[388px] pr-11 text-base text-white">
+                {message.text}
+              </p>
             </div>
           ))}
           {isTyping && (
             <div className="flex gap-2">
               <div className="flex">
-                <img src={WHiteStarChatbotImage} alt="StarChatbotImage" className="w-[16px] h-[16px] mt-1" />
+                <img
+                  src={WHiteStarChatbotImage}
+                  alt="StarChatbotImage"
+                  className="w-[16px] h-[16px] mt-1"
+                />
                 <p className="text-light-blue">Liz:</p>
               </div>
               <p className="rounded-full bg-light-blue h-4 w-4  animate-bounce   text-base text-white"></p>
@@ -89,4 +105,4 @@ const ChatBot = ({ onClose }) => {
   );
 };
 
-export default ChatBot;
+export default MiniChatbotDetails;

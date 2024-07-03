@@ -1,6 +1,6 @@
 import React from "react";
-import { cardsData } from "../constants/Framework";
-import NexLayer from "../assets/svgs/nexLayer.svg";
+import { cardsData } from "../../constants/Framework";
+import NexLayer from "../../assets/svgs/nexLayer.svg";
 
 export default function CardsContent({ selectedMenu, onCardSelect }) {
   const filteredData =

@@ -1,9 +1,8 @@
-// src/components/ChatBotComponent.js
 import React, { useState } from "react";
 import ChatBotComponentImage from '../assets/images/ChatbotImage.png';
-import ChatBot from './Chatbot';
+import MiniChatbotDetails from './MiniChatbotDetails';
 
-export default function ChatBotComponent() {
+export default function ChatBotIcon() {
   const [isChatBotVisible, setIsChatBotVisible] = useState(false);
 
   const toggleChatBot = () => {
@@ -18,7 +17,7 @@ export default function ChatBotComponent() {
         className="w-[60px] h-[60px] cursor-pointer z-[1000] hover:scale-110 transition-all"
         onClick={toggleChatBot}
       />
-      {isChatBotVisible && <ChatBot onClose={toggleChatBot} />}
+      {isChatBotVisible && <MiniChatbotDetails onClose={toggleChatBot} />}
     </div>
   );
 }

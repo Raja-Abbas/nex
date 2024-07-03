@@ -68,7 +68,7 @@ const BuildNavbar = () => {
         </div>
       </div>
 
-      {isModalOpen && <ModalAfterWaitlist isOpen={isModalOpen} onClose={closeModal} />}
+      {/* {isModalOpen && <ModalAfterWaitlist isOpen={isModalOpen} onClose={closeModal} />} */}
     </div>
   );
 };

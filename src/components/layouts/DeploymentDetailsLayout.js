@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import DeploymentDetails from './DeploymentDetails';
-import DetailsComponent from './DetailsComponent';
-import BuildComponent from './BuildComponent';
-import StarComponent from './StarComponent';
-import { logsData } from '../constants/Framework';
+import DeploymentDetails from '../DeploymentDetails';
+import DetailsTabSidebar from '../DetailsTabSidebar';
+import BuildTabSidebar from '../BuildTabSidebar';
+import ChatbotTabSidebar from '../ChatbotTabSidebar';
+import { logsData } from '../../constants/Framework';
 
 const Layout = ({ toggleBuildPageDetailsHide, selectedCard }) => {
   const [selectedMenu, setSelectedMenu] = useState('Details');
@@ -44,9 +44,9 @@ const Layout = ({ toggleBuildPageDetailsHide, selectedCard }) => {
         />
       </div>
       <div>
-        {selectedMenu === 'Details' && <DetailsComponent selectedCard={selectedCard} />}
-        {selectedMenu === 'Build' && <BuildComponent logs={logs} />}
-        {selectedMenu === 'Star' && <StarComponent />}
+        {selectedMenu === 'Details' && <DetailsTabSidebar selectedCard={selectedCard} />}
+        {selectedMenu === 'Build' && <BuildTabSidebar logs={logs} />}
+        {selectedMenu === 'Star' && <ChatbotTabSidebar />}
       </div>
     </div>
   );

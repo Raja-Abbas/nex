@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Tick from "../assets/svgs/tick.svg";
-import TemplateLogo from "../assets/svgs/templateLogo.svg";
+import Tick from "../../assets/svgs/tick.svg";
+import TemplateLogo from "../../assets/svgs/templateLogo.svg";
 
-const Sidebar = ({ handleMenuClick }) => {
+const TemplateLeftSidebar = ({ handleMenuClick }) => {
   const [activeMenu, setActiveMenu] = useState("All");
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
@@ -71,4 +71,4 @@ const Sidebar = ({ handleMenuClick }) => {
   );
 };
 
-export default Sidebar;
+export default TemplateLeftSidebar;
