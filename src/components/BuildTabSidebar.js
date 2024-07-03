@@ -56,7 +56,7 @@ export default function BuildTabSidebar({ logs }) {
           type="search"
           placeholder="Natural language search....."
         />
-        <div className="relative w-48">
+        <div className="relative w-60 xl:w-56">
           <div
             className="px-[10px] h-8 bg-gray-800 text-white cursor-pointer flex justify-between items-center border-[2px] rounded-[7px] border-dark-gray bg-background"
             onClick={handleToggle}
