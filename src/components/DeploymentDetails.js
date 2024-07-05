@@ -80,7 +80,7 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
         <a href={deploymentData.url} target='_blank' rel="noreferrer" className="pt-[15px] w-fit flex gap-[10px] items-center">
           <img src={Globe} alt="Globe Icon" />
           <p className="font-normal text-base text-dark-blue cursor-pointer">
-            https://{cardToDisplay.title}-3hp0.ondeployx.com
+            https://{cardToDisplay.title.toLowerCase()}-3hp0.ondeployx.com
           </p>
         </a>
       </div>
