@@ -44,7 +44,7 @@ export const steps = [
     details: [
       { label: "Project Name", value: "Nodejs", text: "white" },
       { label: "", value: "nodejs-template-patch-1", image: Nodejs, text: "white" },
-      { label: "Time", value: "10 seconds ago" },
+      { label: "Time", value: "" },
       { label: "", value: "ProjextX Builder", image: ProjectXBox },
     ],
   },
@@ -64,7 +64,7 @@ export const steps = [
     details: [
       { label: "Deploying", value: "(0:10)", text:"white" },
       { label: "", value: "sasdeployer /ndejs:latest", image: GithubLogoCard, text:'white' },
-      { label: "", value: "10 seconds ago" },
+      { label: "Time", value: "" },
       { label: "", value: "Docterhub", image: ProjectXBox },
     ],
   },

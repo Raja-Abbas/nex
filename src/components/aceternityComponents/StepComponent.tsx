@@ -52,11 +52,17 @@ const StepComponent: React.FC<{
   toggleBuildPageDetails: () => void;
 }> = ({ step, index, toggleBuildPageDetails }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [timeElapsed, setTimeElapsed] = useState<number>(0);
+  const [showInProgress, setShowInProgress] = useState(false); // State to manage "In Progress" status
 
   useEffect(() => {
     if (index !== 0) {
       const timeout = setTimeout(() => {
         setIsLoading(false);
+        setShowInProgress(true); 
+        setTimeout(() => {
+          setShowInProgress(false);
+        }, 2000);
       }, 2000);
 
       return () => clearTimeout(timeout);
@@ -64,6 +70,23 @@ const StepComponent: React.FC<{
       setIsLoading(false);
     }
   }, [index]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeElapsed((prevTime) => prevTime + 5);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTimeAgo = (timeElapsed: number): string => {
+    if (timeElapsed < 60) {
+      return `${timeElapsed} seconds ago`;
+    } else {
+      const minutes = Math.floor(timeElapsed / 60);
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    }
+  };
 
   if (!step || !step.image || !images[step.image]) {
     return null;
@@ -104,10 +127,18 @@ const StepComponent: React.FC<{
               {step.subheading}
             </p>
           )}
-          {step.description && (
+         {step.description && (
             <p className="mt-1 text-base text-white font-[450]">
               Status:{" "}
-              <span className="text-green ml-[8px]">{step.description}</span>
+              <span className="text-green ml-[8px]">
+                {step.id === 2 ? (
+                  showInProgress ? "Build in Progress" : step.description
+                ) : step.id === 4 ? (
+                  showInProgress ? "Deployment in Progress" : step.description
+                ) : (
+                  step.description
+                )}
+              </span>
             </p>
           )}
           {step.builder && (
@@ -156,9 +187,9 @@ const StepComponent: React.FC<{
                       }`}
                     />
                   )}
-                  {detail.label && (
+                  {detail.label && detail.label !== "Time" && (
                     <span
-                      className={`${detail.label === "Time" ? "hidden" : ""} ${
+                      className={`${
                         detail.text === "white"
                           ? "text-white max-md:text-tiny md:text-base font-semibold"
                           : "text-description-color max-md:text-tiny md:text-base font-semibold"
@@ -166,6 +197,13 @@ const StepComponent: React.FC<{
                     >
                       {detail.label}:
                     </span>
+                  )}
+                  {detail.label === "Time" && (
+                    <>
+                      <span className="text-description-color max-md:text-tiny md:text-base font-normal">
+                        {formatTimeAgo(timeElapsed)}
+                      </span>
+                    </>
                   )}
                   <span
                     className={`${
@@ -180,18 +218,15 @@ const StepComponent: React.FC<{
               ))}
               {step.id === 5 && (
                 <div className="flex flex-row mt-[8px] max-md:gap-[10px] md:gap-[56px]">
-                  {step.details.some(
-                    (detail) => detail.label === "Feedback"
-                  ) && (
+                  {step.details.some((detail) => detail.label === "Feedback") && (
                     <div className="mr-4">
                       <p className="text-description-color text-tiny leading-[24px]">
                         Feedback
                       </p>
                       <p className="border mt-[1px] text-base leading-[24px] rounded-full text-center border-dark-blue bg-medium-grey-color text-dark-blue py-[1px] px-[14px]">
                         {
-                          step.details.find(
-                            (detail) => detail.label === "Feedback"
-                          )?.value
+                          step.details.find((detail) => detail.label === "Feedback")
+                            ?.value
                         }
                       </p>
                     </div>
@@ -212,18 +247,15 @@ const StepComponent: React.FC<{
                       </p>
                     </div>
                   )}
-                  {step.details.some(
-                    (detail) => detail.label === "Cluster"
-                  ) && (
+                  {step.details.some((detail) => detail.label === "Cluster") && (
                     <div>
                       <p className="text-description-color text-tiny leading-[24px]">
                         Cluster
                       </p>
                       <p className="text-white mt-[1px] leading-[24px] text-lg rounded-full py-[1px]">
                         {
-                          step.details.find(
-                            (detail) => detail.label === "Cluster"
-                          )?.value
+                          step.details.find((detail) => detail.label === "Cluster")
+                            ?.value
                         }
                       </p>
                     </div>
@@ -232,22 +264,22 @@ const StepComponent: React.FC<{
               )}
               {step.details.some((detail) => detail.label === "Link") && (
                 <a
-                  href={step.details[4].url}
+                  href={step.details.find((detail) => detail.label === "Link")?.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-4 flex gap-0 items-center w-fit"
                 >
                   {step.details.some((detail) => detail.label === "Link") && (
                     <img
-                      src={step.details[4].image}
-                      alt={step.details[4].label}
+                      src={step.details.find((detail) => detail.label === "Link")?.image}
+                      alt={step.details.find((detail) => detail.label === "Link")?.label}
                       className={`mr-2 ${
                         step.id === 5 ? "w-4 h-4" : "w-4 h-4"
                       }`}
                     />
                   )}
                   <p className="text-dark-blue text-base">
-                    {step.details[4].url}
+                    {step.details.find((detail) => detail.label === "Link")?.url}
                   </p>
                 </a>
               )}
@@ -255,8 +287,8 @@ const StepComponent: React.FC<{
                 <div className="mt-2 flex gap-0 items-center">
                   {step.details.some((detail) => detail.label === "Docker") && (
                     <img
-                      src={step.details[5].image}
-                      alt={step.details[5].label}
+                      src={step.details.find((detail) => detail.label === "Docker")?.image}
+                      alt={step.details.find((detail) => detail.label === "Docker")?.label}
                       className={`mr-2 ${
                         step.id === 5 ? "w-4 h-4" : "w-4 h-4"
                       }`}
@@ -264,8 +296,7 @@ const StepComponent: React.FC<{
                   )}
                   <p className="text-description-color text-base">
                     {
-                      step.details.find((detail) => detail.label === "Docker")
-                        ?.value
+                      step.details.find((detail) => detail.label === "Docker")?.value
                     }
                   </p>
                 </div>
