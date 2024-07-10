@@ -62,7 +62,7 @@ export const steps = [
     description: "Deployment successful",
     image: "DeployLoadingState",
     details: [
-      { label: "Deploying", value: "(0:10)", text:"white" },
+      { label: "Deploying", value: "", text:"white" },
       { label: "", value: "sasdeployer /ndejs:latest", image: GithubLogoCard, text:'white' },
       { label: "Time", value: "" },
       { label: "", value: "Docterhub", image: ProjectXBox },

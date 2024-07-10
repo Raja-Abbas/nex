@@ -62,7 +62,7 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
         }
         return step;
       })
-      .filter((step, index, self) => self.findIndex((s) => s.id === step.id) === index); // Ensure unique steps
+      .filter((step, index, self) => self.findIndex((s) => s.id === step.id) === index);
   }, [selectedCard]);
 
   return (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BlueSvg from "../../assets/svgs/blueSvg.svg";
-import Loading from '../common/Spinner';
+import Loading from "../common/Spinner";
 import SourceLoadingState from "../../assets/svgs/sourceLoadingState.svg";
 import BuildLoadingState from "../../assets/svgs/buildLoadingState.svg";
 import PackageLoadingState from "../../assets/svgs/packageLoadingState.svg";
@@ -53,16 +53,20 @@ const StepComponent: React.FC<{
 }> = ({ step, index, toggleBuildPageDetails }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
-  const [showInProgress, setShowInProgress] = useState(false); // State to manage "In Progress" status
+  const [showInProgress, setShowInProgress] = useState(false);
+  const [buildTimer, setBuildTimer] = useState<number>(10);
+
+ 
 
   useEffect(() => {
     if (index !== 0) {
       const timeout = setTimeout(() => {
         setIsLoading(false);
-        setShowInProgress(true); 
+        setShowInProgress(true);
         setTimeout(() => {
           setShowInProgress(false);
-        }, 2000);
+          startElapsedTime();
+        }, 10000);
       }, 2000);
 
       return () => clearTimeout(timeout);
@@ -71,20 +75,29 @@ const StepComponent: React.FC<{
     }
   }, [index]);
 
-  useEffect(() => {
+  const startElapsedTime = () => {
     const timer = setInterval(() => {
       setTimeElapsed((prevTime) => prevTime + 5);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, []);
+  };
+
+  useEffect(() => {
+    if ((step.id === 2 || step.id === 4) && buildTimer > 0) {
+      const countdown = setTimeout(() => {
+        setBuildTimer((prev) => prev - 1);
+      }, 1000);
+      return () => clearTimeout(countdown);
+    }
+  }, [step.id, buildTimer]);
 
   const formatTimeAgo = (timeElapsed: number): string => {
     if (timeElapsed < 60) {
       return `${timeElapsed} seconds ago`;
     } else {
       const minutes = Math.floor(timeElapsed / 60);
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
     }
   };
 
@@ -127,14 +140,14 @@ const StepComponent: React.FC<{
               {step.subheading}
             </p>
           )}
-         {step.description && (
+          {step.description && (
             <p className="mt-1 text-base text-white font-[450]">
               Status:{" "}
               <span className="text-green ml-[8px]">
                 {step.id === 2 ? (
-                  showInProgress ? "Build in Progress" : step.description
+                  buildTimer > 0 ? `Building (0:0${10 - buildTimer})` : "Build Successful"
                 ) : step.id === 4 ? (
-                  showInProgress ? "Deployment in Progress" : step.description
+                  buildTimer > 0 ? "Deployment in Progress" : "Deployment Successful"
                 ) : (
                   step.description
                 )}
@@ -201,8 +214,23 @@ const StepComponent: React.FC<{
                   {detail.label === "Time" && (
                     <>
                       <span className="text-description-color max-md:text-tiny md:text-base font-normal">
-                        {formatTimeAgo(timeElapsed)}
+                        {step.id === 2 && buildTimer > 0
+                          ? "Build in Progress"
+                          : step.id === 4 ? (
+                              showInProgress ? "Deployment in Progress" : formatTimeAgo(timeElapsed)
+                            ) : formatTimeAgo(timeElapsed)}
                       </span>
+                    </>
+                  )}
+                   {detail.label === "Deploying" && (
+                    <>
+                    <div className="text-white max-md:text-tiny md:text-base font-normal">
+                      { step.id === 4 ? (
+                        buildTimer > 0 ? `(0:0${10 - buildTimer})` : "(0:10)"
+                      ) : (
+                        step.description
+                      )}
+                    </div>
                     </>
                   )}
                   <span
@@ -310,3 +338,5 @@ const StepComponent: React.FC<{
 };
 
 export default StepComponent;
+
+

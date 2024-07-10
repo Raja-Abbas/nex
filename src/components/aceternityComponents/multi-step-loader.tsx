@@ -3,8 +3,7 @@ import Waitlist from '../WaitlistComponent';
 import TemplateWaitlistModal from "../TemplateWaitlistModal";
 import DeploymentAlert from "./DeploymentAlert";
 import ModalAlert from "./ModalAlert";
-import StepComponent from "./StepComponent";
-import { Step } from "./StepComponent";
+import StepComponent, { Step } from "./StepComponent";
 
 interface MultiStepLoaderProps {
   steps: Step[];
@@ -38,7 +37,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
       const interval = setInterval(() => {
         if (index < steps.length) {
           setVisibleSteps((prevSteps) => {
-            if (!prevSteps.some(step => step.id === steps[index].id)) {
+            if (steps[index] && !prevSteps.some(step => step?.id === steps[index]?.id)) {
               return [...prevSteps, steps[index]];
             }
             return prevSteps;
