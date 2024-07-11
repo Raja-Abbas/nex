@@ -70,7 +70,7 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
       <MultiStepLoader
         steps={updatedSteps}
         loading={true}
-        duration={2500}
+        duration={2000}
         toggleBuildPageDetails={toggleBuildPageDetails}
         selectedCard={selectedCard}
       />

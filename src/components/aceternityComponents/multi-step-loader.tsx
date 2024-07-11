@@ -8,7 +8,6 @@ import StepComponent, { Step } from "./StepComponent";
 interface MultiStepLoaderProps {
   steps: Step[];
   loading: boolean;
-  duration: number;
   toggleBuildPageDetails: () => void;
   selectedCard?: any;
 }
@@ -16,7 +15,6 @@ interface MultiStepLoaderProps {
 export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   steps,
   loading,
-  duration,
   toggleBuildPageDetails,
   selectedCard,
 }) => {
@@ -34,7 +32,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
       setVisibleSteps([]);
 
       let index = 0;
-      const interval = setInterval(() => {
+      const showNextStep = () => {
         if (index < steps.length) {
           setVisibleSteps((prevSteps) => {
             if (steps[index] && !prevSteps.some(step => step?.id === steps[index]?.id)) {
@@ -42,18 +40,22 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
             }
             return prevSteps;
           });
-          index++;
+
+          const stepDuration = (steps[index].id === 2 || steps[index].id === 4) ? 10000 : steps[index].duration || 1500;
+          setTimeout(() => {
+            index++;
+            showNextStep();
+          }, stepDuration);
         } else {
-          clearInterval(interval);
           setTimeout(() => setShowModal(true), 2000);
         }
-      }, duration);
+      };
+
+      showNextStep();
 
       setTimeout(() => setIsAlertOpen(true), 2000);
-
-      return () => clearInterval(interval);
     }
-  }, [loading, duration, steps]);
+  }, [loading, steps]);
 
   useEffect(() => {
     if (visibleSteps.length === steps.length && !hasModalAlertShown) {
@@ -141,7 +143,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
         }
       `}</style>
       {selectedCard ? (
-        <TemplateWaitlistModal isOpen={showModal} onClose={closeSelectedCardModal} selectedCard={selectedCard}/>
+        <TemplateWaitlistModal isOpen={showModal} onClose={closeSelectedCardModal} selectedCard={selectedCard} />
       ) : (
         <Waitlist isOpen={showModal} onClose={closeSelectedCardModal} />
       )}
