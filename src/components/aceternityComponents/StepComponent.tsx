@@ -226,7 +226,7 @@ const StepComponent: React.FC<{
                     <>
                     <div className="text-white max-md:text-tiny md:text-base font-normal">
                       { step.id === 4 ? (
-                        buildTimer > 0 ? `(0:0${10 - buildTimer})` : "(0:10)"
+                        buildTimer > 0 ? `(0:0${10 - buildTimer})` : "Successful"
                       ) : (
                         step.description
                       )}

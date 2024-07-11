@@ -23,6 +23,8 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [showModalAlert, setShowModalAlert] = useState<boolean>(false);
   const [hasModalAlertShown, setHasModalAlertShown] = useState<boolean>(false);
+  const [step4EndTime, setStep4EndTime] = useState<number | null>(null);
+  const [modalAlertTime, setModalAlertTime] = useState<string>("");
 
   useEffect(() => {
     if (loading) {
@@ -30,6 +32,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
       setShowModalAlert(false);
       setHasModalAlertShown(false);
       setVisibleSteps([]);
+      setStep4EndTime(null);
 
       let index = 0;
       const showNextStep = () => {
@@ -41,8 +44,11 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
             return prevSteps;
           });
 
-          const stepDuration = (steps[index].id === 2 || steps[index].id === 4) ? 10000 : steps[index].duration || 1500;
+          const stepDuration = (steps[index].id === 2 || steps[index].id === 4) ? 10000 : steps[index].duration || 2500;
           setTimeout(() => {
+            if (steps[index].id === 4) {
+              setStep4EndTime(Date.now());
+            }
             index++;
             showNextStep();
           }, stepDuration);
@@ -53,18 +59,22 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
 
       showNextStep();
 
-      setTimeout(() => setIsAlertOpen(true), 2000);
+      setTimeout(() => setIsAlertOpen(true));
     }
   }, [loading, steps]);
 
   useEffect(() => {
     if (visibleSteps.length === steps.length && !hasModalAlertShown) {
       setTimeout(() => {
+        if (step4EndTime) {
+          const timeElapsed = Math.floor((Date.now() - step4EndTime) / 1000);
+          setModalAlertTime(`${timeElapsed} seconds ago`);
+        }
         setShowModalAlert(true);
         setHasModalAlertShown(true);
       }, 2000);
     }
-  }, [visibleSteps, steps.length, hasModalAlertShown]);
+  }, [visibleSteps, steps.length, hasModalAlertShown, step4EndTime]);
 
   if (!loading) return null;
 
@@ -108,7 +118,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
         <ModalAlert
           isOpen={showModalAlert}
           message="Deployment Successful"
-          time="2 min ago"
+          time={modalAlertTime}
           onClose={closeModalAlert}
           selectedCard={selectedCard}
         />
