@@ -16,7 +16,13 @@ import GithubLogoCard from "../assets/svgs/githubLogoCard.svg";
 import JsLogo from "../assets/svgs/node.svg";
 import Globe from "../assets/svgs/globe.svg";
 import TickCircle from "../assets/svgs/tick-circle.svg";
-
+import LibreChat from "../assets/svgs/librechat_Icon.svg";
+import DialoqBase from "../assets/images/dialoqbaselogo.png";
+import LiamaIndex from "../assets/images/LiamaIndex.png";
+import Dify from "../assets/images/Dify.png";
+import ChatBotUI from "../assets/svgs/ChatBotUI.svg";
+import Chain from "../assets/images/chain.png";
+import ChainLangflow from "../assets/svgs/chains.svg";
 
 export const steps = [
   {
@@ -108,6 +114,7 @@ export const cardsData = [
     description: "A simple Django Application",
     provider: "NexLayer",
     category: "Latest",
+    Marketplacecategory: "Analytics",
   },
   {
     logo: Flask,
@@ -115,6 +122,7 @@ export const cardsData = [
     description: "A minimal Flask application",
     provider: "NexLayer",
     category: "News",
+    Marketplacecategory: "AI/ML",
   },
   {
     logo: AnythingLLM,
@@ -123,6 +131,7 @@ export const cardsData = [
       "A multi-user ChatGPT for any LLMs and vector database with full privacy.",
     provider: "NexLayer",
     category: "All",
+    Marketplacecategory: "AI/ML"
   },
   {
     logo: MongoDB,
@@ -137,6 +146,7 @@ export const cardsData = [
     description: "A popular self-hosted CMS",
     provider: "NexLayer",
     category: "All",
+    Marketplacecategory: "Analytics"
   },
   {
     logo: MySQL,
@@ -144,6 +154,7 @@ export const cardsData = [
     description: "MySQL database with data persistence and TCP Proxy",
     provider: "NexLayer",
     category: "News",
+    Marketplacecategory: "Authentication",
   },
   {
     logo: PostgreSQL,
@@ -151,6 +162,7 @@ export const cardsData = [
     description: "PostgreSQL database with data persistence and TCP Proxy",
     provider: "NexLayer",
     category: "News",
+    Marketplacecategory: "Authentication",
   },
   {
     logo: Flowise,
@@ -158,6 +170,140 @@ export const cardsData = [
     description: "Flowise - low- code LLM apps builder",
     provider: "NexLayer",
     category: "Latest",
+    Marketplacecategory: "AI/ML"
+  },
+];
+
+export const templatesData = [
+  {
+    logo: Django,
+    title: "Django",
+    description: "A simple Django Application",
+    provider: "Henry Heng",
+    category: "Latest",
+    Marketplacecategory: "Analytics",
+    Downloads: "783",
+  },
+  {
+    logo: Flask,
+    title: "Flask",
+    description: "A minimal Flask application",
+    provider: "Berry",
+    category: "News",
+    Marketplacecategory: "Authentication",
+    Downloads: "200",
+  },
+  {
+    logo: Strapi,
+    title: "Strapi",
+    description: "A popular self-hosted CMS",
+    provider: "Gabriel Luiz ...",
+    category: "All",
+    Marketplacecategory: "Analytics",
+    Downloads: "400",
+  },
+  {
+    logo: MySQL,
+    title: "MySQL",
+    description: "MySQL database with data persistence and TCP Proxy",
+    provider: "alphasec",
+    category: "News",
+    Marketplacecategory: "Authentication",
+    Downloads: "2K",
+  },
+  {
+    logo: PostgreSQL,
+    title: "PostgreSQL",
+    description: "PostgreSQL database with data persistence and TCP Proxy",
+    provider: "Muhammed ...",
+    category: "News",
+    Marketplacecategory: "Authentication",
+    Downloads: "1K",
+  },
+  {
+    logo: Flowise,
+    title: "flowise-railway",
+    description: "Flowise - low- code LLM apps builder",
+    provider: "Henry Heng",
+    category: "Latest",
+    Marketplacecategory: "AI/ML",
+    Downloads: "4.8K",
+  },
+  {
+    logo: LibreChat,
+    title: "LibreChat",
+    description: "ChatGPT clone GPT-4, Bing, Anthropic, DALL-E-3, Plugins, Multi-...",
+    provider: "Berry",
+    category: "Latest",
+    Marketplacecategory: "AI/ML",
+    Downloads: "1.5K",
+  },
+  {
+    logo: ChainLangflow,
+    title: "Langflow 1.0",
+    description: "Simple Langflow deployment using PostgreSQL as the database.",
+    provider: "Gabriel Luiz ...",
+    category: "Latest",
+    Marketplacecategory: "AI/ML",
+    Downloads: "1.5K",
+  },
+  {
+    logo: Chain,
+    title: "Langflow",
+    description: "A drag-and-drop web interface for LangChain.",
+    provider: "aplhasec",
+    category: "Latest",
+    Marketplacecategory: "AI/ML",
+    Downloads: "830",
+  },
+  {
+    logo: DialoqBase,
+    title: "Dialoqbase",
+    description: "Create chatbots with ease",
+    provider: "Muhammed ...",
+    category: "Latest",
+    Marketplacecategory: "AI/ML",
+    Downloads: "473",
+  },
+  {
+    logo: AnythingLLM,
+    title: "AnythingLLM",
+    description:
+      "A multi-user ChatGPT for any LLMs and vector database with full privacy.",
+    provider: "Timothy Car ...",
+    category: "All",
+    Marketplacecategory: "AI/ML",
+    Downloads: "440",
+  },
+  {
+    logo: LiamaIndex,
+    title: "Liama-Index",
+    description:
+      "A Streamlit app for chatting with PDFs using LIamaIndex and LIamaParse",
+    provider: "alphasec",
+    category: "All",
+    Marketplacecategory: "AI/ML",
+    Downloads: "367",
+  },
+  {
+    logo: Dify,
+    title: "Dify",
+    description:
+      "An open-source LLM app development platform",
+    provider: "Jack",
+    category: "All",
+    Marketplacecategory: "AI/ML",
+    Downloads: "336",
+  },
+  {
+    logo: ChatBotUI,
+    title: "Chatbot UI",
+    description:
+      "An open-source ChatGPT UI alternative.",
+    provider: "alphasec",
+    category: "All",
+    Marketplacecategory: "AI/ML",
+    Downloads: "308",
   },
 ];
 

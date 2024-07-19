@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Tick from "../../assets/svgs/tick.svg";
-import TemplateLogo from "../../assets/svgs/templateLogo.svg";
 
-const TemplateLeftSidebar = ({ handleMenuClick }) => {
+const MarketPlaceTemplateSidebar = ({ handleMenuClick }) => {
   const [activeMenu, setActiveMenu] = useState("AI/ML");
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
@@ -14,10 +13,18 @@ const TemplateLeftSidebar = ({ handleMenuClick }) => {
 
   const menuItems = [
     { key: "All", text: "All" },
-    { key: "Popular", text: "Popular" },
-    { key: "Latest", text: "Latest" },
-    { key: "News", text: "News" },
     { key: "AI/ML", text: "AI/ML" },
+    { key: "Analytics", text: "Analytics" },
+    { key: "Authentication", text: "Authentication" },
+    { key: "Automation", text: "Automation" },
+    { key: "Blogs", text: "Blogs" },
+    { key: "Bots", text: "Bots" },
+    { key: "CMS", text: "CMS" },
+    { key: "Observability", text: "Observability" },
+    { key: "Other", text: "Other" },
+    { key: "Starters", text: "Starters" },
+    { key: "Storage", text: "Storage" },
+    { key: "Queues", text: "Queues" },
   ];
 
   return (
@@ -30,18 +37,12 @@ const TemplateLeftSidebar = ({ handleMenuClick }) => {
         aria-label="Sidebar"
       >
         <div className="px-5 sm:px-6 md:px-0">
-          <div className="pt-6 flex gap-[10px] items-center">
-            <img src={TemplateLogo} alt="Template SVG" />
-            <p className="font-normal text-base text-white">
-              Start with a Template
-            </p>
-          </div>
-          <p className="pt-3 md:pt-[30px] pb-0 md:pb-6 font-normal text-sm text-description-color">
-            Category
+          <p className="pt-3 capitalize md:pt-[30px] pb-0 md:pb-6 font-bold text-lg text-description-color">
+            CATEGORY
           </p>
         </div>
 
-        <div className="w-[100%] flex flex-row md:flex-col gap-0 sm:gap-0 items-center px-2 md:px-0 pb-3">
+        <div className="w-[100%] flex flex-row md:flex-col gap-0 sm:gap-0 items-center px-2 md:px-0 pb-3 max-md:w-full max-md:overflow-y-auto">
           {menuItems.map((item) => (
             <button
               key={item.key}
@@ -72,4 +73,4 @@ const TemplateLeftSidebar = ({ handleMenuClick }) => {
   );
 };
 
-export default TemplateLeftSidebar;
+export default MarketPlaceTemplateSidebar;
