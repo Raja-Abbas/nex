@@ -150,7 +150,7 @@ export default function DynamicPage() {
           </span>
         </p>
       </div>
-      <div className="py-16 max-w-[750px]">
+      <div className="py-16 pt-5 max-w-[750px]">
         <span className="text-3xl font-semibold">Template Content</span>
         <div className="bg-[#191622] px-5 py-6 mt-10 rounded-xl flex gap-4">
           <img src={Cube} alt="Cube" className="w-10 p-[10px] bg-[#33313f] rounded-lg h-fit" />

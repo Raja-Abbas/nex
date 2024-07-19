@@ -269,7 +269,7 @@ export const templatesData = [
     logo: AnythingLLM,
     title: "AnythingLLM",
     description:
-      "A multi-user ChatGPT for any LLMs and vector database with full privacy.",
+      "The all-in-one app for private documnet chat, AI Agents, and more.",
     provider: "Timothy Car ...",
     category: "All",
     Marketplacecategory: "AI/ML",
@@ -279,7 +279,7 @@ export const templatesData = [
     logo: LiamaIndex,
     title: "Liama-Index",
     description:
-      "A Streamlit app for chatting with PDFs using LIamaIndex and LIamaParse",
+      "A Streamlit app for chatting with PDFs using LIamaIndex and LIamaParse.",
     provider: "alphasec",
     category: "All",
     Marketplacecategory: "AI/ML",
