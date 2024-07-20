@@ -29,7 +29,7 @@ export default function DynamicPage() {
   const Note =
     "Due to Railway container permissions, web scraping of any sort is disabled! You will need to upload those site's HTML manually.";
   return (
-  <div className="text-white max-md:w-[300px] pt-10 min-h-[80vh] max-lg:w-[550px] lg:max-w-[950px] xl:max-w-[1200px] w-full flex max-md:flex-col md:gap-5">
+  <div className="text-white pt-10 min-h-[80vh] lg:max-w-[950px] max-xl:px-10 max-md:px-4 xl:max-w-[1200px] w-full flex max-xl:flex-col md:gap-5">
     <div className="flex flex-col gap-10">
       <a href="/marketplace" className="flex gap-3 text-description-color"><img src={FourSquares} alt="FourSquares" className="w-5" /><span>All Templates/{item.Marketplacecategory}</span></a>
       <div className="flex gap-6 items-center">
@@ -41,6 +41,7 @@ export default function DynamicPage() {
           </p>
         </div>
       </div>
+      <div className="xl:flex gap-2 relative">
       <GlowingStarsBackgroundCard>
         <div className="flex flex-col justify-between items-end">
           <GlowingStarsDescription>
@@ -66,6 +67,27 @@ export default function DynamicPage() {
           </GlowingStarsDescription>
         </div>
       </GlowingStarsBackgroundCard>
+      <div className="-mt-20 relative float-right max-xl:hidden">
+      <button className="bg-[#732993] hover:bg-opacity-70 transition-all px-[100px] py-2 rounded-md text-nowrap md:ml-10">Deploy Now</button>
+      <div className="mt-12 md:ml-4 border-t border-t-[#374151] border-opacity-50">
+      <div className="flex py-2 px-4 w-fit justify-center bg-dark-gray gap-2 items-center">
+      <img src={NexLayer} alt="NexLayer Logo" className="w-6" />
+      <p className="font-medium text-lg text-white">
+        <span className="font-normal text-description-color">
+          By{" "}
+        </span>
+        Nextlayer
+      </p>
+      </div>
+      <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5">
+        <div className="flex gap-5"><img src={Calendar} alt="Calendar" className="w-4" /><span>Created on Feb 21, 2024</span></div>
+        <div className="flex gap-5"><img src={Download} alt="Download" className="w-4" /><span>440 total projects</span></div>
+        <div className="flex gap-5 text-green"><img src={CheckMark} alt="CheckMark" className="w-4" /><span>100% success on reacent deploys</span></div>
+        <div className="flex gap-5"><img src={DocumentFolder} alt="DocumentFolder" className="w-5" /><span>AI/ML</span></div>
+      </div>
+      </div>
+      </div>
+      </div>
       <div className="max-w-[750px] mt-14">
         <p className="text-3xl font-semibold">
           {item.title} on Railway is here!
@@ -161,7 +183,7 @@ export default function DynamicPage() {
         </div>
       </div>
     </div>
-    <div className="md:mt-24">
+    <div className="mb-10 max-xl:block xl:hidden">
       <button className="bg-[#732993] hover:bg-opacity-70 transition-all px-[100px] py-2 rounded-md text-nowrap md:ml-10">Deploy Now</button>
       <div className="mt-12 md:ml-4 border-t border-t-[#374151] border-opacity-50">
       <div className="flex py-2 px-4 w-fit justify-center bg-dark-gray gap-2 items-center">
@@ -170,17 +192,17 @@ export default function DynamicPage() {
         <span className="font-normal text-description-color">
           By{" "}
         </span>
-        {item.provider}
+        Nexlayer
       </p>
       </div>
-      <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5">
+      <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5 mb-20">
         <div className="flex gap-5"><img src={Calendar} alt="Calendar" className="w-4" /><span>Created on Feb 21, 2024</span></div>
         <div className="flex gap-5"><img src={Download} alt="Download" className="w-4" /><span>440 total projects</span></div>
         <div className="flex gap-5 text-green"><img src={CheckMark} alt="CheckMark" className="w-4" /><span>100% success on reacent deploys</span></div>
         <div className="flex gap-5"><img src={DocumentFolder} alt="DocumentFolder" className="w-5" /><span>AI/ML</span></div>
       </div>
       </div>
-    </div>
+      </div>
   </div>
   );
 }

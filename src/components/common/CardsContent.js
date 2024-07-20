@@ -12,7 +12,7 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
       : cardsData.filter((item) => item.category === selectedMenu);
 
   const handleLinkClick = (slug) => {
-    navigate(`/page/${slug}`);
+    navigate(`/details/${slug}`);
   };
 
   return (
