@@ -29,7 +29,7 @@ function App() {
           <Route path="/build" element={<BuildPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="*" element={<BrokenPage />} />
-          <Route path="/page/:slug" element={<DynamicPage />} />
+          <Route path="/details/:slug" element={<DynamicPage />} />
           <Route path="/marketplace" element={<MarketPlace />} />
         </Routes>
       </div>

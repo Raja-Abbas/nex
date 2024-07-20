@@ -76,7 +76,7 @@ export default function DynamicPage() {
         <span className="font-normal text-description-color">
           By{" "}
         </span>
-        {item.provider}
+        Nextlayer
       </p>
       </div>
       <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5">
@@ -192,7 +192,7 @@ export default function DynamicPage() {
         <span className="font-normal text-description-color">
           By{" "}
         </span>
-        {item.provider}
+        Nexlayer
       </p>
       </div>
       <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5 mb-20">
