@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { cardsData } from "../../constants/Framework";
+import { templatesData } from "../../constants/Framework";
 import StarIcon from "../../assets/svgs/star-icon.svg";
 import Cube from "../../assets/svgs/cube.svg";
 import NexLayer from "../../assets/svgs/nexLayer.svg";
@@ -18,7 +18,7 @@ import {
 
 export default function DynamicPage() {
   const { slug } = useParams();
-  const item = cardsData.find((item) => item.title === slug);
+  const item = templatesData.find((item) => item.title === slug);
 
   if (!item) {
     return <div>Item not found</div>;
@@ -90,7 +90,7 @@ export default function DynamicPage() {
           <span className="flex gap-1 items-center">
             <img src={StarIcon} alt="StarIcon" className="w-4" />
             Star on Github: 
-            <a href="/" className="text-white underline"> https://github.com/Mintplex-Labs/anything-llm</a>
+            <a href="/" className="text-white underline"> https://github.com/Mintplex-Labs/{item.title.toLowerCase()}</a>
           </span>
           <span>Includes all features of the main app including:</span>
           <span>
@@ -120,7 +120,7 @@ export default function DynamicPage() {
           <span>
             <p className="text-white text-2xl">Supported Embedding modules:</p>
             <ul className="mt-6 list-disc ml-6 flex flex-col gap-4">
-              <li>AnythingLLM Native Embedder (default)</li>
+              <li>{item.title} Native Embedder (default)</li>
               <li>OpenAI</li>
               <li>Azure OpenAI</li>
               <li>LLM Suite (all)</li>
@@ -146,7 +146,7 @@ export default function DynamicPage() {
           </span>
           <span className="flex flex-col gap-4">
             <p className="text-white text-2xl">LICENSE</p>
-            <p>AnythingLLM is MIT Licensed.</p>
+            <p>{item.title} is MIT Licensed.</p>
           </span>
         </p>
       </div>
@@ -155,8 +155,8 @@ export default function DynamicPage() {
         <div className="bg-[#191622] px-5 py-6 mt-10 rounded-xl flex gap-4">
           <img src={Cube} alt="Cube" className="w-10 p-[10px] bg-[#33313f] rounded-lg h-fit" />
           <div>
-          <p className="text-white text-lg">anythingllm-docker</p>
-          <p className="text-description-color text-base">mintplexlabs/anything-llm:railway</p>
+          <p className="text-white text-lg">{item.title.toLowerCase()}-docker</p>
+          <p className="text-description-color text-base">mintplexlabs/{item.title.toLowerCase()}:railway</p>
           </div>
         </div>
       </div>
