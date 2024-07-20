@@ -3,7 +3,7 @@ import Tick from "../../assets/svgs/tick.svg";
 import TemplateLogo from "../../assets/svgs/templateLogo.svg";
 
 const TemplateLeftSidebar = ({ handleMenuClick }) => {
-  const [activeMenu, setActiveMenu] = useState("AI/ML");
+  const [activeMenu, setActiveMenu] = useState("All");
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
   const handleButtonClick = (menu) => {
@@ -17,7 +17,6 @@ const TemplateLeftSidebar = ({ handleMenuClick }) => {
     { key: "Popular", text: "Popular" },
     { key: "Latest", text: "Latest" },
     { key: "News", text: "News" },
-    { key: "AI/ML", text: "AI/ML" },
   ];
 
   return (
