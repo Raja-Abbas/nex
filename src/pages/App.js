@@ -15,15 +15,15 @@ function App() {
   const isDynamicPage = location.pathname.startsWith("/page/");
   const isMarketPlace = location.pathname === "/marketplace";
   const backgroundClass = isMarketPlace
-    ? "bg-[#13121c]"
+    ? "bg-[#13121c] overflow-hidden"
     : isDynamicPage
-    ? "bg-[#14121d]"
-    : "bg-background background-svg";
+    ? "bg-[#14121d] overflow-y-auto"
+    : "bg-background background-svg overflow-y-auto";
 
   return (
     <div className="min-h-screen max-h-screen flex flex-col">
       <Navbar />
-      <div className={`relative flex-1 overflow-y-auto scrollbar ${backgroundClass} flex justify-center`}>
+      <div className={`relative flex-1 ${backgroundClass} flex justify-center`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/build" element={<BuildPage />} />
