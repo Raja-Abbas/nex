@@ -21,7 +21,7 @@ function App() {
     : "bg-background background-svg overflow-y-auto";
 
   return (
-    <div className="min-h-screen max-h-screen flex flex-col">
+    <div className="min-h-screen scrollbar max-h-screen flex flex-col">
       <Navbar />
       <div className={`relative flex-1 ${backgroundClass} flex justify-center`}>
         <Routes>
