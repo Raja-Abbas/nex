@@ -12,7 +12,7 @@ import MarketPlace from "./MarketPlace";
 
 function App() {
   const location = useLocation();
-  const isDynamicPage = location.pathname.startsWith("/page/");
+  const isDynamicPage = location.pathname.startsWith("/details/");
   const isMarketPlace = location.pathname === "/marketplace";
   const backgroundClass = isMarketPlace
     ? "bg-[#13121c] overflow-hidden"
