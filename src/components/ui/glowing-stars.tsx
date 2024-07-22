@@ -22,7 +22,7 @@ export const GlowingStarsBackgroundCard = ({
         setMouseEnter(false);
       }}
       className={cn(
-        "bg-[#191622] bg-opacity-70 p-0 max-h-auto relative overflow-clip h-full max-w-auto w-full rounded-xl border border-light-grey-color border-opacity-20 dark:border-neutral-600",
+        "bg-background background-svg bg-cover p-0 max-h-auto relative overflow-clip h-full max-w-auto w-full rounded-lg border border-light-grey-color border-opacity-20 dark:border-neutral-600",
         className
       )}
     >
@@ -42,7 +42,7 @@ export const GlowingStarsDescription = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <p className={cn("text-base z-[1000] absolute top-[35%] left-[10%] md:left-[30%] text-white max-w-[16rem]", className)}>
+    <p className={cn("text-base z-[1000] absolute top-[35%] left-[10%] md:left-[5%] text-white", className)}>
       {children}
     </p>
   );
@@ -50,7 +50,7 @@ export const GlowingStarsDescription = ({
 
 
 export const Illustration = ({ mouseEnter }: { mouseEnter: boolean }) => {
-  const stars = 358;
+  const stars = 0;
   const columns = 20;
 
   const [glowingStars, setGlowingStars] = useState<number[]>([]);

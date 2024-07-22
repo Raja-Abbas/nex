@@ -1,24 +1,34 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { templatesData } from "../../constants/Framework";
 import StarIcon from "../../assets/svgs/star-icon.svg";
-import Cube from "../../assets/svgs/cube.svg";
-import NexLayer from "../../assets/svgs/nexLayer.svg";
+import Cube from "../../assets/svgs/blueCube.svg";
 import Calendar from "../../assets/svgs/calendar.svg";
 import Download from "../../assets/svgs/download.svg";
 import CheckMark from "../../assets/svgs/check-mark.svg";
 import DocumentFolder from "../../assets/svgs/folder.svg";
 import FourSquares from "../../assets/svgs/four-squares.svg";
-import DiskStorage from "../../assets/svgs/disk-storage.svg";
+import StepComponent from "../../components/aceternityComponents/StepComponent";
+import ProjectXBox from "../../assets/svgs/projectXBox.svg";
+import Nodejs from "../../assets/svgs/nodejsTemplate.svg";
 import {
   GlowingStarsBackgroundCard, 
   GlowingStarsDescription,
 } from "../../components/ui/glowing-stars";
 
-export default function DynamicPage() {
+export default function DynamicPage({ selectedCard }) {
   const { slug } = useParams();
   const item = templatesData.find((item) => item.title === slug);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+      const timer = setTimeout(() => {
+          setIsVisible(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+  }, []);
 
   if (!item) {
     return <div>Item not found</div>;
@@ -28,6 +38,21 @@ export default function DynamicPage() {
     "The all-in-one app for private document chat, AI Agents, and more.";
   const Note =
     "Due to Railway container permissions, web scraping of any sort is disabled! You will need to upload those site's HTML manually.";
+
+    const step4 = {
+      id: 1,
+    type: "step",
+    heading: "Deploy",
+    description: "Deployment Successful",
+    builder: "",
+    image: "DeployLoadingState",
+    details: [
+      { label: "Project Name", value:slug, text: "white" },
+      { label: "", value: "nodejs-template-patch-1", image: Nodejs, text: "white" },
+      { label: "", value: "10 seconds ago" },
+      { label: "", value: "ProjextX Builder", image: ProjectXBox },
+    ],
+    };
   return (
   <div className="text-white pt-10 min-h-[80vh] lg:max-w-[950px] max-xl:px-10 max-md:px-4 xl:max-w-[1200px] w-full flex max-xl:flex-col md:gap-5">
     <div className="flex flex-col gap-10">
@@ -45,40 +70,20 @@ export default function DynamicPage() {
       <GlowingStarsBackgroundCard>
         <div className="flex flex-col justify-between items-end">
           <GlowingStarsDescription>
-            <div className="rounded-xl overflow-hidden max-md:min-w-[240px] md:min-w-[300px] border border-light-grey-color border-opacity-50 shadow-xl">
-            <div className="bg-[#20202d] rounded-xl border-b py-4 border-light-grey-color border-opacity-50">
-            <div className="px-5 py-2 rounded-xl flex items-start gap-3">
-              <img src={Cube} alt="Cube" className="w-6 h-fit rounded-lg" />
-              <div>
-              <p className="text-white text-lg"></p>
-              <p className="text-description-color text-nowrap text-base"></p>
-              </div>
-            </div>
-            <div className="px-5 py-2 rounded-xl flex items-start gap-3">
-            <img src={CheckMark} alt="CheckMark" className="w-5" /> 
-            <p className="text-description-color text-nowrap text-base font-semibold"></p>
-            </div>
-            </div>
-            <div className="px-4 py-2 bg-[#191626] flex items-start gap-3">
-            <img src={DiskStorage} alt="DiskStorage" className="w-4" /> 
-            <p className="text-description-color text-nowrap text-base"></p>
-            </div>
-            </div>
+          <div className={`z-10 absolute left-[15px] top-0 bottom-20 border border-custom-color animate-fill transition-all duration-[500ms]`}></div>
+          <StepComponent step={step4} index={1} toggleBuildPageDetails={() => {}} />
+          {isVisible && (
+                <div className="bg-[#203133] p-2 pl-3 pt-3 mt-[-55px] ml-11 rounded-b-md flex gap-2 items-center shadow-2xl">
+                    <img src={item.logo} alt={item.logo} className="w-4 h-4" />
+                    <p className="text-tiny font-semibold text-dark-blue">{item.title}</p>
+                </div>
+            )}
           </GlowingStarsDescription>
         </div>
       </GlowingStarsBackgroundCard>
       <div className="-mt-20 relative float-right max-xl:hidden">
-      <button className="bg-[#732993] hover:bg-opacity-70 transition-all px-[100px] py-2 rounded-md text-nowrap md:ml-10">Deploy Now</button>
+      <button className="bg-[#1EB8CD] hover:bg-opacity-70 transition-all px-[100px] py-2 rounded-md text-nowrap md:ml-10">Deploy Now</button>
       <div className="mt-12 md:ml-4 border-t border-t-[#374151] border-opacity-50">
-      <div className="flex py-2 px-4 w-fit justify-center bg-dark-gray gap-2 items-center">
-      <img src={NexLayer} alt="NexLayer Logo" className="w-6" />
-      <p className="font-medium text-lg text-white">
-        <span className="font-normal text-description-color">
-          By{" "}
-        </span>
-        Nextlayer
-      </p>
-      </div>
       <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5">
         <div className="flex gap-5"><img src={Calendar} alt="Calendar" className="w-4" /><span>Created on Feb 21, 2024</span></div>
         <div className="flex gap-5"><img src={Download} alt="Download" className="w-4" /><span>440 total projects</span></div>
@@ -174,27 +179,24 @@ export default function DynamicPage() {
       </div>
       <div className="py-16 pt-5 max-w-[750px]">
         <span className="text-3xl font-semibold">Template Content</span>
-        <div className="bg-[#191622] px-5 py-6 mt-10 rounded-xl flex gap-4">
-          <img src={Cube} alt="Cube" className="w-10 p-[10px] bg-[#33313f] rounded-lg h-fit" />
-          <div>
-          <p className="text-white text-lg">{item.title.toLowerCase()}-docker</p>
-          <p className="text-description-color text-base">mintplexlabs/{item.title.toLowerCase()}:railway</p>
-          </div>
+        <div className="mt-[40px] px-5 py-5 flex gap-[10px] items-center rounded-[7px] bg-card-color">
+        <div className="flex justify-center items-center rounded-[7px] p-2 w-[38px] h-[38px] bg-[#191919]">
+          <img src={Cube} alt="Details Logo" />
         </div>
+        <div>
+          <p className="font-normal text-base text-white">
+            {item.title.toLowerCase()}-docker
+          </p>
+          <p className="font-normal text-tiny text-description-color">
+            mintplexlabs/{item.title.toLowerCase()}:railway
+          </p>
+        </div>
+      </div>
       </div>
     </div>
     <div className="mb-10 max-xl:block xl:hidden">
-      <button className="bg-[#732993] hover:bg-opacity-70 transition-all px-[100px] py-2 rounded-md text-nowrap md:ml-10">Deploy Now</button>
+      <button className="bg-[#1EB8CD] hover:bg-opacity-70 transition-all px-[100px] py-2 rounded-md text-nowrap md:ml-10">Deploy Now</button>
       <div className="mt-12 md:ml-4 border-t border-t-[#374151] border-opacity-50">
-      <div className="flex py-2 px-4 w-fit justify-center bg-dark-gray gap-2 items-center">
-      <img src={NexLayer} alt="NexLayer Logo" className="w-6" />
-      <p className="font-medium text-lg text-white">
-        <span className="font-normal text-description-color">
-          By{" "}
-        </span>
-        Nexlayer
-      </p>
-      </div>
       <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5 mb-20">
         <div className="flex gap-5"><img src={Calendar} alt="Calendar" className="w-4" /><span>Created on Feb 21, 2024</span></div>
         <div className="flex gap-5"><img src={Download} alt="Download" className="w-4" /><span>440 total projects</span></div>
