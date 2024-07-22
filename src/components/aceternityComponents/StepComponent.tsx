@@ -50,8 +50,9 @@ const StepComponent: React.FC<{
   step: Step;
   index: number;
   toggleBuildPageDetails: () => void;
-}> = ({ step, index, toggleBuildPageDetails }) => {
-  const [isLoading, setIsLoading] = useState(true);
+  disableLoading?: boolean;
+}> = ({ step, index, toggleBuildPageDetails, disableLoading = false }) => {
+  const [isLoading, setIsLoading] = useState(!disableLoading);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [showInProgress, setShowInProgress] = useState(false);
   const [buildTimer, setBuildTimer] = useState<number>(10);
@@ -59,7 +60,7 @@ const StepComponent: React.FC<{
  
 
   useEffect(() => {
-    if (index !== 0) {
+    if (index !== 0 && !disableLoading) {
       const timeout = setTimeout(() => {
         setIsLoading(false);
         setShowInProgress(true);
@@ -73,7 +74,7 @@ const StepComponent: React.FC<{
     } else {
       setIsLoading(false);
     }
-  }, [index]);
+  }, [index, disableLoading]);
 
   const startElapsedTime = () => {
     const timer = setInterval(() => {

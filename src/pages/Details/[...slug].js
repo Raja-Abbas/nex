@@ -20,15 +20,6 @@ import {
 export default function DynamicPage({ selectedCard }) {
   const { slug } = useParams();
   const item = templatesData.find((item) => item.title === slug);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-      const timer = setTimeout(() => {
-          setIsVisible(true);
-      }, 2000);
-
-      return () => clearTimeout(timer);
-  }, []);
 
   if (!item) {
     return <div>Item not found</div>;
@@ -48,7 +39,7 @@ export default function DynamicPage({ selectedCard }) {
     image: "DeployLoadingState",
     details: [
       { label: "Project Name", value:slug, text: "white" },
-      { label: "", value: "nodejs-template-patch-1", image: Nodejs, text: "white" },
+      { label: "", value: `${item.title.toLowerCase()}-template-patch-1`, image: Nodejs, text: "white" },
       { label: "", value: "10 seconds ago" },
       { label: "", value: "ProjextX Builder", image: ProjectXBox },
     ],
@@ -71,13 +62,11 @@ export default function DynamicPage({ selectedCard }) {
         <div className="flex flex-col justify-between items-end">
           <GlowingStarsDescription>
           <div className={`z-10 absolute left-[15px] top-0 bottom-20 border border-custom-color animate-fill transition-all duration-[500ms]`}></div>
-          <StepComponent step={step4} index={1} toggleBuildPageDetails={() => {}} />
-          {isVisible && (
+          <StepComponent step={step4} index={1} disableLoading={true} toggleBuildPageDetails={() => {}} />
                 <div className="bg-[#203133] p-2 pl-3 pt-3 mt-[-55px] ml-11 rounded-b-md flex gap-2 items-center shadow-2xl">
                     <img src={item.logo} alt={item.logo} className="w-4 h-4" />
                     <p className="text-tiny font-semibold text-dark-blue">{item.title}</p>
                 </div>
-            )}
           </GlowingStarsDescription>
         </div>
       </GlowingStarsBackgroundCard>
