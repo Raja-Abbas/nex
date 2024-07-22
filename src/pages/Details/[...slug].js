@@ -15,7 +15,7 @@ import {
   GlowingStarsDescription,
 } from "../../components/ui/glowing-stars";
 import mdxMapping from "../../content/mdxMapping";
-import { templatesData } from "../../constants/Framework"; 
+import { templatesData } from "../../constants/Framework";
 
 export default function DynamicPage({ selectedCard }) {
   const { slug } = useParams();
