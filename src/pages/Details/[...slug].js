@@ -93,14 +93,14 @@ export default function DynamicPage({ selectedCard }) {
                   index={1}
                   toggleBuildPageDetails={() => {}}
                 />
-                {isVisible && (
+                {/* {isVisible && ( */}
                   <div className="bg-[#203133] p-2 pl-3 pt-3 mt-[-55px] ml-11 rounded-b-md flex gap-2 items-center shadow-2xl">
                     <img src={item.logo} alt={item.logo} className="w-4 h-4" />
                     <p className="text-tiny font-semibold text-dark-blue">
                       {item.title}
                     </p>
                   </div>
-                )}
+                {/* )} */}
               </GlowingStarsDescription>
             </div>
           </GlowingStarsBackgroundCard>
