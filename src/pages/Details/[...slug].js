@@ -1,24 +1,33 @@
 "use client";
-import React from "react";
-import { useParams } from "react-router-dom";
-import { cardsData } from "../../constants/Framework";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { templatesData } from "../../constants/Framework";
 import StarIcon from "../../assets/svgs/star-icon.svg";
-import Cube from "../../assets/svgs/cube.svg";
-import NexLayer from "../../assets/svgs/nexLayer.svg";
+import Cube from "../../assets/svgs/blueCube.svg";
 import Calendar from "../../assets/svgs/calendar.svg";
 import Download from "../../assets/svgs/download.svg";
 import CheckMark from "../../assets/svgs/check-mark.svg";
 import DocumentFolder from "../../assets/svgs/folder.svg";
 import FourSquares from "../../assets/svgs/four-squares.svg";
-import DiskStorage from "../../assets/svgs/disk-storage.svg";
+import StepComponent from "../../components/aceternityComponents/StepComponent";
+import ProjectXBox from "../../assets/svgs/projectXBox.svg";
+import Nodejs from "../../assets/svgs/nodejsTemplate.svg";
 import {
   GlowingStarsBackgroundCard, 
   GlowingStarsDescription,
 } from "../../components/ui/glowing-stars";
 
-export default function DynamicPage() {
+export default function DynamicPage({ selectedCard }) {
   const { slug } = useParams();
-  const item = cardsData.find((item) => item.title === slug);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (slug !== slug.toLowerCase()) {
+      navigate(`/details/${slug.toLowerCase()}`);
+    }
+  }, [slug, navigate]);
+
+  const item = templatesData.find((item) => item.slug === slug.toLowerCase());
 
   if (!item) {
     return <div>Item not found</div>;
@@ -28,8 +37,23 @@ export default function DynamicPage() {
     "The all-in-one app for private document chat, AI Agents, and more.";
   const Note =
     "Due to Railway container permissions, web scraping of any sort is disabled! You will need to upload those site's HTML manually.";
+
+    const step4 = {
+      id: 1,
+    type: "step",
+    heading: "Deploy",
+    description: "Deployment Successful",
+    builder: "",
+    image: "DeployLoadingState",
+    details: [
+      { label: "Project Name", value:slug, text: "white" },
+      { label: "", value: `${item.title.toLowerCase()}-template-patch-1`, image: Nodejs, text: "white" },
+      { label: "", value: "10 seconds ago" },
+      { label: "", value: "ProjextX Builder", image: ProjectXBox },
+    ],
+    };
   return (
-  <div className="text-white max-md:w-[300px] pt-10 min-h-[80vh] max-lg:w-[550px] lg:max-w-[950px] xl:max-w-[1200px] w-full flex max-md:flex-col md:gap-5">
+  <div className="text-white pt-10 min-h-[80vh] lg:max-w-[950px] max-xl:px-10 max-md:px-4 xl:max-w-[1200px] w-full flex max-xl:flex-col md:gap-5">
     <div className="flex flex-col gap-10">
       <a href="/marketplace" className="flex gap-3 text-description-color"><img src={FourSquares} alt="FourSquares" className="w-5" /><span>All Templates/{item.Marketplacecategory}</span></a>
       <div className="flex gap-6 items-center">
@@ -41,31 +65,31 @@ export default function DynamicPage() {
           </p>
         </div>
       </div>
+      <div className="xl:flex gap-2 relative">
       <GlowingStarsBackgroundCard>
         <div className="flex flex-col justify-between items-end">
           <GlowingStarsDescription>
-            <div className="rounded-xl overflow-hidden max-md:min-w-[240px] md:min-w-[300px] border border-light-grey-color border-opacity-50 shadow-xl">
-            <div className="bg-[#20202d] rounded-xl border-b py-4 border-light-grey-color border-opacity-50">
-            <div className="px-5 py-2 rounded-xl flex items-start gap-3">
-              <img src={Cube} alt="Cube" className="w-6 h-fit rounded-lg" />
-              <div>
-              <p className="text-white text-lg"></p>
-              <p className="text-description-color text-nowrap text-base"></p>
-              </div>
-            </div>
-            <div className="px-5 py-2 rounded-xl flex items-start gap-3">
-            <img src={CheckMark} alt="CheckMark" className="w-5" /> 
-            <p className="text-description-color text-nowrap text-base font-semibold"></p>
-            </div>
-            </div>
-            <div className="px-4 py-2 bg-[#191626] flex items-start gap-3">
-            <img src={DiskStorage} alt="DiskStorage" className="w-4" /> 
-            <p className="text-description-color text-nowrap text-base"></p>
-            </div>
-            </div>
+          <div className={`z-10 absolute left-[15px] top-0 bottom-20 border border-custom-color animate-fill transition-all duration-[500ms]`}></div>
+          <StepComponent step={step4} index={1} disableLoading={true} toggleBuildPageDetails={() => {}} />
+                <div className="bg-[#203133] p-2 pl-3 pt-3 mt-[-55px] ml-11 rounded-b-md flex gap-2 items-center shadow-2xl">
+                    <img src={item.logo} alt={item.logo} className="w-4 h-4" />
+                    <p className="text-tiny font-semibold text-dark-blue">{item.title}</p>
+                </div>
           </GlowingStarsDescription>
         </div>
       </GlowingStarsBackgroundCard>
+      <div className="-mt-20 relative float-right max-xl:hidden">
+      <button className="bg-[#1EB8CD] hover:bg-opacity-70 transition-all px-[100px] py-2 rounded-md text-nowrap md:ml-10">Deploy Now</button>
+      <div className="mt-12 md:ml-4 border-t border-t-[#374151] border-opacity-50">
+      <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5">
+        <div className="flex gap-5"><img src={Calendar} alt="Calendar" className="w-4" /><span>Created on Feb 21, 2024</span></div>
+        <div className="flex gap-5"><img src={Download} alt="Download" className="w-4" /><span>440 total projects</span></div>
+        <div className="flex gap-5 text-green"><img src={CheckMark} alt="CheckMark" className="w-4" /><span>100% success on reacent deploys</span></div>
+        <div className="flex gap-5"><img src={DocumentFolder} alt="DocumentFolder" className="w-5" /><span>AI/ML</span></div>
+      </div>
+      </div>
+      </div>
+      </div>
       <div className="max-w-[750px] mt-14">
         <p className="text-3xl font-semibold">
           {item.title} on Railway is here!
@@ -90,7 +114,7 @@ export default function DynamicPage() {
           <span className="flex gap-1 items-center">
             <img src={StarIcon} alt="StarIcon" className="w-4" />
             Star on Github: 
-            <a href="/" className="text-white underline"> https://github.com/Mintplex-Labs/anything-llm</a>
+            <a href="/" className="text-white underline"> https://github.com/Mintplex-Labs/{item.title.toLowerCase()}</a>
           </span>
           <span>Includes all features of the main app including:</span>
           <span>
@@ -120,7 +144,7 @@ export default function DynamicPage() {
           <span>
             <p className="text-white text-2xl">Supported Embedding modules:</p>
             <ul className="mt-6 list-disc ml-6 flex flex-col gap-4">
-              <li>AnythingLLM Native Embedder (default)</li>
+              <li>{item.title} Native Embedder (default)</li>
               <li>OpenAI</li>
               <li>Azure OpenAI</li>
               <li>LLM Suite (all)</li>
@@ -146,41 +170,38 @@ export default function DynamicPage() {
           </span>
           <span className="flex flex-col gap-4">
             <p className="text-white text-2xl">LICENSE</p>
-            <p>AnythingLLM is MIT Licensed.</p>
+            <p>{item.title} is MIT Licensed.</p>
           </span>
         </p>
       </div>
       <div className="py-16 pt-5 max-w-[750px]">
         <span className="text-3xl font-semibold">Template Content</span>
-        <div className="bg-[#191622] px-5 py-6 mt-10 rounded-xl flex gap-4">
-          <img src={Cube} alt="Cube" className="w-10 p-[10px] bg-[#33313f] rounded-lg h-fit" />
-          <div>
-          <p className="text-white text-lg">anythingllm-docker</p>
-          <p className="text-description-color text-base">mintplexlabs/anything-llm:railway</p>
-          </div>
+        <div className="mt-[40px] px-5 py-5 flex gap-[10px] items-center rounded-[7px] bg-card-color">
+        <div className="flex justify-center items-center rounded-[7px] p-2 w-[38px] h-[38px] bg-[#191919]">
+          <img src={Cube} alt="Details Logo" />
+        </div>
+        <div>
+          <p className="font-normal text-base text-white">
+            {item.title.toLowerCase()}-docker
+          </p>
+          <p className="font-normal text-tiny text-description-color">
+            mintplexlabs/{item.title.toLowerCase()}:railway
+          </p>
         </div>
       </div>
-    </div>
-    <div className="md:mt-24">
-      <button className="bg-[#732993] hover:bg-opacity-70 transition-all px-[100px] py-2 rounded-md text-nowrap md:ml-10">Deploy Now</button>
-      <div className="mt-12 md:ml-4 border-t border-t-[#374151] border-opacity-50">
-      <div className="flex py-2 px-4 w-fit justify-center bg-dark-gray gap-2 items-center">
-      <img src={NexLayer} alt="NexLayer Logo" className="w-6" />
-      <p className="font-medium text-lg text-white">
-        <span className="font-normal text-description-color">
-          By{" "}
-        </span>
-        {item.provider}
-      </p>
       </div>
-      <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5">
+    </div>
+    <div className="mb-10 max-xl:block xl:hidden">
+      <button className="bg-[#1EB8CD] hover:bg-opacity-70 transition-all px-[100px] py-2 rounded-md text-nowrap md:ml-10">Deploy Now</button>
+      <div className="mt-12 md:ml-4 border-t border-t-[#374151] border-opacity-50">
+      <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5 mb-20">
         <div className="flex gap-5"><img src={Calendar} alt="Calendar" className="w-4" /><span>Created on Feb 21, 2024</span></div>
         <div className="flex gap-5"><img src={Download} alt="Download" className="w-4" /><span>440 total projects</span></div>
         <div className="flex gap-5 text-green"><img src={CheckMark} alt="CheckMark" className="w-4" /><span>100% success on reacent deploys</span></div>
         <div className="flex gap-5"><img src={DocumentFolder} alt="DocumentFolder" className="w-5" /><span>AI/ML</span></div>
       </div>
       </div>
-    </div>
+      </div>
   </div>
   );
 }
