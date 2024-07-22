@@ -61,7 +61,7 @@ export default function DynamicPage({ selectedCard }) {
   };
 
   return (
-    <><div className="text-white pt-10 min-h-[80vh] lg:max-w-[950px] max-xl:px-10 max-md:px-4 xl:max-w-[1200px] w-full flex max-xl:flex-col md:gap-5">
+  <div className="text-white pt-10 min-h-[80vh] lg:max-w-[950px] max-xl:px-10 max-md:px-4 xl:max-w-[1200px] w-full flex max-xl:flex-col md:gap-5">
       <div className="flex flex-col gap-10">
         <a href="/marketplace" className="flex gap-3 text-description-color">
           <img src={FourSquares} alt="FourSquares" className="w-5" />
@@ -128,7 +128,7 @@ export default function DynamicPage({ selectedCard }) {
         </div>
         {Content && <Content />}
       </div>
-    </div><div className="mb-10 max-xl:block xl:hidden">
+      <div className="mb-10 max-xl:block xl:hidden">
         <button className="bg-[#1EB8CD] hover:bg-opacity-70 transition-all px-[100px] py-2 rounded-md text-nowrap md:ml-10">Deploy Now</button>
         <div className="mt-12 md:ml-4 border-t border-t-[#374151] border-opacity-50">
           <div className="text-description-color mt-6 md:ml-8 flex flex-col gap-5 mb-20">
@@ -138,6 +138,7 @@ export default function DynamicPage({ selectedCard }) {
             <div className="flex gap-5"><img src={DocumentFolder} alt="DocumentFolder" className="w-5" /><span>AI/ML</span></div>
           </div>
         </div>
-      </div></>
+      </div>
+    </div>
   );
 }
