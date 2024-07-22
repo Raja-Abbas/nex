@@ -178,6 +178,7 @@ export const templatesData = [
   {
     logo: Django,
     title: "Django",
+    slug: "django",
     description: "A simple Django Application",
     provider: "Henry Heng",
     category: "Latest",
@@ -187,6 +188,7 @@ export const templatesData = [
   {
     logo: Flask,
     title: "Flask",
+    slug: "flask",
     description: "A minimal Flask application",
     provider: "Berry",
     category: "News",
@@ -196,6 +198,7 @@ export const templatesData = [
   {
     logo: Strapi,
     title: "Strapi",
+    slug: "strapi",
     description: "A popular self-hosted CMS",
     provider: "Gabriel Luiz ...",
     category: "All",
@@ -205,6 +208,7 @@ export const templatesData = [
   {
     logo: MySQL,
     title: "MySQL",
+    slug: "mysql",
     description: "MySQL database with data persistence and TCP Proxy",
     provider: "alphasec",
     category: "News",
@@ -214,6 +218,7 @@ export const templatesData = [
   {
     logo: PostgreSQL,
     title: "PostgreSQL",
+    slug: "postgresql",
     description: "PostgreSQL database with data persistence and TCP Proxy",
     provider: "Muhammed ...",
     category: "News",
@@ -223,6 +228,7 @@ export const templatesData = [
   {
     logo: Flowise,
     title: "flowise-railway",
+    slug: "flowise-railway",
     description: "Flowise - low- code LLM apps builder",
     provider: "Henry Heng",
     category: "Latest",
@@ -232,6 +238,7 @@ export const templatesData = [
   {
     logo: LibreChat,
     title: "LibreChat",
+    slug: "librechat",
     description: "ChatGPT clone GPT-4, Bing, Anthropic, DALL-E-3, Plugins, Multi-...",
     provider: "Berry",
     category: "Latest",
@@ -241,6 +248,7 @@ export const templatesData = [
   {
     logo: ChainLangflow,
     title: "Langflow 1.0",
+    slug: "langflow-1-0",
     description: "Simple Langflow deployment using PostgreSQL as the database.",
     provider: "Gabriel Luiz ...",
     category: "Latest",
@@ -250,6 +258,7 @@ export const templatesData = [
   {
     logo: Chain,
     title: "Langflow",
+    slug: "langflow",
     description: "A drag-and-drop web interface for LangChain.",
     provider: "aplhasec",
     category: "Latest",
@@ -259,6 +268,7 @@ export const templatesData = [
   {
     logo: DialoqBase,
     title: "Dialoqbase",
+    slug: "dialoqbase",
     description: "Create chatbots with ease",
     provider: "Muhammed ...",
     category: "Latest",
@@ -268,8 +278,8 @@ export const templatesData = [
   {
     logo: AnythingLLM,
     title: "AnythingLLM",
-    description:
-      "The all-in-one app for private documnet chat, AI Agents, and more.",
+    slug: "anythingllm",
+    description: "The all-in-one app for private document chat, AI Agents, and more.",
     provider: "Timothy Car ...",
     category: "All",
     Marketplacecategory: "AI/ML",
@@ -278,8 +288,8 @@ export const templatesData = [
   {
     logo: LiamaIndex,
     title: "Liama-Index",
-    description:
-      "A Streamlit app for chatting with PDFs using LIamaIndex and LIamaParse.",
+    slug: "liama-index",
+    description: "A Streamlit app for chatting with PDFs using LIamaIndex and LIamaParse.",
     provider: "alphasec",
     category: "All",
     Marketplacecategory: "AI/ML",
@@ -288,8 +298,8 @@ export const templatesData = [
   {
     logo: Dify,
     title: "Dify",
-    description:
-      "An open-source LLM app development platform",
+    slug: "dify",
+    description: "An open-source LLM app development platform",
     provider: "Jack",
     category: "All",
     Marketplacecategory: "AI/ML",
@@ -298,14 +308,15 @@ export const templatesData = [
   {
     logo: ChatBotUI,
     title: "Chatbot UI",
-    description:
-      "An open-source ChatGPT UI alternative.",
+    slug: "chatbot-ui",
+    description: "An open-source ChatGPT UI alternative.",
     provider: "alphasec",
     category: "All",
     Marketplacecategory: "AI/ML",
     Downloads: "308",
   },
 ];
+
 
 export const deploymentData = {
   logo: Node,
