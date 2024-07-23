@@ -31,7 +31,7 @@ const DetailsPage = () => {
   useEffect(() => {
     const loadContent = async () => {
       try {
-        const mdxContent = await fetchMDXContent(slug);
+        const mdxContent = await fetchMDXContent(slug.toLowerCase());
         setContent(() => mdxContent);
       } catch (error) {
         console.error(error);
