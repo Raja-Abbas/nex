@@ -48,7 +48,7 @@ const MarketPlaceTemplateSidebar = ({ handleMenuClick }) => {
               key={item.key}
               className={`md:w-[100%] max-[470px]:px-3 px-5 md:px-3 py-2 mt-0 lg:mt-1 ${
                 activeMenu === item.key
-                  ? "bg-[#261a37] text-base h-10 -ml-3 rounded-[5px] text-white flex gap-3 items-center"
+                  ? "bg-custom-color text-base h-10 -ml-3 rounded-[5px] text-white flex gap-3 items-center"
                   : "bg-transparent "
               }`}
               onClick={() => handleButtonClick(item.key)}
