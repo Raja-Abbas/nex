@@ -28,7 +28,7 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
                 src={Link}
                 alt="Link"
                 className="absolute right-2 top-2 w-[17px] h-[15px] cursor-pointer"
-                onClick={() => handleLinkClick(item.title)}
+                onClick={() => handleLinkClick(item.slug)}
               />
             )}
             <img className="min-h-[40px]" src={item.logo} alt={item.logo} />

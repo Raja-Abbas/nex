@@ -111,6 +111,7 @@ export const cardsData = [
   {
     logo: Django,
     title: "Django",
+    slug: "django",
     description: "A simple Django Application",
     provider: "NexLayer",
     category: "Latest",
@@ -119,6 +120,7 @@ export const cardsData = [
   {
     logo: Flask,
     title: "Flask",
+    slug: "flask",
     description: "A minimal Flask application",
     provider: "NexLayer",
     category: "News",
@@ -127,6 +129,7 @@ export const cardsData = [
   {
     logo: AnythingLLM,
     title: "AnythingLLM",
+    slug: "anythingllm",
     description:
       "A multi-user ChatGPT for any LLMs and vector database with full privacy.",
     provider: "NexLayer",
@@ -136,6 +139,7 @@ export const cardsData = [
   {
     logo: MongoDB,
     title: "MongoDB",
+    slug: "mongodb",
     description: "Mongo database with data persistence and TCP Proxy",
     provider: "NexLayer",
     category: "All",
@@ -143,6 +147,7 @@ export const cardsData = [
   {
     logo: Strapi,
     title: "Strapi",
+    slug: "strapi",
     description: "A popular self-hosted CMS",
     provider: "NexLayer",
     category: "All",
@@ -151,6 +156,7 @@ export const cardsData = [
   {
     logo: MySQL,
     title: "MySQL",
+    slug: "mysql",
     description: "MySQL database with data persistence and TCP Proxy",
     provider: "NexLayer",
     category: "News",
@@ -159,6 +165,7 @@ export const cardsData = [
   {
     logo: PostgreSQL,
     title: "PostgreSQL",
+    slug: "postgresql",
     description: "PostgreSQL database with data persistence and TCP Proxy",
     provider: "NexLayer",
     category: "News",
@@ -167,6 +174,7 @@ export const cardsData = [
   {
     logo: Flowise,
     title: "flowise-railway",
+    slug: "flowise-railway",
     description: "Flowise - low- code LLM apps builder",
     provider: "NexLayer",
     category: "Latest",
