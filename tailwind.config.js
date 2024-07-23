@@ -52,5 +52,5 @@ module.exports = {
       "medium-grey-color": "#202222",
     }
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 }
