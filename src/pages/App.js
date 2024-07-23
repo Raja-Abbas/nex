@@ -17,7 +17,7 @@ function App() {
   const backgroundClass = isMarketPlace
     ? "bg-[#13121c] overflow-hidden"
     : isDynamicPage
-    ? "bg-[#14121d] overflow-y-auto"
+    ? "bg-[#041619] overflow-y-auto"
     : "bg-background background-svg overflow-y-auto";
 
   return (
