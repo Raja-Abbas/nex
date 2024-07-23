@@ -1,4 +1,3 @@
-// src/content/mdxMapping.js
 const mdxMapping = {
   "anythingllm": () => import('./anythingllm.mdx'),
   "django": () => import('./django.mdx'),
@@ -14,7 +13,6 @@ const mdxMapping = {
   "liama-index": () => import('./liama-index.mdx'),
   "dify": () => import('./dify.mdx'),
   "chatbot-ui": () => import('./chatbot-ui.mdx'),
-  // Add more mappings as needed
 };
 
 export default mdxMapping;
