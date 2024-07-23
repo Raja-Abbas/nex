@@ -70,7 +70,7 @@ export const Illustration = ({ mouseEnter }: { mouseEnter: boolean }) => {
 
   return (
     <div
-      className="max-lg:h-[400px] lg:h-[600px] p-1 max-xl:w-full xl:w-[750px]"
+      className="max-lg:h-[400px] lg:h-[600px] p-1 max-xl:w-full xl:w-[750px] 2xl:w-[1014px]"
       style={{
         display: "grid",
         gridTemplateColumns: `repeat(${columns}, 1fr)`,

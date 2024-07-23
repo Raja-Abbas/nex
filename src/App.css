@@ -2,14 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-.left{
-    padding-left: 20px;
-    border-left: 5px solid #374151;
-    color: #b4b3b6;
-    font-weight:700;
-    font-style: italic;
-}
-
-.left span{
-    font-style: normal;
-}
