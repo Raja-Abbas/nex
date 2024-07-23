@@ -17,9 +17,7 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
     navigate(`/details/${slug}`);
   };
 
-  const handleDeployClick = () => {
-    navigate(-1);
-  };
+
 
   return (
     <div className="px-0 md:px-5 py-5 grid gap-[16px] max-[470px]:grid-cols-1 grid-cols-2 xl:grid-cols-3">
@@ -49,8 +47,8 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
                 </div>
                 <button
                   className="px-[6px] rounded-lg border border-light-grey-color border-opacity-20 py-[5px] font-medium text-base bg-[#20202c] text-description-color"
-                  onClick={handleDeployClick}
-                >
+                  onClick={() => handleLinkClick(item.slug)}
+                  >
                   Deploy
                 </button>
               </div>

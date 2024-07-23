@@ -104,9 +104,11 @@ export const cardsData = [
   {
     logo: Node,
     title: "Node.js",
+    slug: "nodejs",
     description: "A minimal Node.js web application.",
     provider: "NexLayer",
     category: "Popular",
+    Marketplacecategory: "Analytics",
   },
   {
     logo: Django,
@@ -183,6 +185,24 @@ export const cardsData = [
 ];
 
 export const templatesData = [
+  {
+    logo: Node,
+    title: "Node.js",
+    slug: "nodejs",
+    description: "A minimal Node.js web application.",
+    provider: "NexLayer",
+    category: "Popular",
+    Marketplacecategory: "Analytics",
+  },
+  {
+    logo: MongoDB,
+    title: "MongoDB",
+    slug: "mongodb",
+    description: "Mongo database with data persistence and TCP Proxy",
+    provider: "NexLayer",
+    category: "All",
+    Marketplacecategory: "Analytics",
+  },
   {
     logo: Django,
     title: "Django",

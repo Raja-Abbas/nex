@@ -13,6 +13,8 @@ const mdxMapping = {
   "liama-index": () => import('./liama-index.mdx'),
   "dify": () => import('./dify.mdx'),
   "chatbot-ui": () => import('./chatbot-ui.mdx'),
+  "mongodb": () => import('./mongodb.mdx'),
+  "nodejs": () => import('./nodejs.mdx'),
 };
 
 export default mdxMapping;
