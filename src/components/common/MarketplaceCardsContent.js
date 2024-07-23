@@ -24,7 +24,7 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
       {filteredData.map((item, index) => (
         <div
           key={index}
-          className="relative px-8 pr-6 font-semibold py-5 rounded-[5px] shadow-2xl border border-light-gray border-opacity-20 bg-[#041619]"
+          className="relative px-8 pr-6 font-semibold py-5 rounded-[5px] shadow-2xl border border-light-gray border-opacity-20 bg-[#031113]"
         >
           <div>
             <img className="min-h-[40px] max-h-[40px]" src={item.logo} alt={item.logo} />

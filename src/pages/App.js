@@ -15,9 +15,9 @@ function App() {
   const isDynamicPage = location.pathname.startsWith("/details/");
   const isMarketPlace = location.pathname === "/marketplace";
   const backgroundClass = isMarketPlace
-    ? "bg-[#041619] overflow-hidden"
+    ? "bg-[#031113] overflow-hidden"
     : isDynamicPage
-    ? "bg-[#041619] overflow-y-auto"
+    ? "bg-[#031113] overflow-y-auto"
     : "bg-background background-svg overflow-y-auto";
 
   return (
