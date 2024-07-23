@@ -10,6 +10,7 @@ import FourSquares from "../../assets/svgs/four-squares.svg";
 import StepComponent from "../../components/aceternityComponents/StepComponent";
 import ProjectXBox from "../../assets/svgs/projectXBox.svg";
 import Nodejs from "../../assets/svgs/nodejsTemplate.svg";
+import LanceDB from "../../assets/images/LanceDB.png"
 import {
   GlowingStarsBackgroundCard, 
   GlowingStarsDescription,
@@ -51,25 +52,29 @@ const DetailsPage = () => {
 
   const SubTitle =
   "The all-in-one app for private document chat, AI Agents, and more.";
+  const pageroute = item.title === "AnythingLLM" ? "LanceDB" : item.slug;
+  const item_name = item.title === "AnythingLLM" ? "LanceDB" : item.title;
+  const item_logo = item.title === "AnythingLLM" ? LanceDB  : item.logo;
+
   const step4 = {
     id: 1,
-  type: "step",
-  heading: "Deploy",
-  description: "Deployment Successful",
-  builder: "",
-  image: "DeployLoadingState",
-  details: [
-    { label: "Project Name", value:slug, text: "white" },
-    { label: "", value: `${item.title.toLowerCase()}-template-patch-1`, image: Nodejs, text: "white" },
-    { label: "", value: "10 seconds ago" },
-    { label: "", value: "ProjextX Builder", image: ProjectXBox },
+    type: "step",
+    heading: "Deploy",
+    description: "Deployment Successful",
+    builder: "",
+    image: "DeployLoadingState",
+    details: [
+      { label: "Project Name", value:pageroute , text: "white" },
+      { label: "", value: `${item.title.toLowerCase()}-template-patch-1`, image: Nodejs, text: "white" },
+      { label: "", value: "10 seconds ago" },
+      { label: "", value: "ProjextX Builder", image: ProjectXBox },
   ],
 };
 
   return (
     <div className="text-white pt-10 min-h-[80vh] lg:max-w-[950px] max-xl:px-10 max-md:px-4 xl:max-w-[1200px] 2xl:max-w-[1440px] w-full flex max-xl:flex-col md:gap-5">
     <div className="flex flex-col gap-10">
-      <a href="/marketplace" className="flex gap-3 text-description-color">
+      <a href="/marketplace" className="flex gap-3 text-description-color w-fit">
         <img src={FourSquares} alt="FourSquares" className="w-5" />
         <span>All Templates/{item.Marketplacecategory}</span>
       </a>
@@ -95,9 +100,9 @@ const DetailsPage = () => {
                 toggleBuildPageDetails={() => { } }
                 disableLoading={true} />
               <div className="bg-[#203133] p-2 pl-3 pt-3 mt-[-55px] ml-11 rounded-b-md flex gap-2 items-center shadow-2xl">
-                <img src={item.logo} alt={item.logo} className="w-4 h-4" />
+                <img src={item_logo} alt={item_logo} className="w-4 h-4" />
                 <p className="text-tiny font-semibold text-dark-blue">
-                  {item.title}
+                  {item_name}
                 </p>
               </div>
             </GlowingStarsDescription>
