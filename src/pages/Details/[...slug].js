@@ -133,7 +133,7 @@ const DetailsPage = () => {
                   src={DocumentFolder}
                   alt="DocumentFolder"
                   className="w-5" />
-                <span>{item.Marketplacecategory}</span>
+                <span>{item.category}</span>
               </div>
               {item.tag === "true" && (
               <div className="flex gap-5">
