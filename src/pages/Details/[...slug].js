@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate  } from 'react-router-dom';
 import { MDXProvider } from '@mdx-js/react';
-import { templatesData } from "../../constants/Framework";
+import { cardsData, templatesData } from "../../constants/Framework";
 import Calendar from "../../assets/svgs/calendar.svg";
 import Download from "../../assets/svgs/download.svg";
 import CheckMark from "../../assets/svgs/check-mark.svg";
@@ -15,6 +15,8 @@ import {
   GlowingStarsBackgroundCard, 
   GlowingStarsDescription,
 } from "../../components/ui/glowing-stars";
+import Tag from "../../assets/svgs/Tag.svg";
+
 const fetchMDXContent = async (slug) => {
   try {
     const content = await import(`../../content/${slug}.mdx`);
@@ -48,7 +50,7 @@ const DetailsPage = () => {
   }, [slug, navigate]);
 
   if (!Content) return <div>Loading...</div>;
-  const item = templatesData.find((item) => item.slug === slug.toLowerCase());
+  const item = cardsData.find((item) => item.slug === slug.toLowerCase());
 
   const SubTitle =
   "The all-in-one app for private document chat, AI Agents, and more.";
@@ -76,7 +78,7 @@ const DetailsPage = () => {
     <div className="flex flex-col gap-10">
       <a href="/marketplace" className="flex gap-3 text-description-color w-fit">
         <img src={FourSquares} alt="FourSquares" className="w-5" />
-        <span>All Templates/{item.Marketplacecategory}</span>
+        <span>All Templates/{item.category}</span>
       </a>
       <div className="flex gap-6 items-center">
         <img src={item.logo} alt={item.title} className="w-14 rounded-lg" />
@@ -133,6 +135,12 @@ const DetailsPage = () => {
                   className="w-5" />
                 <span>{item.Marketplacecategory}</span>
               </div>
+              {item.tag === "true" && (
+              <div className="flex gap-5">
+              <img src={Tag} alt="Dummy" className="w-4" />
+              <p className="text-[#878593]">{item.text}</p>
+              </div>
+            )}
             </div>
           </div>
         </div>

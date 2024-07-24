@@ -16,7 +16,7 @@ const TemplateLeftSidebar = ({ handleMenuClick }) => {
     { key: "All", text: "All" },
     { key: "Popular", text: "Popular" },
     { key: "Latest", text: "Latest" },
-    { key: "News", text: "News" },
+    { key: "New", text: "New" },
   ];
 
   return (

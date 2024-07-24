@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Tick from "../../assets/svgs/tick-marketplace.svg";
 
 const MarketPlaceTemplateSidebar = ({ handleMenuClick }) => {
-  const [activeMenu, setActiveMenu] = useState("AI/ML");
+  const [activeMenu, setActiveMenu] = useState("All");
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
   const handleButtonClick = (menu) => {
@@ -11,20 +11,11 @@ const MarketPlaceTemplateSidebar = ({ handleMenuClick }) => {
     setIsSidebarVisible(false);
   };
 
-  const menuItems = [
+ const menuItems = [
     { key: "All", text: "All" },
-    { key: "AI/ML", text: "AI/ML" },
-    { key: "Analytics", text: "Analytics" },
-    { key: "Authentication", text: "Authentication" },
-    { key: "Automation", text: "Automation" },
-    { key: "Blogs", text: "Blogs" },
-    { key: "Bots", text: "Bots" },
-    { key: "CMS", text: "CMS" },
-    { key: "Observability", text: "Observability" },
-    { key: "Other", text: "Other" },
-    { key: "Starters", text: "Starters" },
-    { key: "Storage", text: "Storage" },
-    { key: "Queues", text: "Queues" },
+    { key: "Popular", text: "Popular" },
+    { key: "Latest", text: "Latest" },
+    { key: "New", text: "New" },
   ];
 
   return (

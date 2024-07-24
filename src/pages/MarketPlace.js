@@ -3,8 +3,8 @@ import TemplateLeftSidebar from "../components/common/MarketplaceTemplateSidebar
 import CardsContent from "../components/common/MarketplaceCardsContent";
 
 const MarketPlace = ({ onCardSelect }) => {
-  const [selectedMenu, setSelectedMenu] = useState("AI/ML");
-  const [, setActiveMenu] = useState("AI/ML");
+  const [selectedMenu, setSelectedMenu] = useState("All");
+  const [, setActiveMenu] = useState("All");
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);

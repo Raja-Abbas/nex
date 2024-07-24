@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { templatesData } from "../../constants/Framework";
+import { cardsData, templatesData } from "../../constants/Framework";
 import NexLayer from "../../assets/svgs/nexLayer.svg";
 import Download from "../../assets/svgs/download.svg";
 
@@ -9,8 +9,8 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
   const navigate = useNavigate();
   const filteredData =
     selectedMenu === "All"
-      ? templatesData
-      : templatesData.filter((item) => item.Marketplacecategory.includes(selectedMenu));
+      ? cardsData
+      : cardsData.filter((item) =>  item.category === selectedMenu);
 
   const handleLinkClick = (slug) => {
     navigate(`/details/${slug}`);
