@@ -2,8 +2,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { templatesData } from "../../constants/Framework";
-import Link from "../../assets/svgs/Link.svg";
-import LoginAccount from "../../assets/svgs/login_account.svg";
+import NexLayer from "../../assets/svgs/nexLayer.svg";
 import Download from "../../assets/svgs/download.svg";
 
 export default function CardsContent({ selectedMenu, onCardSelect }) {
@@ -34,10 +33,13 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
             </p>
             <div className="border-t border-[#4F4F4F] border-opacity-20"></div>
             <div className="pt-[10px] flex justify-between items-center">
-              <div className="flex gap-2 items-center">
-                <img src={LoginAccount} alt="Item Image" className="w-4" />
-                <p className="text-base text-description-color font-semibold">
-                  {item.provider}
+            <div className="flex gap-2 items-center">
+                <img src={NexLayer} alt="NexLayer Logo" />
+                <p className="font-medium text-xs text-white">
+                  <span className="font-normal text-description-color">
+                    By{" "}
+                  </span>
+                  Nexlayer
                 </p>
               </div>
               <div className="flex gap-4 items-center">
@@ -46,11 +48,11 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
                   <p className="text-description-color text-base font-semibold">{item.Downloads}</p>
                 </div>
                 <button
-                  className="px-[6px] rounded-lg border border-light-grey-color border-opacity-20 py-[5px] font-medium text-base bg-[#20202c] text-description-color"
-                  onClick={() => handleLinkClick(item.slug)}
-                  >
-                  Deploy
-                </button>
+                onClick={() => handleLinkClick(item.slug)}
+                className="px-[10px] py-[4.5px] font-normal text-sm rounded-full bg-light-blue text-[black]"
+                >
+                Deploy
+              </button>
               </div>
             </div>
           </div>
