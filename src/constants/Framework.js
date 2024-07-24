@@ -192,7 +192,7 @@ export const templatesData = [
     description: "A minimal Node.js web application.",
     provider: "NexLayer",
     category: "Popular",
-    Marketplacecategory: "Analytics",
+    Marketplacecategory: "Automation",
   },
   {
     logo: MongoDB,
@@ -201,7 +201,7 @@ export const templatesData = [
     description: "Mongo database with data persistence and TCP Proxy",
     provider: "NexLayer",
     category: "All",
-    Marketplacecategory: "Analytics",
+    Marketplacecategory: "Blogs",
   },
   {
     logo: Django,
@@ -220,7 +220,7 @@ export const templatesData = [
     description: "A minimal Flask application",
     provider: "Berry",
     category: "News",
-    Marketplacecategory: "Authentication",
+    Marketplacecategory: "Observability",
     Downloads: "200",
   },
   {
@@ -230,7 +230,7 @@ export const templatesData = [
     description: "A popular self-hosted CMS",
     provider: "Gabriel Luiz ...",
     category: "All",
-    Marketplacecategory: "Analytics",
+    Marketplacecategory: "CMS",
     Downloads: "400",
   },
   {
@@ -250,7 +250,7 @@ export const templatesData = [
     description: "PostgreSQL database with data persistence and TCP Proxy",
     provider: "Muhammed ...",
     category: "News",
-    Marketplacecategory: "Authentication",
+    Marketplacecategory: "Bots",
     Downloads: "1K",
   },
   {
@@ -264,6 +264,16 @@ export const templatesData = [
     Downloads: "4.8K",
   },
   {
+    logo: Flowise,
+    title: "flowise-railway",
+    slug: "flowise-railway",
+    description: "Flowise - low- code LLM apps builder",
+    provider: "Henry Heng",
+    category: "Latest",
+    Marketplacecategory: "Other",
+    Downloads: "4.8K",
+  },
+  {
     logo: LibreChat,
     title: "LibreChat",
     slug: "librechat",
@@ -271,6 +281,16 @@ export const templatesData = [
     provider: "Berry",
     category: "Latest",
     Marketplacecategory: "AI/ML",
+    Downloads: "1.5K",
+  },
+  {
+    logo: LibreChat,
+    title: "LibreChat",
+    slug: "librechat",
+    description: "ChatGPT clone GPT-4, Bing, Anthropic, DALL-E-3, Plugins, Multi-...",
+    provider: "Berry",
+    category: "Latest",
+    Marketplacecategory: "Starters",
     Downloads: "1.5K",
   },
   {
@@ -284,6 +304,16 @@ export const templatesData = [
     Downloads: "1.5K",
   },
   {
+    logo: ChainLangflow,
+    title: "Langflow 1.0",
+    slug: "langflow-1-0",
+    description: "Simple Langflow deployment using PostgreSQL as the database.",
+    provider: "Gabriel Luiz ...",
+    category: "Latest",
+    Marketplacecategory: "Storage",
+    Downloads: "1.5K",
+  },
+  {
     logo: Chain,
     title: "Langflow",
     slug: "langflow",
@@ -291,6 +321,16 @@ export const templatesData = [
     provider: "aplhasec",
     category: "Latest",
     Marketplacecategory: "AI/ML",
+    Downloads: "830",
+  },
+  {
+    logo: Chain,
+    title: "Langflow",
+    slug: "langflow",
+    description: "A drag-and-drop web interface for LangChain.",
+    provider: "aplhasec",
+    category: "Latest",
+    Marketplacecategory: "Queues",
     Downloads: "830",
   },
   {

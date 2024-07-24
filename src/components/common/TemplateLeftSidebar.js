@@ -35,7 +35,7 @@ const TemplateLeftSidebar = ({ handleMenuClick }) => {
               Start with a Template
             </p>
           </div>
-          <p className="pt-3 md:pt-[30px] pb-0 md:pb-6 font-normal text-sm text-description-color">
+          <p className="pt-3 md:pt-[30px] pb-0 md:pb-6 font-normal text-tiny text-description-color">
             Category
           </p>
         </div>

@@ -11,7 +11,7 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
   const filteredData =
     selectedMenu === "All"
       ? templatesData
-      : templatesData.filter((item) => item.Marketplacecategory === selectedMenu);
+      : templatesData.filter((item) => item.Marketplacecategory.includes(selectedMenu));
 
   const handleLinkClick = (slug) => {
     navigate(`/details/${slug}`);

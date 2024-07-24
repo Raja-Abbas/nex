@@ -42,7 +42,7 @@ export const GlowingStarsDescription = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <p className={cn("text-base z-[1000] absolute top-[35%] left-[10%] md:left-[5%] text-white", className)}>
+    <p className={cn("text-base z-[1000] absolute top-[100px] left-[2%] md:left-[10%] 2xl:left-[6%] text-white", className)}>
       {children}
     </p>
   );
