@@ -11,7 +11,7 @@ export default function DetailsTabSidebar({ selectedCard }) {
   const cardToDisplay = selectedCard || defaultCard;
 
   return (
-    <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5">
+    <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
       <p className="font-400 text-lg text-white">Deployed via Docker Image</p>
       <div className="mt-[15px] px-2 py-[8.5px] flex gap-[10px] items-center rounded-[7px] bg-card-color">
         <div className="flex justify-center items-center rounded-[7px] p-2 w-[38px] h-[38px] bg-background">

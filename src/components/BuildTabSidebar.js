@@ -49,7 +49,7 @@ export default function BuildTabSidebar({ logs }) {
   }, [logs]);
 
   return (
-    <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5">
+    <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
       <div className="flex gap-2 items-center">
         <input
           className="w-full h-8 p-[10px] py-[6.5px] text-white font-normal text-tiny border-[2px] rounded-[7px] border-dark-gray bg-background"
@@ -113,12 +113,12 @@ export default function BuildTabSidebar({ logs }) {
       </div>
 
       <div
-        className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen `}
+        className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen scrollbar`}
       >
         {BuildlogsData.slice(0, currentIndex).map((log, index) => (
           <div
             key={index}
-            className="font-medium text-base leading-7"
+            className="font-medium text-base leading-7 flex"
             style={{
               color:
                 log.type === "error"
@@ -130,9 +130,11 @@ export default function BuildTabSidebar({ logs }) {
                   : "7FB7D9",
             }}
           >
-            <span className="mr-5 text-light-gray">{`${index + 1}.`}</span>
+            <span className="w-[35px] text-light-gray">{`${index + 1}.`}</span>
+            <div className="overflow-x-auto scrollbar lg:w-[600px]">
             {log.timestamp ? `${log.timestamp} - ` : ""}
             {log.message}
+            </div>
           </div>
         ))}
       </div>

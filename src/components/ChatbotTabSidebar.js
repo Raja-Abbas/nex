@@ -5,7 +5,7 @@ import Send from "../assets/svgs/send.svg";
 
 export default function ChatbotTabSidebar() {
   return (
-    <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5">
+    <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
       <div className="bg-background rounded-[7px] py-20">
         <p className="font-normal text-custom-size text-center text-white">
           Check-In your Code, Let <span className="text-dark-blue">Liz</span>{" "}

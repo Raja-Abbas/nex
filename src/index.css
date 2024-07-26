@@ -30,7 +30,7 @@ body, * {
   .scrollbar::-webkit-scrollbar-thumb:hover {
     background-color: #6b6b6b;
   }
-  
+
 @keyframes toastSlideIn {
   0% {
     transform: translateX(100%);

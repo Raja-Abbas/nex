@@ -21,7 +21,7 @@ export default function BuildPage() {
     <div
       className={`grid max-lg:px-4 w-full scrollbar overflow-x-hidden gap-4 sm:gap-[50px] justify-center ${
         showDeploymentDetails
-          ? "lg:grid-cols-2 max-lg:grid-cols-1 max-lg:grid-rows-2 max-lg:h-full lg:h-auto"
+          ? "lg:grid-cols-2 max-lg:grid-cols-1 max-lg:grid-rows-2 max-lg:h-full lg:h-fit"
           : "max-lg:grid-cols-1 max-lg:grid-rows-2 h-auto"
       }`}
     >
