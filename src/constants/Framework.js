@@ -418,7 +418,61 @@ export const detailsData = {
   restartPolicyMaxRetries: "10",
 };
 
-export const logsData = [
+export const BuildlogsData = [
+  {
+    timestamp: "2024-05-14 10:00:00",
+    message: "Starting deployment process...",
+    type: "success",
+  },
+  {
+    timestamp: "2024-05-14 10:00:01",
+    message: "Validating deployment configuration...",
+    type: "success",
+  },
+  {
+    timestamp: "2024-05-14 10:00:03",
+    message: "Fetching deployment environment details...",
+    type: "success",
+  },
+  {
+    timestamp: "2024-05-14 10:00:05",
+    message: "Deployment environment validated successfully.",
+    type: "success",
+  },
+  { timestamp: "", message: "{{pipeline}}", type: "success", },
+  { timestamp: "", message: "" },
+  { timestamp: "", message: "{{if pipeline}} T1 {{end}}", type: "warning",},
+  { timestamp: "", message: "{{if pipeline}} T1 {{else}} T0 {{end}}", type: "success", },
+  {
+    timestamp: "",
+    message:
+      "//If the value of the pipeline is empty, T0 is executed;",
+      type: "error",
+  },
+  {
+    timestamp: "",
+    message:
+      "otherwise, T1 is executed. Dot is unaffected.",
+      type: "error",
+  },
+  {
+    timestamp: "",
+    message: "{{if pipeline}} T1 {{else if pipeline}} T0 {{end}}",
+    type: "success",
+  },
+  {
+    timestamp: "",
+    message: "{{if pipeline}} T1 {{else}}{{if pipeline}} T0 {{end}}{{end}}",
+    type: "success",
+  },
+  { timestamp: "", message: "" ,  type: "success",},
+  { timestamp: "", message: "{{range pipeline}} T1 {{end}}" ,  type: "success", },
+  { timestamp: "", message: "" },
+  { timestamp: "", message: "{{range pipeline}} T1 {{else}} T0 {{end}}" ,  type: "success", },
+  { timestamp: "", message: "{{break}}" ,  type: "success",},
+  { timestamp: "", message: "" ,  type: "success",},
+];
+export const DeploylogsData = [
   {
     timestamp: "2024-05-14 10:00:00",
     message: "Starting deployment process...",

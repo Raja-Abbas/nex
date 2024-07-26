@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import DeploymentDetails from '../DeploymentDetails';
 import DetailsTabSidebar from '../DetailsTabSidebar';
 import BuildTabSidebar from '../BuildTabSidebar';
+import DeployTabSidebar from '../DeployTabSidebar';
 import ChatbotTabSidebar from '../ChatbotTabSidebar';
-import { logsData } from '../../constants/Framework';
+import { BuildlogsData, DeploylogsData } from '../../constants/Framework';
 
 const Layout = ({ toggleBuildPageDetailsHide, selectedCard }) => {
   const [selectedMenu, setSelectedMenu] = useState('Details');
@@ -21,8 +22,8 @@ const Layout = ({ toggleBuildPageDetailsHide, selectedCard }) => {
   useEffect(() => {
     let logIndex = 0;
     const interval = setInterval(() => {
-      if (logIndex < logsData.length) {
-        setLogs((prevLogs) => [...prevLogs, logsData[logIndex]]);
+      if (logIndex < BuildlogsData.length) {
+        setLogs((prevLogs) => [...prevLogs, BuildlogsData[logIndex]]);
         logIndex += 1;
       }
     }, 2000);
@@ -46,6 +47,7 @@ const Layout = ({ toggleBuildPageDetailsHide, selectedCard }) => {
       <div>
         {selectedMenu === 'Details' && <DetailsTabSidebar selectedCard={selectedCard} />}
         {selectedMenu === 'Build' && <BuildTabSidebar logs={logs} />}
+        {selectedMenu === 'Deploy' && <DeployTabSidebar logs={logs} />}
         {selectedMenu === 'Star' && <ChatbotTabSidebar />}
       </div>
     </div>

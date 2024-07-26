@@ -10,6 +10,7 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
   const menuItems = [
     { key: "Details", text: "Details" },
     { key: "Build", text: "Build" },
+    { key: "Deploy", text: "Deploy" },
   ];
 
   const toggleDetailsVisibility = () => {
@@ -109,21 +110,6 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
               </p>
             </button>
           ))}
-          <div
-            className={`px-[15px] py-2 mt-0 lg:mt-1 ${
-              activeMenu === "Deploy"
-                ? "bg-custom-color text-base h-10 rounded-[5px] text-white"
-                : "bg-transparent "
-            }`}
-          >
-            <p
-              className={`font-normal text-white ${
-                activeMenu === "Deploy" ? "text-base" : "text-base"
-              }`}
-            >
-              Deploy
-            </p>
-          </div>
         </div>
         <div onClick={() => {
           setActiveMenu("Star");

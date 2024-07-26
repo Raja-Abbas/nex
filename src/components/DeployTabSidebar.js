@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BuildlogsData } from "../constants/Framework";
+import { DeploylogsData } from "../constants/Framework";
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
@@ -36,7 +36,7 @@ export default function BuildTabSidebar({ logs }) {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => {
         const newIndex = prevIndex + 1;
-        if (newIndex <= BuildlogsData.length) {
+        if (newIndex <= DeploylogsData.length) {
           return newIndex;
         } else {
           clearInterval(interval);
@@ -115,7 +115,7 @@ export default function BuildTabSidebar({ logs }) {
       <div
         className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen `}
       >
-        {BuildlogsData.slice(0, currentIndex).map((log, index) => (
+        {DeploylogsData.slice(0, currentIndex).map((log, index) => (
           <div
             key={index}
             className="font-medium text-base leading-7"
