@@ -111,7 +111,7 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
             </button>
           ))}
         </div>
-        <div onClick={() => {
+        {/* <div onClick={() => {
           setActiveMenu("Star");
           handleMenuClick("Star");
         }}>
@@ -124,7 +124,7 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
                 : "bg-transparent "
               }`}
           />
-        </div>
+        </div> */}
       </div>
     </aside>
   );

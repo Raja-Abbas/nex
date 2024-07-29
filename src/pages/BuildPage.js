@@ -6,6 +6,7 @@ import ChatBotIcon from "../components/ChatBotIcon";
 
 export default function BuildPage() {
   const [showDeploymentDetails, setShowDeploymentDetails] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
   const location = useLocation();
   const { selectedCard } = location.state || {};
 
@@ -25,10 +26,11 @@ export default function BuildPage() {
           : "max-lg:grid-cols-1 max-lg:grid-rows-2 h-auto"
       }`}
     >
-      {!showDeploymentDetails && <ChatBotIcon />}
+      {currentStep === 1 && !showDeploymentDetails && <ChatBotIcon />}
       <GithubDeployment
         toggleBuildPageDetails={toggleBuildPageDetails}
         selectedCard={selectedCard}
+        setCurrentStep={setCurrentStep}
       />
       {showDeploymentDetails && (
         <div className="shadow-2xl animation-toastSlideIn bg-medium-grey-color">
