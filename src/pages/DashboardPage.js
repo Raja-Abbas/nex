@@ -3,6 +3,7 @@ import Globe from "../assets/svgs/globe.svg";
 import { deploymentData } from "../constants/Framework";
 import { useCardTitle } from "../context/CardTitleContext";
 import { useCredit } from "../context/CreditContext";
+import ChatBotIcon from "../components/ChatBotIcon";
 
 function DashboardPage({ selectedCard }) {
   const { cardTitle } = useCardTitle();
@@ -62,6 +63,7 @@ function DashboardPage({ selectedCard }) {
           <p className="text-base text-white leading-[24px]">1 service </p>
         </div>
       </div>
+      <ChatBotIcon/>
     </div>
   );
 }

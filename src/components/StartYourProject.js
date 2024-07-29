@@ -8,6 +8,7 @@ import GridSvg from "../assets/svgs/gridLogo.svg";
 import ArrowRightSvg from "../assets/svgs/arrowRight.svg";
 import Modal from "./common/Modal";
 import ModalGithubDeployment from "./GithubDeploymentModal";
+import ChatBotIcon from "../components/ChatBotIcon";
 
 const StartProject = () => {
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +30,7 @@ const StartProject = () => {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center bg-gray-900 text-white h-full w-full">
+    <div className="flex flex-col items-center justify-center bg-gray-900 text-white h-full w-full">
       <div className="text-center mb-[30px]">
         <div className="flex justify-center mb-[10px]">
           <div className="bg-blue-600 p-4 rounded-full">
@@ -87,6 +88,7 @@ const StartProject = () => {
           </div>
         )}
       </Modal>
+      {/* <ChatBotIcon/> */}
     </div>
   );
 };
