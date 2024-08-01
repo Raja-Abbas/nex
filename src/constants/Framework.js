@@ -16,13 +16,6 @@ import GithubLogoCard from "../assets/svgs/githubLogoCard.svg";
 import JsLogo from "../assets/svgs/node.svg";
 import Globe from "../assets/svgs/globe.svg";
 import TickCircle from "../assets/svgs/tick-circle.svg";
-import LibreChat from "../assets/svgs/librechat_Icon.svg";
-import DialoqBase from "../assets/images/dialoqbaselogo.png";
-import LiamaIndex from "../assets/images/LiamaIndex.png";
-import Dify from "../assets/images/Dify.png";
-import ChatBotUI from "../assets/svgs/ChatBotUI.svg";
-import Chain from "../assets/images/chain.png";
-import ChainLangflow from "../assets/svgs/chains.svg";
 
 export const steps = [
   {

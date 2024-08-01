@@ -5,7 +5,6 @@ import Avatar from 'react-avatar';
 import { Link, useLocation } from "react-router-dom";
 import { useCredit } from '../../context/CreditContext';
 import { useCardTitle } from '../../context/CardTitleContext';
-import ModalAfterWaitlist from '../aceternityComponents/ModalAfterWaitlist';
 
 const BuildNavbar = () => {
   const location = useLocation();
@@ -14,7 +13,7 @@ const BuildNavbar = () => {
   const { credit } = useCredit();
 
   const [animatedCredit, setAnimatedCredit] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const animationDuration = 3000;

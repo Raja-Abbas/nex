@@ -8,7 +8,6 @@ import GridSvg from "../assets/svgs/gridLogo.svg";
 import ArrowRightSvg from "../assets/svgs/arrowRight.svg";
 import Modal from "./common/Modal";
 import ModalGithubDeployment from "./GithubDeploymentModal";
-import ChatBotIcon from "../components/ChatBotIcon";
 
 const StartProject = () => {
   const [showModal, setShowModal] = useState(false);

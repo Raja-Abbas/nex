@@ -1,6 +1,5 @@
 import React from 'react';
 import Globe from "../assets/svgs/globe.svg";
-import StarSVG from "../assets/svgs/starSVG.svg";
 import { deploymentData } from "../constants/Framework";
 import NodeJs from "../assets/svgs/node.svg";
 

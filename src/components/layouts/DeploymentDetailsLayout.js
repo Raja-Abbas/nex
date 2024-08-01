@@ -4,7 +4,7 @@ import DetailsTabSidebar from '../DetailsTabSidebar';
 import BuildTabSidebar from '../BuildTabSidebar';
 import DeployTabSidebar from '../DeployTabSidebar';
 import ChatbotTabSidebar from '../ChatbotTabSidebar';
-import { BuildlogsData, DeploylogsData } from '../../constants/Framework';
+import { BuildlogsData } from '../../constants/Framework';
 
 const Layout = ({ toggleBuildPageDetailsHide, selectedCard }) => {
   const [selectedMenu, setSelectedMenu] = useState('Details');

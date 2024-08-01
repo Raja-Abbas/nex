@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate  } from 'react-router-dom';
 import { MDXProvider } from '@mdx-js/react';
-import { cardsData, templatesData } from "../../constants/Framework";
+import { cardsData } from "../../constants/Framework";
 import Calendar from "../../assets/svgs/calendar.svg";
 import Download from "../../assets/svgs/download.svg";
 import CheckMark from "../../assets/svgs/check-mark.svg";
@@ -42,7 +42,7 @@ const DetailsPage = () => {
       }
     };
     loadContent();
-  }, [slug]);
+  });
   useEffect(() => {
     if (slug !== slug.toLowerCase()) {
       navigate(`/details/${slug.toLowerCase()}`);

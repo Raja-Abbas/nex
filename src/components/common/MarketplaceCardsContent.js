@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { cardsData, templatesData } from "../../constants/Framework";
+import { cardsData } from "../../constants/Framework";
 import NexLayer from "../../assets/svgs/nexLayer.svg";
 import Download from "../../assets/svgs/download.svg";
 
