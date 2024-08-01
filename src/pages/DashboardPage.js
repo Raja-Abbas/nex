@@ -60,7 +60,7 @@ function DashboardPage({ selectedCard }) {
   };
 
   return (
-    <div className="max-md:w-[300px] max-lg:w-[550px] lg:max-w-[950px] xl:max-w-[1200px] pt-20 w-full flex flex-col gap-10">
+    <div className="grid max-lg:px-4 w-full scrollbar overflow-x-hidden gap-4 sm:gap-[50px] justify-center max-lg:grid-cols-1 max-lg:grid-rows-2 pt-20">
       <div className="relative w-full lg:py-3 xl:h-[56px] flex items-center max-md:px-2 md:px-6 bg-[black] text-white border border-[#3D3F40] rounded-[7px]">
         <p className="font-normal max-md:px-1 max-md:text-base md:text-lg rounded-lg py-1 md:px-3 text-dark-blue">
           Exclusive nexlayer credits{" "}
@@ -88,7 +88,7 @@ function DashboardPage({ selectedCard }) {
           <input type="submit" value="Send Invitation" className="cursor-pointer p-2 bg-light-blue hover:bg-opacity-50 text-white rounded" />
         </form>
       )}
-      {message && <p className="text-center text-green absolute top-5">{message}</p>}
+      {message && <p className="text-center text-green absolute inset-0 top-5">{message}</p>}
       {sentEmails.length > 0 && (
         <div className="text-white">
           <h3 className="text-lg font-semibold text-light-blue">Invited users</h3>
