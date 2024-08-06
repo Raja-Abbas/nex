@@ -8,6 +8,7 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
   const { namespace, setNamespace, message, setMessage } = useDeploymentContext();
   const [responseData, setResponseData] = useState(null);
 
+  const authToken = "QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==";
   useEffect(() => {
     if (selectedCard) {
       handleCardSelect(selectedCard);
@@ -22,7 +23,7 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            'Authorization': `Bearer QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==`
+            'Authorization': `Bearer ${authToken}`
           },
           body: JSON.stringify({
             templateID: "0001",
