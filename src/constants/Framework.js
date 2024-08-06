@@ -95,6 +95,15 @@ export const steps = [
 
 export const cardsData = [
   {
+    title: "K-d Chat",
+    slug: "kdchat",
+    description: "A minimal Node.js web application.",
+    provider: "NexLayer",
+    category: "Popular",
+    Marketplacecategory: "Analytics",
+    Downloads: "1.5K",
+  },
+  {
     logo: Node,
     title: "Node.js",
     slug: "nodejs",

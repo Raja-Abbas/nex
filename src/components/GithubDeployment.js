@@ -1,8 +1,50 @@
-import React, { useMemo } from "react";
+// components/GithubDeployment.js
+import React, { useState, useMemo, useEffect } from "react";
 import { MultiStepLoader } from "./aceternityComponents/multi-step-loader";
 import { steps } from "../constants/Framework";
+import { useDeploymentContext } from "../context/DeploymentContext";
 
 const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
+  const { namespace, setNamespace, message, setMessage } = useDeploymentContext();
+  const [responseData, setResponseData] = useState(null);
+
+  useEffect(() => {
+    if (selectedCard) {
+      handleCardSelect(selectedCard);
+    }
+  }, [selectedCard]);
+
+  const handleCardSelect = async (item) => {
+    try {
+      const response = await fetch(
+        "https://service.api.nexlayer.ai/startdeployment/0001",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==`
+          },
+          body: JSON.stringify({
+            templateID: "0001",
+          }),
+        }
+      );
+
+      const responseText = await response.text();
+
+      if (response.headers.get('Content-Type')?.includes('application/json')) {
+        const data = JSON.parse(responseText);
+        setResponseData(data);
+        setNamespace(data.namespace);
+        setMessage(data.message);
+      } else {
+        throw new Error(`HTTP error! Status: ${response.status} Response: ${responseText}`);
+      }
+    } catch (error) {
+      console.error("Error making POST request:", error.message);
+    }
+  };
+
   const updatedSteps = useMemo(() => {
     const processedStepIds = new Set();
 
@@ -67,13 +109,17 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
 
   return (
     <div className={`w-full lg:w-[450px] xl:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}>
-      <MultiStepLoader
-        steps={updatedSteps}
-        loading={true}
-        duration={2000}
-        toggleBuildPageDetails={toggleBuildPageDetails}
-        selectedCard={selectedCard}
-      />
+      <p className="text-white mb-2">Name: {namespace}</p>
+      <p className="text-white mb-10">Message: {message}</p>
+      {namespace && message && (
+        <MultiStepLoader
+          steps={updatedSteps}
+          loading={true}
+          duration={2000}
+          toggleBuildPageDetails={toggleBuildPageDetails}
+          selectedCard={selectedCard}
+        />
+      )}
     </div>
   );
 };

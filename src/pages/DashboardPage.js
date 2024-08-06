@@ -5,11 +5,9 @@ import { useCardTitle } from "../context/CardTitleContext";
 import { useCredit } from "../context/CreditContext";
 import ChatBotIcon from "../components/ChatBotIcon";
 
-// Dummy function to simulate sending an email
 const sendEmailMock = async (email, userName) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      console.log(`Mock email sent to ${email} for ${userName}`);
       resolve({ status: 'success' });
     }, 1000); 
   });

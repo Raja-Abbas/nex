@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { BuildlogsData } from "../constants/Framework";
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
+import { useDeploymentContext } from "../context/DeploymentContext";
+import useFetchData from "./hooks/useFetchData";
 
-export default function BuildTabSidebar({ logs }) {
+const colors = {
+  dateInfo: "#7FB7D9",
+  plusInfo: "#FFFFBC",
+  default: "#FFBDFF"
+};
+
+export default function BuildTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Live Logs");
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayedData, setDisplayedData] = useState([]);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+  const { namespace } = useDeploymentContext();
+
+  const authToken = "QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==";
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -32,21 +43,49 @@ export default function BuildTabSidebar({ logs }) {
     "Custom",
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => {
-        const newIndex = prevIndex + 1;
-        if (newIndex <= BuildlogsData.length) {
-          return newIndex;
-        } else {
-          clearInterval(interval);
-          return prevIndex;
-        }
-      });
-    }, 1000);
+  // Use custom hook for fetching data
+  const { data, loading, error } = useFetchData(
+    `https://service.api.nexlayer.ai/deploymentLogs/namespace/${namespace}/0001?timeout=0`,
+    authToken
+  );
 
-    return () => clearInterval(interval);
-  }, [logs]);
+  useEffect(() => {
+    if (data) {
+      const lines = data.split("\n");
+      if (!initialLoadComplete) {
+        let delay = 0;
+        lines.forEach((line, index) => {
+          setTimeout(() => {
+            setDisplayedData((prevDisplayedData) => [...prevDisplayedData, line]);
+            if (index === lines.length - 1) {
+              setInitialLoadComplete(true);
+            }
+          }, delay);
+          delay += 200;
+        });
+      } else {
+        setDisplayedData(lines);
+      }
+    }
+  }, [data, initialLoadComplete]);
+
+  if (loading) {
+    return <p className="p-10 text-white">Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="p-10 text-white">Error: {error}</p>;
+  }
+
+  const getLineColor = (line) => {
+    if (line.startsWith("8/6/2024")) {
+      return colors.dateInfo;
+    } else if (line.startsWith("[+]")) {
+      return colors.plusInfo;
+    } else {
+      return colors.default;
+    }
+  };
 
   return (
     <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
@@ -89,7 +128,7 @@ export default function BuildTabSidebar({ logs }) {
                     <img
                       className="w-[17px] h-[17px]"
                       src={ClockIcon}
-                      alt="CLock Icon"
+                      alt="Clock Icon"
                     />
                     <p className="font-normal text-sm text-white opacity-90">
                       {option}
@@ -112,31 +151,21 @@ export default function BuildTabSidebar({ logs }) {
         </div>
       </div>
 
-      <div
-        className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen scrollbar`}
-      >
-        {BuildlogsData.slice(0, currentIndex).map((log, index) => (
-          <div
-            key={index}
-            className="font-medium text-base leading-7 flex"
-            style={{
-              color:
-                log.type === "error"
-                  ? "#FFBDFF"
-                  : log.type === "success"
-                  ? "#7FB7D9"
-                  : log.type === "warning"
-                  ? "#FFFFBC"
-                  : "7FB7D9",
-            }}
-          >
-            <span className="w-[35px] text-light-gray">{`${index + 1}.`}</span>
-            <div className="overflow-x-auto scrollbar lg:w-[600px]">
-            {log.timestamp ? `${log.timestamp} - ` : ""}
-            {log.message}
+      <div className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen scrollbar`}>
+        <pre className="text-white">
+          {displayedData.map((line, index) => (
+            <div
+              key={index}
+              className="flex gap-0 py-1 text-[14px]"
+              style={{ color: getLineColor(line) }}
+            >
+              <span className="min-w-[30px] text-light-gray mr-2">
+                {`${index + 1}.`}
+              </span>
+              <span>{line}</span>
             </div>
-          </div>
-        ))}
+          ))}
+        </pre>
       </div>
     </div>
   );
