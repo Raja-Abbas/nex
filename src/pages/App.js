@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import BuildPage from "./BuildPage";
 import HomePage from "./HomePage";
-import Footer from "../components/common/Footer"; 
+import Footer from "../components/common/Footer";
 import BrokenPage from "../components/common/404";
 import '../App.css';
 import Navbar from "../components/common/Navbar";
@@ -14,6 +14,7 @@ function App() {
   const location = useLocation();
   const isDynamicPage = location.pathname.startsWith("/details/");
   const isMarketPlace = location.pathname === "/marketplace";
+  console.log("page location is :" , location)
   const backgroundClass = isMarketPlace
     ? "bg-[#031113] overflow-hidden"
     : isDynamicPage
