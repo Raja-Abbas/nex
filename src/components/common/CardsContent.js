@@ -15,32 +15,7 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
     navigate(`/details/${slug}`);
   };
 
-  const handleCardSelect = async (item) => {
-    try {
-      const response = await fetch(
-        "https://service.api.nexlayer.ai/startdeployment/0001",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==`
-          },
-          body: JSON.stringify({
-            templateID: "0001",
-          }),
-        }
-      );
 
-      const data = await response.json();
-      if (response.ok) {
-        console.log("POST request successful:", data);
-      } else {
-        console.error("POST request failed:", data);
-      }
-    } catch (error) {
-      console.error("Error making POST request:", error);
-    }
-  };
 
   return (
     <div className="px-0 md:px-5 py-5 grid gap-[14px] max-[470px]:grid-cols-1 grid-cols-2 lg:grid-cols-3">
@@ -77,8 +52,7 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
               <button
                 onClick={() => {
                   onCardSelect(item);
-                  handleCardSelect(item);
-                }}
+}}
                 className="px-[10px] py-[4.5px] font-normal text-sm rounded-full bg-light-blue text-[black]"
               >
                 Deploy

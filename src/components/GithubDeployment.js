@@ -1,5 +1,5 @@
 // components/GithubDeployment.js
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { MultiStepLoader } from "./aceternityComponents/multi-step-loader";
 import { steps } from "../constants/Framework";
 import { useDeploymentContext } from "../context/DeploymentContext";
@@ -7,11 +7,14 @@ import { useDeploymentContext } from "../context/DeploymentContext";
 const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
   const { namespace, setNamespace, message, setMessage } = useDeploymentContext();
   const [responseData, setResponseData] = useState(null);
+  const hasTriggered = useRef(false);
 
   const authToken = "QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==";
+
   useEffect(() => {
-    if (selectedCard) {
+    if (selectedCard && !hasTriggered.current) {
       handleCardSelect(selectedCard);
+      hasTriggered.current = true; 
     }
   }, [selectedCard]);
 
