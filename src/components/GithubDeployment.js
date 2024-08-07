@@ -10,8 +10,12 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
   const hasTriggered = useRef(false);
 
   useEffect(() => {
-    if (selectedCard && !hasTriggered.current) {
-      dispatch(fetchDeploymentData("0001"));
+    const hasFetchedData = sessionStorage.getItem('hasFetchedDeploymentData');
+
+    if (selectedCard && !hasFetchedData && !hasTriggered.current) {
+      dispatch(fetchDeploymentData("0001")).then(() => {
+        sessionStorage.setItem('hasFetchedDeploymentData', 'true');
+      });
       hasTriggered.current = true;
     }
   }, [selectedCard, dispatch]);
