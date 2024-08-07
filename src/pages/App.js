@@ -19,7 +19,6 @@ function App() {
     : isDynamicPage
     ? "bg-[#031113] overflow-y-auto"
     : "bg-background background-svg overflow-y-auto";
-
   return (
     <div className="min-h-screen scrollbar max-h-screen flex flex-col">
       <Navbar />
