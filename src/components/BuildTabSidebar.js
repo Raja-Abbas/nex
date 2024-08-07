@@ -25,7 +25,6 @@ export default function BuildTabSidebar() {
   const error = useSelector(state => state.deployment.error);
   const dispatch = useDispatch();
 
-  // Ref to keep track of whether the logs have been processed
   const logsProcessed = useRef(false);
 
   const handleToggle = () => {
@@ -49,14 +48,12 @@ export default function BuildTabSidebar() {
     "Custom",
   ];
 
-  // Fetch logs if namespace changes
   useEffect(() => {
     if (namespace && !isLogsFetched[namespace]) {
       dispatch(fetchLogsData(namespace));
     }
   }, [namespace, dispatch, isLogsFetched]);
 
-  // Process logs with delay only once
   useEffect(() => {
     if (logsData) {
       const lines = logsData.split("\n");
@@ -76,12 +73,10 @@ export default function BuildTabSidebar() {
             }, delay);
             delay += 200;
           } else {
-            // Show already delayed lines immediately
             setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
           }
         });
       } else {
-        // For already complete load, show lines immediately
         setDisplayedData(prevDisplayedData => [...prevDisplayedData, ...lines.filter(line => !prevDisplayedData.includes(line))]);
       }
     }
