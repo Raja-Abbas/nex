@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeploymentData } from "../../redux/deploymentSlice";
 import { cardsData } from "../../constants/Framework";
 import NexLayer from "../../assets/svgs/nexLayer.svg";
@@ -9,6 +9,8 @@ import Link from "../../assets/svgs/Link.svg";
 export default function CardsContent({ selectedMenu, onCardSelect }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const namespace = useSelector(state => state.deployment.namespace);
+  const message = useSelector(state => state.deployment.message);
 
   const filteredData =
     selectedMenu === "All"
@@ -20,8 +22,6 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
   };
 
   const handleDeployClick = (item) => {
-    localStorage.removeItem('deploymentData');
-    
     dispatch(fetchDeploymentData(item.templateID));
     if (onCardSelect) onCardSelect(item);
   };

@@ -6,7 +6,7 @@ import { fetchDeploymentData } from "../redux/deploymentSlice";
 
 const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
   const dispatch = useDispatch();
-  const { namespace, message, responseData } = useSelector((state) => state.deployment);
+  const { namespace, message } = useSelector((state) => state.deployment);
   const hasTriggered = useRef(false);
 
   useEffect(() => {
@@ -15,6 +15,12 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
       hasTriggered.current = true;
     }
   }, [selectedCard, dispatch]);
+
+  // Debugging logs
+  useEffect(() => {
+    console.log("Namespace:", namespace);
+    console.log("Message:", message);
+  }, [namespace, message]);
 
   const updatedSteps = useMemo(() => {
     const processedStepIds = new Set();
@@ -80,8 +86,8 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
 
   return (
     <div className={`w-full lg:w-[450px] xl:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}>
-      <p className="text-white mb-2">Name: {namespace}</p>
-      <p className="text-white mb-10">Message: {message}</p>
+      <p className="text-white mb-2">Name: {namespace || "Loading..."}</p>
+      <p className="text-white mb-10">Message: {message || "Loading..."}</p>
       {namespace && message && (
         <MultiStepLoader
           steps={updatedSteps}
