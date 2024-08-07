@@ -6,15 +6,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const fetchDeploymentData = createAsyncThunk(
   'deployment/fetchDeploymentData',
   async (templateID, { rejectWithValue }) => {
-    const authToken = "QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==";
     try {
       const response = await fetch(
-        "https://service.api.nexlayer.ai/startdeployment/0001",
+        `/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${authToken}`
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({ templateID }),
         }
@@ -34,16 +32,10 @@ export const fetchDeploymentData = createAsyncThunk(
 
 export const fetchLogsData = createAsyncThunk(
   'deployment/fetchLogsData',
-  async (namespace, { rejectWithValue }) => {
-    const authToken = "QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==";
+  async ({ namespace, templateID }, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `https://service.api.nexlayer.ai/deploymentLogs/namespace/${namespace}/0001?timeout=0`,
-        {
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-          },
-        }
+        `/getDeploymentLogs/${namespace}/${templateID}`
       );
 
       if (!response.ok) {
