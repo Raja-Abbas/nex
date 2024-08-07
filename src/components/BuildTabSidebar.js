@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import axios from 'axios';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchLogsData } from '../redux/deploymentSlice'; // Import the thunk
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
@@ -18,11 +18,15 @@ export default function BuildTabSidebar() {
   const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [displayedData, setDisplayedData] = useState([]);
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [delayedLines, setDelayedLines] = useState(new Set()); // Track lines with delay
   const namespace = useSelector(state => state.deployment.namespace);
+  const logsData = useSelector(state => state.deployment.logsData);
+  const isLogsFetched = useSelector(state => state.deployment.isLogsFetched);
+  const error = useSelector(state => state.deployment.error);
+  const dispatch = useDispatch();
 
-  const authToken = "QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==";
+  // Ref to keep track of whether the logs have been processed
+  const logsProcessed = useRef(false);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -45,56 +49,49 @@ export default function BuildTabSidebar() {
     "Custom",
   ];
 
+  // Fetch logs if namespace changes
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(false);
-      try {
-        const response = await axios.get(
-          `https://service.api.nexlayer.ai/deploymentLogs/namespace/${namespace}/0001?timeout=0`,
-          {
-            headers: {
-              'Authorization': `Bearer ${authToken}`,
-            },
-          }
-        );
-        const data = response.data;
-        const lines = data.split("\n");
-        if (!initialLoadComplete) {
-          let delay = 0;
-          lines.forEach((line, index) => {
+    if (namespace && !isLogsFetched[namespace]) {
+      dispatch(fetchLogsData(namespace));
+    }
+  }, [namespace, dispatch, isLogsFetched]);
+
+  // Process logs with delay only once
+  useEffect(() => {
+    if (logsData) {
+      const lines = logsData.split("\n");
+
+      if (!logsProcessed.current) {
+        let delay = 0;
+        lines.forEach((line, index) => {
+          if (!delayedLines.has(line)) {
+            // Apply delay only to new lines
             setTimeout(() => {
-              setDisplayedData((prevDisplayedData) => [...prevDisplayedData, line]);
+              setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
               if (index === lines.length - 1) {
                 setInitialLoadComplete(true);
+                logsProcessed.current = true;
               }
+              setDelayedLines(prev => new Set(prev.add(line)));
             }, delay);
             delay += 200;
-          });
-        } else {
-          setDisplayedData(lines);
-        }
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+          } else {
+            // Show already delayed lines immediately
+            setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
+          }
+        });
+      } else {
+        // For already complete load, show lines immediately
+        setDisplayedData(prevDisplayedData => [...prevDisplayedData, ...lines.filter(line => !prevDisplayedData.includes(line))]);
       }
-    };
-
-    if (namespace) {
-      fetchData();
     }
-  }, [namespace]);
-
-  if (loading) {
-    return <p className="p-10 text-white">Loading...</p>;
-  }
+  }, [logsData]);
 
   if (error) {
     return <p className="p-10 text-white">Error: {error}</p>;
   }
 
   const getLineColor = (line) => {
-    // Regular expression to match date patterns
     const dateRegex = /^\d{1,4}[\/\-]\d{1,2}[\/\-]\d{1,4}/;
     if (dateRegex.test(line)) {
       return colors.dateInfo;
@@ -174,7 +171,7 @@ export default function BuildTabSidebar() {
           {displayedData.map((line, index) => (
             <div
               key={index}
-              className="flex gap-0 py-1 text-[14px]"
+              className="flex gap-0 text-wrap py-1 text-[14px]"
               style={{ color: getLineColor(line) }}
             >
               <span className="min-w-[30px] text-light-gray mr-2">

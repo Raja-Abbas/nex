@@ -46,7 +46,7 @@ const Layout = ({ toggleBuildPageDetailsHide, selectedCard }) => {
       </div>
       <div>
         {selectedMenu === 'Details' && <DetailsTabSidebar selectedCard={selectedCard} />}
-        {selectedMenu === 'Build' && <BuildTabSidebar logs={logs} />}
+        {selectedMenu === 'Build' && <BuildTabSidebar />}
         {selectedMenu === 'Deploy' && <DeployTabSidebar logs={logs} />}
         {selectedMenu === 'Star' && <ChatbotTabSidebar />}
       </div>
