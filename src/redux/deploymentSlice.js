@@ -92,7 +92,7 @@ const deploymentSlice = createSlice({
       .addCase(fetchLogsData.fulfilled, (state, action) => {
         state.loading = false;
         state.logsData = action.payload;
-        state.isLogsFetched[state.namespace] = true;  // Set flag for this namespace
+        state.isLogsFetched[state.namespace] = true;
       })
       .addCase(fetchLogsData.rejected, (state, action) => {
         state.loading = false;
