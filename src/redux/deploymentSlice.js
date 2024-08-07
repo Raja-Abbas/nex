@@ -22,8 +22,6 @@ export const fetchDeploymentData = createAsyncThunk(
       }
 
       const data = await response.json();
-      // Save the data to localStorage
-      localStorage.setItem('deploymentData', JSON.stringify(data));
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -36,11 +34,12 @@ const deploymentSlice = createSlice({
   initialState: {
     namespace: null,
     message: null,
-    responseData: JSON.parse(localStorage.getItem('deploymentData')) || null,
+    responseData: null,
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchDeploymentData.pending, (state) => {
@@ -52,8 +51,6 @@ const deploymentSlice = createSlice({
         state.responseData = action.payload;
         state.namespace = action.payload.namespace;
         state.message = action.payload.message;
-        // Update localStorage with the new data
-        localStorage.setItem('deploymentData', JSON.stringify(action.payload));
       })
       .addCase(fetchDeploymentData.rejected, (state, action) => {
         state.loading = false;

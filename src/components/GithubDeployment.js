@@ -11,17 +11,7 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
 
   useEffect(() => {
     if (selectedCard && !hasTriggered.current) {
-      // Check if data is already in localStorage and state
-      const savedData = JSON.parse(localStorage.getItem('deploymentData'));
-      if (!savedData) {
-        dispatch(fetchDeploymentData("0001"));
-      } else {
-        // Update state from localStorage if available
-        dispatch({
-          type: 'deployment/fetchDeploymentData/fulfilled',
-          payload: savedData
-        });
-      }
+      dispatch(fetchDeploymentData("0001"));
       hasTriggered.current = true;
     }
   }, [selectedCard, dispatch]);
@@ -90,8 +80,8 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
 
   return (
     <div className={`w-full lg:w-[450px] xl:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}>
-      <p className="text-white mb-2">Name: {namespace || 'Loading...'}</p>
-      <p className="text-white mb-10">Message: {message || 'Loading...'}</p>
+      <p className="text-white mb-2">Name: {namespace}</p>
+      <p className="text-white mb-10">Message: {message}</p>
       {namespace && message && (
         <MultiStepLoader
           steps={updatedSteps}
