@@ -20,6 +20,8 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
   };
 
   const handleDeployClick = (item) => {
+    localStorage.removeItem('deploymentData');
+    
     dispatch(fetchDeploymentData(item.templateID));
     if (onCardSelect) onCardSelect(item);
   };

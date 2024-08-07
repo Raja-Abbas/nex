@@ -5,6 +5,11 @@ export const fetchDeploymentData = createAsyncThunk(
   async (templateID, { rejectWithValue }) => {
     const authToken = "QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==";
     try {
+      const cachedData = localStorage.getItem('deploymentData');
+      if (cachedData) {
+        return JSON.parse(cachedData);
+      }
+
       const response = await fetch(
         "https://service.api.nexlayer.ai/startdeployment/0001",
         {
@@ -22,8 +27,12 @@ export const fetchDeploymentData = createAsyncThunk(
       }
 
       const data = await response.json();
+
+      localStorage.setItem('deploymentData', JSON.stringify(data));
+
       return data;
     } catch (error) {
+      console.error('Fetch Deployment Data Error:', error.message);
       return rejectWithValue(error.message);
     }
   }
@@ -38,8 +47,7 @@ const deploymentSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchDeploymentData.pending, (state) => {
