@@ -1,15 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { fetchDeploymentData } from "../../redux/deploymentSlice";
 import { cardsData } from "../../constants/Framework";
 import NexLayer from "../../assets/svgs/nexLayer.svg";
 import Link from "../../assets/svgs/Link.svg";
 
 export default function CardsContent({ selectedMenu, onCardSelect }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const filteredData =
     selectedMenu === "All"
       ? cardsData
@@ -19,10 +15,7 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
     navigate(`/details/${slug}`);
   };
 
-  const handleDeployClick = (item) => {
-    dispatch(fetchDeploymentData(item.templateID));
-    if (onCardSelect) onCardSelect(item);
-  };
+
 
   return (
     <div className="px-0 md:px-5 py-5 grid gap-[14px] max-[470px]:grid-cols-1 grid-cols-2 lg:grid-cols-3">
@@ -57,7 +50,9 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
                 </p>
               </div>
               <button
-                onClick={() => handleDeployClick(item)}
+                onClick={() => {
+                  onCardSelect(item);
+}}
                 className="px-[10px] py-[4.5px] font-normal text-sm rounded-full bg-light-blue text-[black]"
               >
                 Deploy

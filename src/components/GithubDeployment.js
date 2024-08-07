@@ -11,10 +11,12 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
 
   useEffect(() => {
     if (selectedCard && !hasTriggered.current) {
+      // Check if data is already in localStorage and state
       const savedData = JSON.parse(localStorage.getItem('deploymentData'));
       if (!savedData) {
         dispatch(fetchDeploymentData("0001"));
       } else {
+        // Update state from localStorage if available
         dispatch({
           type: 'deployment/fetchDeploymentData/fulfilled',
           payload: savedData
