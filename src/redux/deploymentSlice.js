@@ -65,7 +65,7 @@ const deploymentSlice = createSlice({
     message: null,
     responseData: null,
     logsData: null,
-    isLogsFetched: {},  // Track if logs have been fetched for a namespace
+    isLogsFetched: {},
     loading: false,
     error: null,
   },
@@ -74,7 +74,7 @@ const deploymentSlice = createSlice({
       state.namespace = null;
       state.message = null;
       state.logsData = null;
-      state.isLogsFetched = {};  // Reset the logs fetched flag
+      state.isLogsFetched = {};
     },
   },
   extraReducers: (builder) => {
