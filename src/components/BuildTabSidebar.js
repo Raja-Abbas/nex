@@ -94,7 +94,9 @@ export default function BuildTabSidebar() {
   }
 
   const getLineColor = (line) => {
-    if (line.startsWith("8/6/2024")) {
+    // Regular expression to match date patterns
+    const dateRegex = /^\d{1,4}[\/\-]\d{1,2}[\/\-]\d{1,4}/;
+    if (dateRegex.test(line)) {
       return colors.dateInfo;
     } else if (line.startsWith("[+]")) {
       return colors.plusInfo;
