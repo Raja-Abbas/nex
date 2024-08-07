@@ -1,4 +1,3 @@
-// components/BuildNavbar.js
 import React, { useState, useEffect } from "react";
 import Logo from "../../assets/images/logoBuild.png";
 import Avatar from 'react-avatar';

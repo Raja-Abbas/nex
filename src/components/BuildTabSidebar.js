@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
-import { useDeploymentContext } from "../context/DeploymentContext";
-import useFetchData from "./hooks/useFetchData";
 
 const colors = {
   dateInfo: "#7FB7D9",
@@ -18,7 +18,9 @@ export default function BuildTabSidebar() {
   const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [displayedData, setDisplayedData] = useState([]);
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
-  const { namespace } = useDeploymentContext();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const namespace = useSelector(state => state.deployment.namespace);
 
   const authToken = "QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==";
 
@@ -43,31 +45,45 @@ export default function BuildTabSidebar() {
     "Custom",
   ];
 
-  // Use custom hook for fetching data
-  const { data, loading, error } = useFetchData(
-    `https://service.api.nexlayer.ai/deploymentLogs/namespace/${namespace}/0001?timeout=0`,
-    authToken
-  );
-
   useEffect(() => {
-    if (data) {
-      const lines = data.split("\n");
-      if (!initialLoadComplete) {
-        let delay = 0;
-        lines.forEach((line, index) => {
-          setTimeout(() => {
-            setDisplayedData((prevDisplayedData) => [...prevDisplayedData, line]);
-            if (index === lines.length - 1) {
-              setInitialLoadComplete(true);
-            }
-          }, delay);
-          delay += 200;
-        });
-      } else {
-        setDisplayedData(lines);
+    const fetchData = async () => {
+      setLoading(false);
+      try {
+        const response = await axios.get(
+          `https://service.api.nexlayer.ai/deploymentLogs/namespace/${namespace}/0001?timeout=0`,
+          {
+            headers: {
+              'Authorization': `Bearer ${authToken}`,
+            },
+          }
+        );
+        const data = response.data;
+        const lines = data.split("\n");
+        if (!initialLoadComplete) {
+          let delay = 0;
+          lines.forEach((line, index) => {
+            setTimeout(() => {
+              setDisplayedData((prevDisplayedData) => [...prevDisplayedData, line]);
+              if (index === lines.length - 1) {
+                setInitialLoadComplete(true);
+              }
+            }, delay);
+            delay += 200;
+          });
+        } else {
+          setDisplayedData(lines);
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
+    };
+
+    if (namespace) {
+      fetchData();
     }
-  }, [data, initialLoadComplete]);
+  }, [namespace]);
 
   if (loading) {
     return <p className="p-10 text-white">Loading...</p>;

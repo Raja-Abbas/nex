@@ -1,53 +1,28 @@
-// components/GithubDeployment.js
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { MultiStepLoader } from "./aceternityComponents/multi-step-loader";
 import { steps } from "../constants/Framework";
-import { useDeploymentContext } from "../context/DeploymentContext";
+import { fetchDeploymentData } from "../redux/deploymentSlice";
 
 const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
-  const { namespace, setNamespace, message, setMessage } = useDeploymentContext();
-  const [responseData, setResponseData] = useState(null);
+  const dispatch = useDispatch();
+  const { namespace, message, responseData } = useSelector((state) => state.deployment);
   const hasTriggered = useRef(false);
-
-  const authToken = "QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==";
 
   useEffect(() => {
     if (selectedCard && !hasTriggered.current) {
-      handleCardSelect(selectedCard);
-      hasTriggered.current = true; 
-    }
-  }, [selectedCard]);
-
-  const handleCardSelect = async (item) => {
-    try {
-      const response = await fetch(
-        "https://service.api.nexlayer.ai/startdeployment/0001",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${authToken}`
-          },
-          body: JSON.stringify({
-            templateID: "0001",
-          }),
-        }
-      );
-
-      const responseText = await response.text();
-
-      if (response.headers.get('Content-Type')?.includes('application/json')) {
-        const data = JSON.parse(responseText);
-        setResponseData(data);
-        setNamespace(data.namespace);
-        setMessage(data.message);
+      const savedData = JSON.parse(localStorage.getItem('deploymentData'));
+      if (!savedData) {
+        dispatch(fetchDeploymentData("0001"));
       } else {
-        throw new Error(`HTTP error! Status: ${response.status} Response: ${responseText}`);
+        dispatch({
+          type: 'deployment/fetchDeploymentData/fulfilled',
+          payload: savedData
+        });
       }
-    } catch (error) {
-      console.error("Error making POST request:", error.message);
+      hasTriggered.current = true;
     }
-  };
+  }, [selectedCard, dispatch]);
 
   const updatedSteps = useMemo(() => {
     const processedStepIds = new Set();
@@ -113,8 +88,8 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
 
   return (
     <div className={`w-full lg:w-[450px] xl:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}>
-      <p className="text-white mb-2">Name: {namespace}</p>
-      <p className="text-white mb-10">Message: {message}</p>
+      <p className="text-white mb-2">Name: {namespace || 'Loading...'}</p>
+      <p className="text-white mb-10">Message: {message || 'Loading...'}</p>
       {namespace && message && (
         <MultiStepLoader
           steps={updatedSteps}
