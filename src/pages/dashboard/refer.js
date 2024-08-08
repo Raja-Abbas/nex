@@ -106,7 +106,7 @@ const Refer = () => {
                     />Get $25 in credit for every person you invite.</li>
               </ul>
             </div>
-            <a href='/' className='ml-12 underline text-[16px] text-[#28B8CD]'>Learn more about credits</a>
+            <div onClick={() => handleSectionChange('Referrals & Credits')} className='cursor-pointer ml-12 underline text-[16px] text-[#28B8CD]'>Learn more about credits</div>
           </div>
         )}
         {activeSection === 'Referrals & Credits' && (
