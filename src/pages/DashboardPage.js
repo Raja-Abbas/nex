@@ -1,60 +1,26 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import Globe from "../assets/svgs/globe.svg";
 import { deploymentData } from "../constants/Framework";
 import { useCardTitle } from "../context/CardTitleContext";
 import { useCredit } from "../context/CreditContext";
 import ChatBotIcon from "../components/ChatBotIcon";
 
-const sendEmailMock = async (email, userName) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ status: 'success' });
-    }, 1000); 
-  });
-};
 
-const getUserNameByEmail = async (email) => {
-  return email.split('@')[0]; 
-};
 
 function DashboardPage({ selectedCard }) {
   const { cardTitle } = useCardTitle();
   const { credit } = useCredit();
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [isFormVisible, setFormVisible] = useState(false);
-  const [sentEmails, setSentEmails] = useState([]);
+  const [message] = useState('');
+  const [sentEmails] = useState([]);
+  const navigate = useNavigate(); 
 
   const cardToDisplay = selectedCard || {
     title: cardTitle.charAt(0).toUpperCase() + cardTitle.slice(1),
   };
 
-  const handleReferFriend = async (e) => {
-    e.preventDefault();
-    if (sentEmails.some(sentEmail => sentEmail.email === email)) {
-      setMessage('Invitation already sent to this email.');
-      setTimeout(() => setMessage(''), 2000);
-      return;
-    }
-    
-    try {
-      const userName = await getUserNameByEmail(email);
-      const result = await sendEmailMock(email, userName);
-
-      if (result.status === 'success') {
-        setSentEmails((prevEmails) => [...prevEmails, { email, userName }]);
-        setMessage(`Invitation sent successfully to ${email}`);
-        setEmail('');
-        setFormVisible(false);
-        setTimeout(() => setMessage(''), 2000);
-      } else {
-        throw new Error('Failed to send invitation');
-      }
-    } catch (error) {
-      console.error(error);
-      setMessage('Failed to send invitation. Please try again.');
-      setTimeout(() => setMessage(''), 2000);
-    }
+  const handleReferFriend = () => {
+    navigate('/dashboard/refer-a-friend');
   };
 
   return (
@@ -67,26 +33,12 @@ function DashboardPage({ selectedCard }) {
           ${credit.toFixed(0)}
         </p>
         <button
-          onClick={() => setFormVisible(true)}
+          onClick={handleReferFriend} // Update click handler
           className="z-20 text-black absolute end-1 bg-light-blue hover:bg-opacity-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md max-md:text-xs md:text-lg px-4 lg:py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Refer a Friend
         </button>
       </div>
-      {isFormVisible && (
-        <form onSubmit={handleReferFriend} className="text-black flex items-center justify-center gap-2 max-w-[800px] max-md:flex-col">
-          <input
-            type="email"
-            name="to_email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter email address"
-            required
-            className="relative w-full lg:py-1 xl:h-[42px] max-md:px-2 md:px-4 text-dark-blue bg-[black] border border-[#3D3F40] rounded-[7px]"
-          />
-          <input type="submit" value="Send Invitation" className="cursor-pointer p-2 bg-light-blue hover:bg-opacity-50 text-white rounded" />
-        </form>
-      )}
       {message && <p className="text-center text-green absolute inset-0 top-5">{message}</p>}
       {sentEmails.length > 0 && (
         <div className="text-white">
