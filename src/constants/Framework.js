@@ -101,6 +101,7 @@ export const cardsData = [
     provider: "NexLayer",
     category: "Popular",
     Marketplacecategory: "Analytics",
+    templateID: "0001",
     Downloads: "1.5K",
   },
   {

@@ -12,19 +12,23 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
   const namespace = useSelector(state => state.deployment.namespace);
   const message = useSelector(state => state.deployment.message);
 
-  const filteredData =
-    selectedMenu === "All"
-      ? cardsData
-      : cardsData.filter((item) => item.category === selectedMenu);
+  const filteredData = (selectedMenu === "All" ? cardsData : cardsData.filter((item) => item.category === selectedMenu)) || [];
+
 
   const handleLinkClick = (slug) => {
     navigate(`/details/${slug}`);
   };
 
   const handleDeployClick = (item) => {
+    if (!item.templateID) {
+      console.error("Template ID is undefined. Deployment cannot proceed.");
+      return;
+    }
     dispatch(fetchDeploymentData(item.templateID));
+    console.log("Template ID is defined. Deployment can proceed.");
     if (onCardSelect) onCardSelect(item);
   };
+  
 
   return (
     <div className="px-0 md:px-5 py-5 grid gap-[14px] max-[470px]:grid-cols-1 grid-cols-2 lg:grid-cols-3">
