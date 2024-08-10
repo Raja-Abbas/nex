@@ -38,7 +38,7 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
               height={30}
               src={cardToDisplay.logo}
               alt="Node Icon"
-              className="w-auto h-auto"
+              className="w-10 h-10"
             />
             <p className="font-normal text-xl text-white">
               {cardToDisplay.title}

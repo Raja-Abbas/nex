@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchLogsData } from '../redux/deploymentSlice'; // Import the thunk
+import { useSelector } from 'react-redux';
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
@@ -17,15 +16,10 @@ export default function BuildTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [displayedData, setDisplayedData] = useState([]);
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
-  const [delayedLines, setDelayedLines] = useState(new Set()); // Track lines with delay
-  const namespace = useSelector(state => state.deployment.namespace);
+  const [delayedLines, setDelayedLines] = useState(new Set());
   const logsData = useSelector(state => state.deployment.logsData);
-  const isLogsFetched = useSelector(state => state.deployment.isLogsFetched);
   const error = useSelector(state => state.deployment.error);
-  const dispatch = useDispatch();
 
-  // Ref to keep track of whether the logs have been processed
   const logsProcessed = useRef(false);
 
   const handleToggle = () => {
@@ -49,43 +43,34 @@ export default function BuildTabSidebar() {
     "Custom",
   ];
 
-  // Fetch logs if namespace changes
-  useEffect(() => {
-    if (namespace && !isLogsFetched[namespace]) {
-      dispatch(fetchLogsData(namespace));
-    }
-  }, [namespace, dispatch, isLogsFetched]);
-
-  // Process logs with delay only once
   useEffect(() => {
     if (logsData) {
-      const lines = logsData.split("\n");
+        const logsString = typeof logsData === 'string' ? logsData : JSON.stringify(logsData);
+        
+        const lines = logsString.split("\n");
 
-      if (!logsProcessed.current) {
-        let delay = 0;
-        lines.forEach((line, index) => {
-          if (!delayedLines.has(line)) {
-            // Apply delay only to new lines
-            setTimeout(() => {
-              setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
-              if (index === lines.length - 1) {
-                setInitialLoadComplete(true);
-                logsProcessed.current = true;
-              }
-              setDelayedLines(prev => new Set(prev.add(line)));
-            }, delay);
-            delay += 200;
-          } else {
-            // Show already delayed lines immediately
-            setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
-          }
-        });
-      } else {
-        // For already complete load, show lines immediately
-        setDisplayedData(prevDisplayedData => [...prevDisplayedData, ...lines.filter(line => !prevDisplayedData.includes(line))]);
-      }
+        if (!logsProcessed.current) {
+            let delay = 0;
+            lines.forEach((line, index) => {
+                if (!delayedLines.has(line)) {
+                    setTimeout(() => {
+                        setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
+                        if (index === lines.length - 1) {
+                            logsProcessed.current = true;
+                        }
+                        setDelayedLines(prev => new Set(prev.add(line)));
+                    }, delay);
+                    delay += 0;
+                } else {
+                    setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
+                }
+            });
+        } else {
+            setDisplayedData(prevDisplayedData => [...prevDisplayedData, ...lines.filter(line => !prevDisplayedData.includes(line))]);
+        }
     }
-  }, [logsData]);
+}, [logsData]);
+
 
   if (error) {
     return <p className="p-10 text-white">Error: {error}</p>;

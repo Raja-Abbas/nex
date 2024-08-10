@@ -16,6 +16,7 @@ import GithubLogoCard from "../assets/svgs/githubLogoCard.svg";
 import JsLogo from "../assets/svgs/node.svg";
 import Globe from "../assets/svgs/globe.svg";
 import TickCircle from "../assets/svgs/tick-circle.svg";
+import KdChat from "../assets/images/kd-chat-icon-Photoroom.png";
 
 export const steps = [
   {
@@ -95,9 +96,10 @@ export const steps = [
 
 export const cardsData = [
   {
+    logo: KdChat,
     title: "K-d Chat",
     slug: "kdchat",
-    description: "A minimal Node.js web application.",
+    description: "Chat interface to prompt Ollama's dolphin-phi model",
     provider: "NexLayer",
     category: "Popular",
     Marketplacecategory: "Analytics",
