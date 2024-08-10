@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
+import { fetchLogsData } from "../redux/deploymentSlice";
 
 const colors = {
   dateInfo: "#7FB7D9",
@@ -17,10 +18,16 @@ export default function BuildTabSidebar() {
   const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [displayedData, setDisplayedData] = useState([]);
   const [delayedLines, setDelayedLines] = useState(new Set());
-  const logsData = useSelector(state => state.deployment.logsData);
-  const error = useSelector(state => state.deployment.error);
 
+  const namespace = useSelector((state) => state.deployment.namespace);
+  const templateID = useSelector((state) => state.deployment.templateID);
+  const logsData = useSelector((state) => state.deployment.logsData);
+  const isLogsFetched = useSelector((state) => state.deployment.isLogsFetched);
+  const error = useSelector((state) => state.deployment.error);
+
+  const dispatch = useDispatch();
   const logsProcessed = useRef(false);
+  const dataFetched = useRef(false);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -44,33 +51,46 @@ export default function BuildTabSidebar() {
   ];
 
   useEffect(() => {
-    if (logsData) {
-        const logsString = typeof logsData === 'string' ? logsData : JSON.stringify(logsData);
-        
-        const lines = logsString.split("\n");
-
-        if (!logsProcessed.current) {
-            let delay = 0;
-            lines.forEach((line, index) => {
-                if (!delayedLines.has(line)) {
-                    setTimeout(() => {
-                        setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
-                        if (index === lines.length - 1) {
-                            logsProcessed.current = true;
-                        }
-                        setDelayedLines(prev => new Set(prev.add(line)));
-                    }, delay);
-                    delay += 0;
-                } else {
-                    setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
-                }
-            });
-        } else {
-            setDisplayedData(prevDisplayedData => [...prevDisplayedData, ...lines.filter(line => !prevDisplayedData.includes(line))]);
-        }
+    if (namespace && templateID && !isLogsFetched[namespace] && !dataFetched.current) {
+      dispatch(fetchLogsData({ namespace, templateID }));
+      dataFetched.current = true;  // Set the flag to true after dispatch
     }
-}, [logsData]);
+  }, [namespace, templateID, dispatch, isLogsFetched, dataFetched]);
 
+  useEffect(() => {
+    if (logsData) {
+      const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
+
+      if (!logsProcessed.current) {
+        let delay = 0;
+        lines.forEach((line, index) => {
+          if (!delayedLines.has(line)) {
+            setTimeout(() => {
+              setDisplayedData((prevDisplayedData) => [
+                ...prevDisplayedData,
+                line,
+              ]);
+              if (index === lines.length - 1) {
+                logsProcessed.current = true;
+              }
+              setDelayedLines((prev) => new Set(prev.add(line)));
+            }, delay);
+            delay += 0;
+          } else {
+            setDisplayedData((prevDisplayedData) => [
+              ...prevDisplayedData,
+              line,
+            ]);
+          }
+        });
+      } else {
+        setDisplayedData((prevDisplayedData) => [
+          ...prevDisplayedData,
+          ...lines.filter((line) => !prevDisplayedData.includes(line)),
+        ]);
+      }
+    }
+  }, [logsData]);
 
   if (error) {
     return <p className="p-10 text-white">Error: {error}</p>;

@@ -1,18 +1,17 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import io from 'socket.io-client';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Fetch deployment data
 export const fetchDeploymentData = createAsyncThunk(
-  '/startTemplateDeployment/:templateID',
+  "/startTemplateDeployment/:templateID",
   async (templateID, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `https://service.api.nexlayer.ai/startDeployment/${templateID}`,
+        `http://localhost:3003/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            'Authorization': `Bearer QW4gZWxlZ2FudCBzd2VldCBwb3RhdG8gbWUgZ29vZA==`
+            Authorization: `Bearer YOUR_AUTH_TOKEN`,
           },
           body: JSON.stringify({ templateID }),
         }
@@ -23,9 +22,8 @@ export const fetchDeploymentData = createAsyncThunk(
       }
 
       const data = await response.json();
-
       if (!data.namespace || !data.message) {
-        throw new Error('Namespace or message is missing in the response.');
+        throw new Error("Namespace or message is missing in the response.");
       }
 
       return data;
@@ -35,64 +33,58 @@ export const fetchDeploymentData = createAsyncThunk(
   }
 );
 
-const SOCKET_SERVER_URL = 'https://service.api.nexlayer.ai';
+const SOCKET_SERVER_URL = "http://localhost:3003";
 
 export const fetchLogsData = createAsyncThunk(
-  '/getDeploymentLogs/:namespace/:templateID',
-  async (_, { getState, rejectWithValue }) => {
-    const state = getState().deployment;
-    const { namespace, templateID, isLogsFetched } = state;
+  `/getDeploymentLogs/:namespace/:templateID`,
+  async ({ namespace, templateID }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    if (!namespace || !templateID) {
-      console.log("Namespace or TemplateID is missing.");
-      return rejectWithValue("Namespace or TemplateID is missing.");
-    }
-
-    if (isLogsFetched[namespace]) {
-      console.log(`Logs already fetched for namespace: ${namespace}`);
-      return null;
-    }
-
-    console.log("Connecting to Socket.IO server...");
-    const socket = io(SOCKET_SERVER_URL, {
-      transports: ['websocket'],
-      query: {
-        namespace,
-        templateID
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    });
 
-    return new Promise((resolve, reject) => {
-      socket.on('connect', () => {
-        console.log("Connected to Socket.IO server");
-      });
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
 
-      socket.on('connect_error', (error) => {
-        console.error(`Socket connection error: ${error.message}`);
-        reject(rejectWithValue(`Socket connection error: ${error.message}`));
-      });
+      let streamData = "";
+      let done = false;
 
-      socket.on('logs', (data) => {
-        console.log("Received logs data:", data);
-        resolve(data);
-      });
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunk = decoder.decode(value || new Uint8Array(), {
+          stream: !done,
+        });
+        streamData += chunk;
+      }
 
-      socket.on('error', (error) => {
-        console.error(`Socket error: ${error.message}`);
-        reject(rejectWithValue(`Socket error: ${error.message}`));
-        socket.disconnect();
-      });
+      console.log("Raw streamed data:", streamData);
 
-      socket.on('disconnect', () => {
-        console.warn('Socket disconnected unexpectedly.');
-        reject(rejectWithValue('Socket disconnected unexpectedly.'));
-      });
-    });
+      // Check if the data is valid JSON
+      try {
+        const data = JSON.parse(streamData);
+        return data;
+      } catch (error) {
+        return streamData;
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 const deploymentSlice = createSlice({
-  name: 'deployment',
+  name: "deployment",
   initialState: {
     templateID: null,
     namespace: null,
