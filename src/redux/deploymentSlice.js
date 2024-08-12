@@ -11,7 +11,6 @@ export const fetchDeploymentData = createAsyncThunk(
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer YOUR_AUTH_TOKEN`,
           },
           body: JSON.stringify({ templateID }),
         }
@@ -70,7 +69,6 @@ export const fetchLogsData = createAsyncThunk(
 
       console.log("Raw streamed data:", streamData);
 
-      // Check if the data is valid JSON
       try {
         const data = JSON.parse(streamData);
         return data;

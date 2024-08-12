@@ -53,7 +53,7 @@ export default function BuildTabSidebar() {
   useEffect(() => {
     if (namespace && templateID && !isLogsFetched[namespace] && !dataFetched.current) {
       dispatch(fetchLogsData({ namespace, templateID }));
-      dataFetched.current = true;  // Set the flag to true after dispatch
+      dataFetched.current = true;
     }
   }, [namespace, templateID, dispatch, isLogsFetched, dataFetched]);
 
