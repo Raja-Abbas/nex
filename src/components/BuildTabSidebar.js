@@ -59,6 +59,8 @@ export default function BuildTabSidebar() {
 
   useEffect(() => {
     if (logsData) {
+      setDisplayedData([]);
+      setDelayedLines(new Set());
       const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
 
       if (!logsProcessed.current) {
