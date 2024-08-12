@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { MultiStepLoader } from "./aceternityComponents/multi-step-loader";
 import { steps } from "../constants/Framework";
-import { fetchDeploymentData } from "../redux/deploymentSlice";
+import { fetchDeploymentData, fetchLogsData } from "../redux/deploymentSlice";
 
 const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
   const dispatch = useDispatch();
@@ -13,14 +13,19 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
     const hasFetchedData = sessionStorage.getItem('hasFetchedDeploymentData');
 
     if (selectedCard && !hasFetchedData && !hasTriggered.current) {
-      dispatch(fetchDeploymentData("0001")).then(() => {
+      dispatch(fetchDeploymentData("0001")).then((action) => {
+        if (action.type === 'fetchDeploymentData/fulfilled') {
+          const { namespace } = action.payload;
+          if (namespace) {
+            dispatch(fetchLogsData({ namespace, templateID: "0001" }));
+          }
+        }
         sessionStorage.setItem('hasFetchedDeploymentData', 'true');
       });
       hasTriggered.current = true;
     }
   }, [selectedCard, dispatch]);
 
-  // Debugging logs
   useEffect(() => {
     console.log("Namespace:", namespace);
     console.log("Message:", message);

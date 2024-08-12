@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchLogsData } from '../redux/deploymentSlice'; // Import the thunk
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
+import { fetchLogsData } from "../redux/deploymentSlice";
 
 const colors = {
   dateInfo: "#7FB7D9",
@@ -17,15 +17,17 @@ export default function BuildTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [displayedData, setDisplayedData] = useState([]);
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
-  const [delayedLines, setDelayedLines] = useState(new Set()); // Track lines with delay
-  const namespace = useSelector(state => state.deployment.namespace);
-  const logsData = useSelector(state => state.deployment.logsData);
-  const isLogsFetched = useSelector(state => state.deployment.isLogsFetched);
-  const error = useSelector(state => state.deployment.error);
-  const dispatch = useDispatch();
+  const [delayedLines, setDelayedLines] = useState(new Set());
 
+  const namespace = useSelector((state) => state.deployment.namespace);
+  const templateID = useSelector((state) => state.deployment.templateID);
+  const logsData = useSelector((state) => state.deployment.logsData);
+  const isLogsFetched = useSelector((state) => state.deployment.isLogsFetched);
+  const error = useSelector((state) => state.deployment.error);
+
+  const dispatch = useDispatch();
   const logsProcessed = useRef(false);
+  const dataFetched = useRef(false);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -49,35 +51,43 @@ export default function BuildTabSidebar() {
   ];
 
   useEffect(() => {
-    if (namespace && !isLogsFetched[namespace]) {
-      dispatch(fetchLogsData(namespace));
+    if (namespace && templateID && !isLogsFetched[namespace] && !dataFetched.current) {
+      dispatch(fetchLogsData({ namespace, templateID }));
+      dataFetched.current = true;
     }
-  }, [namespace, dispatch, isLogsFetched]);
+  }, [namespace, templateID, dispatch, isLogsFetched, dataFetched]);
 
   useEffect(() => {
     if (logsData) {
-      const lines = logsData.split("\n");
+      const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
 
       if (!logsProcessed.current) {
         let delay = 0;
         lines.forEach((line, index) => {
           if (!delayedLines.has(line)) {
-            // Apply delay only to new lines
             setTimeout(() => {
-              setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
+              setDisplayedData((prevDisplayedData) => [
+                ...prevDisplayedData,
+                line,
+              ]);
               if (index === lines.length - 1) {
-                setInitialLoadComplete(true);
                 logsProcessed.current = true;
               }
-              setDelayedLines(prev => new Set(prev.add(line)));
+              setDelayedLines((prev) => new Set(prev.add(line)));
             }, delay);
-            delay += 200;
+            delay += 0;
           } else {
-            setDisplayedData(prevDisplayedData => [...prevDisplayedData, line]);
+            setDisplayedData((prevDisplayedData) => [
+              ...prevDisplayedData,
+              line,
+            ]);
           }
         });
       } else {
-        setDisplayedData(prevDisplayedData => [...prevDisplayedData, ...lines.filter(line => !prevDisplayedData.includes(line))]);
+        setDisplayedData((prevDisplayedData) => [
+          ...prevDisplayedData,
+          ...lines.filter((line) => !prevDisplayedData.includes(line)),
+        ]);
       }
     }
   }, [logsData]);
