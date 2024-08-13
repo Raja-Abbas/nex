@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+const SOCKET_SERVER_URL = "http://localhost:3003";
+
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 // Fetch deployment data
 export const fetchDeploymentData = createAsyncThunk(
   "/startTemplateDeployment/:templateID",
@@ -32,11 +36,9 @@ export const fetchDeploymentData = createAsyncThunk(
   }
 );
 
-const SOCKET_SERVER_URL = "http://localhost:3003";
-
 export const fetchLogsData = createAsyncThunk(
   `/getDeploymentLogs/:namespace/:templateID`,
-  async ({ namespace, templateID }, { rejectWithValue }) => {
+  async ({ namespace, templateID }, { rejectWithValue, dispatch }) => {
     try {
       const response = await fetch(
         `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
@@ -55,7 +57,6 @@ export const fetchLogsData = createAsyncThunk(
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
 
-      let streamData = "";
       let done = false;
 
       while (!done) {
@@ -64,17 +65,15 @@ export const fetchLogsData = createAsyncThunk(
         const chunk = decoder.decode(value || new Uint8Array(), {
           stream: !done,
         });
-        streamData += chunk;
+
+        await delay(2000);
+        console.log("Chunk received:", chunk);
+
+        dispatch(updateLogs({ namespace, chunk }));
+
       }
 
-      console.log("Raw streamed data:", streamData);
-
-      try {
-        const data = JSON.parse(streamData);
-        return data;
-      } catch (error) {
-        return streamData;
-      }
+      return { namespace, completed: true };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -102,19 +101,16 @@ const deploymentSlice = createSlice({
       state.isLogsFetched = {};
     },
     updateLogs: (state, action) => {
-      console.log("Updating logs in the state:", action.payload);
-      state.logsData.push(action.payload);
+      state.logsData.push(action.payload.chunk);
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchDeploymentData.pending, (state) => {
-        console.log("Fetching deployment data...");
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchDeploymentData.fulfilled, (state, action) => {
-        console.log("Deployment data fetched successfully:", action.payload);
         state.loading = false;
         state.responseData = action.payload;
         state.namespace = action.payload.namespace;
@@ -127,16 +123,14 @@ const deploymentSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(fetchLogsData.pending, (state) => {
-        console.log("Fetching logs data...");
         state.loading = true;
         state.error = null;
+        state.logsData = [];
       })
       .addCase(fetchLogsData.fulfilled, (state, action) => {
-        if (action.payload !== null) {
-          console.log("Logs data fetched successfully:", action.payload);
+        if (action.payload.completed) {
           state.loading = false;
-          state.logsData = action.payload;
-          state.isLogsFetched[state.namespace] = true;
+          state.isLogsFetched[action.meta.arg.namespace] = true;
         }
       })
       .addCase(fetchLogsData.rejected, (state, action) => {

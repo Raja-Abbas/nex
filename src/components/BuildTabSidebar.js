@@ -17,7 +17,7 @@ export default function BuildTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [displayedData, setDisplayedData] = useState([]);
-  const [delayedLines, setDelayedLines] = useState(new Set());
+  const [existingLines, setExistingLines] = useState(new Set());
 
   const namespace = useSelector((state) => state.deployment.namespace);
   const templateID = useSelector((state) => state.deployment.templateID);
@@ -26,7 +26,6 @@ export default function BuildTabSidebar() {
   const error = useSelector((state) => state.deployment.error);
 
   const dispatch = useDispatch();
-  const logsProcessed = useRef(false);
   const dataFetched = useRef(false);
 
   const handleToggle = () => {
@@ -55,42 +54,16 @@ export default function BuildTabSidebar() {
       dispatch(fetchLogsData({ namespace, templateID }));
       dataFetched.current = true;
     }
-  }, [namespace, templateID, dispatch, isLogsFetched, dataFetched]);
+  }, [namespace, templateID, dispatch, isLogsFetched]);
 
   useEffect(() => {
     if (logsData) {
       setDisplayedData([]);
-      setDelayedLines(new Set());
-      const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
+      setExistingLines(new Set());
 
-      if (!logsProcessed.current) {
-        let delay = 0;
-        lines.forEach((line, index) => {
-          if (!delayedLines.has(line)) {
-            setTimeout(() => {
-              setDisplayedData((prevDisplayedData) => [
-                ...prevDisplayedData,
-                line,
-              ]);
-              if (index === lines.length - 1) {
-                logsProcessed.current = true;
-              }
-              setDelayedLines((prev) => new Set(prev.add(line)));
-            }, delay);
-            delay += 0;
-          } else {
-            setDisplayedData((prevDisplayedData) => [
-              ...prevDisplayedData,
-              line,
-            ]);
-          }
-        });
-      } else {
-        setDisplayedData((prevDisplayedData) => [
-          ...prevDisplayedData,
-          ...lines.filter((line) => !prevDisplayedData.includes(line)),
-        ]);
-      }
+      const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
+      setDisplayedData(lines);
+      setExistingLines(new Set(lines));
     }
   }, [logsData]);
 
