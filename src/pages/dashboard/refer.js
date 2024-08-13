@@ -14,7 +14,6 @@ const Refer = () => {
     event.preventDefault();
     if (inputRef.current) {
       navigator.clipboard.writeText(inputRef.current.placeholder).then(() => {
-        console.log('Text is copied');
       }).catch(err => {
         console.error('Failed to copy text: ', err);
       });

@@ -6,25 +6,27 @@ import { fetchDeploymentData, fetchLogsData } from "../redux/deploymentSlice";
 
 const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
   const dispatch = useDispatch();
-  const { namespace, message } = useSelector((state) => state.deployment);
+  const { namespace, message, isLogsFetched } = useSelector((state) => state.deployment);
   const hasTriggered = useRef(false);
 
   useEffect(() => {
     const hasFetchedData = sessionStorage.getItem('hasFetchedDeploymentData');
 
     if (selectedCard && !hasFetchedData && !hasTriggered.current) {
-      dispatch(fetchDeploymentData("0001")).then((action) => {
-        if (action.type === 'fetchDeploymentData/fulfilled') {
-          const { namespace } = action.payload;
-          if (namespace) {
-            dispatch(fetchLogsData({ namespace, templateID: "0001" }));
+      dispatch(fetchDeploymentData("0001"))
+        .unwrap()
+        .then((data) => {
+          if (data.namespace && !isLogsFetched[data.namespace]) {
+            dispatch(fetchLogsData({ namespace: data.namespace, templateID: "0001" }));
           }
-        }
-        sessionStorage.setItem('hasFetchedDeploymentData', 'true');
-      });
+        })
+        .catch((error) => {
+          console.error("Failed to fetch deployment data:", error);
+        });
+      sessionStorage.setItem('hasFetchedDeploymentData', 'true');
       hasTriggered.current = true;
     }
-  }, [selectedCard, dispatch]);
+  }, [selectedCard, dispatch, isLogsFetched]);
 
   useEffect(() => {
     console.log("Namespace:", namespace);
