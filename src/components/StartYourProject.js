@@ -39,7 +39,7 @@ const StartProject = () => {
           Start your project
         </h1>
         <p className="mt-[30px] text-xl text-description-color leading-[24px]">
-          Deploy an app to join the waitlist and get $100 innovator credits!
+          NexLayer is in limited preview release. Deploy an app to get your invitation.
         </p>
       </div>
       <div className="flex max-lg:flex-col max-lg:space-y-4 lg:space-x-4">
