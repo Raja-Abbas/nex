@@ -13,11 +13,11 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
     const hasFetchedData = sessionStorage.getItem('hasFetchedDeploymentData');
 
     if (selectedCard && !hasFetchedData && !hasTriggered.current) {
-      dispatch(fetchDeploymentData("0001"))
+      dispatch(fetchDeploymentData())
         .unwrap()
         .then((data) => {
           if (data.namespace && !isLogsFetched[data.namespace]) {
-            dispatch(fetchLogsData({ namespace: data.namespace, templateID: "0001" }));
+            dispatch(fetchLogsData({ namespace: data.namespace }));
           }
         })
         .catch((error) => {

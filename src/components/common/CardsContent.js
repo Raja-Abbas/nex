@@ -11,9 +11,9 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
   const dispatch = useDispatch();
   const namespace = useSelector(state => state.deployment.namespace);
   const message = useSelector(state => state.deployment.message);
+  const isFetching = useSelector(state => state.deployment.isFetching);
 
   const filteredData = (selectedMenu === "All" ? cardsData : cardsData.filter((item) => item.category === selectedMenu)) || [];
-
 
   const handleLinkClick = (slug) => {
     navigate(`/details/${slug}`);
@@ -24,11 +24,14 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
       console.error("Template ID is undefined. Deployment cannot proceed.");
       return;
     }
-    dispatch(fetchDeploymentData(item.templateID));
-    console.log("Template ID is defined. Deployment can proceed.");
-    if (onCardSelect) onCardSelect(item);
+    if (!isFetching) {
+      dispatch(fetchDeploymentData(item.templateID));
+      console.log("Template ID is defined. Deployment can proceed.");
+      if (onCardSelect) onCardSelect(item);
+    } else {
+      console.log("Deployment is already in progress.");
+    }
   };
-  
 
   return (
     <div className="px-0 md:px-5 py-5 grid gap-[14px] max-[470px]:grid-cols-1 grid-cols-2 lg:grid-cols-3">
@@ -46,7 +49,7 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
                 onClick={() => handleLinkClick(item.slug)}
               />
             )}
-            <img className="min-h-[40px] h-10 w-10" src={item.logo} alt={item.logo} />
+            <img className="min-h-[40px] h-10" src={item.logo} alt={item.logo} />
             <p className="pt-3 font-normal text-xl text-white">{item.title}</p>
             <p className="min-h-[80px] pt-[5px] font-normal text-tiny text-description-color">
               {item.description}

@@ -2,15 +2,20 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const SOCKET_SERVER_URL = "http://localhost:3003";
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Fetch deployment data
 export const fetchDeploymentData = createAsyncThunk(
   "/startTemplateDeployment/:templateID",
-  async (templateID, { rejectWithValue }) => {
+  async (templateID, { rejectWithValue, dispatch, getState }) => {
+    const { deployment } = getState();
+    if (deployment.isFetching) return;
+
     try {
+      dispatch(setFetching(true));
+
       const response = await fetch(
-        `http://localhost:3003/startTemplateDeployment/${templateID}`,
+        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -29,9 +34,16 @@ export const fetchDeploymentData = createAsyncThunk(
         throw new Error("Namespace or message is missing in the response.");
       }
 
+      dispatch(fetchLogsData({ 
+        namespace: data.namespace, 
+        templateID 
+      }));
+
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
+    } finally {
+      dispatch(setFetching(false));
     }
   }
 );
@@ -66,11 +78,10 @@ export const fetchLogsData = createAsyncThunk(
           stream: !done,
         });
 
-        await delay(2000);
+        await delay(1000);
         console.log("Chunk received:", chunk);
 
         dispatch(updateLogs({ namespace, chunk }));
-
       }
 
       return { namespace, completed: true };
@@ -91,6 +102,7 @@ const deploymentSlice = createSlice({
     isLogsFetched: {},
     loading: false,
     error: null,
+    isFetching: false,
   },
   reducers: {
     resetDeploymentState: (state) => {
@@ -102,6 +114,9 @@ const deploymentSlice = createSlice({
     },
     updateLogs: (state, action) => {
       state.logsData.push(action.payload.chunk);
+    },
+    setFetching: (state, action) => {
+      state.isFetching = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -141,6 +156,6 @@ const deploymentSlice = createSlice({
   },
 });
 
-export const { resetDeploymentState, updateLogs } = deploymentSlice.actions;
+export const { resetDeploymentState, updateLogs, setFetching } = deploymentSlice.actions;
 
 export default deploymentSlice.reducer;
