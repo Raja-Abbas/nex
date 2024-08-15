@@ -21,6 +21,8 @@ export default function DeployTabSidebar() {
   const logsData = useSelector((state) => state.deployment.logsData);
   const error = useSelector((state) => state.deployment.error);
 
+  const endOfLogRef = useRef(null);
+
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
@@ -44,14 +46,17 @@ export default function DeployTabSidebar() {
 
   useEffect(() => {
     if (logsData) {
-      setDisplayedData([]);
-      setExistingLines(new Set());
-
       const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
       setDisplayedData(lines);
       setExistingLines(new Set(lines));
     }
   }, [logsData]);
+
+  useEffect(() => {
+    if (endOfLogRef.current) {
+      endOfLogRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [displayedData]);
 
   if (error) {
     return <p className="p-10 text-white">Error: {error}</p>;
@@ -150,6 +155,7 @@ export default function DeployTabSidebar() {
           ) : (
             <div className="text-gray-500">No logs to display.</div>
           )}
+          <div ref={endOfLogRef} /> {/* This is the end reference */}
         </pre>
       </div>
     </div>

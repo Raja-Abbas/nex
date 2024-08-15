@@ -30,17 +30,18 @@ export const fetchDeploymentData = createAsyncThunk(
       }
 
       const data = await response.json();
+      
+      // Check if namespace exists in the response
       if (!data.namespace || !data.message) {
         throw new Error("Namespace or message is missing in the response.");
       }
 
-      dispatch(fetchLogsData({ 
-        namespace: data.namespace, 
-        templateID 
-      }));
+      // Ensure logs fetching starts after the deployment data is successfully received
+      dispatch(fetchLogsData({ namespace: data.namespace, templateID }));
 
       return data;
     } catch (error) {
+      console.error("Error in fetchDeploymentData:", error);
       return rejectWithValue(error.message);
     } finally {
       dispatch(setFetching(false));
@@ -49,7 +50,7 @@ export const fetchDeploymentData = createAsyncThunk(
 );
 
 export const fetchLogsData = createAsyncThunk(
-  `/getDeploymentLogs/:namespace/:templateID`,
+  "/getDeploymentLogs/:namespace/:templateID",
   async ({ namespace, templateID }, { rejectWithValue, dispatch }) => {
     try {
       const response = await fetch(
@@ -70,6 +71,7 @@ export const fetchLogsData = createAsyncThunk(
       const decoder = new TextDecoder("utf-8");
 
       let done = false;
+      let previousChunks = new Set(); // Use a Set to keep track of processed chunks
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
@@ -78,14 +80,18 @@ export const fetchLogsData = createAsyncThunk(
           stream: !done,
         });
 
-        await delay(1000);
-        console.log("Chunk received:", chunk);
-
-        dispatch(updateLogs({ namespace, chunk }));
+        // Only process the chunk if it's not already processed
+        if (!previousChunks.has(chunk)) {
+          previousChunks.add(chunk);
+          await delay(1000);
+          console.log("Chunk received:", chunk);
+          dispatch(updateLogs({ namespace, chunk }));
+        }
       }
 
       return { namespace, completed: true };
     } catch (error) {
+      console.error("Error in fetchLogsData:", error);
       return rejectWithValue(error.message);
     }
   }
@@ -113,7 +119,10 @@ const deploymentSlice = createSlice({
       state.isLogsFetched = {};
     },
     updateLogs: (state, action) => {
-      state.logsData.push(action.payload.chunk);
+      // Add the new chunk to logsData only if it's not already there
+      if (!state.logsData.includes(action.payload.chunk)) {
+        state.logsData.push(action.payload.chunk);
+      }
     },
     setFetching: (state, action) => {
       state.isFetching = action.payload;
