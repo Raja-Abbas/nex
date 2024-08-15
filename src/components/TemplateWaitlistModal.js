@@ -17,7 +17,7 @@ const TemplateWaitlistModal = ({ isOpen, onClose, selectedCard }) => {
         <img
           src={selectedCard.logo}
           alt={selectedCard.title}
-          className="w-[130px] h-[130px] mb-[15px]"
+          className="w-[130px] mb-[15px]"
         />
         <h1 className="text-[30px] text-white font-bold mb-2">
           {selectedCard.title}

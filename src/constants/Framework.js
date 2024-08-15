@@ -113,7 +113,7 @@ export const cardsData = [
     logo: SaleorCommerce,
     title: "Saleor Commmerce",
     slug: "saleor-commerce",
-    description: "High-performance e-commerce solution created with python and Django",
+    description: "High-performance e-commerce solution created with Python and Django",
     provider: "NexLayer",
     category: "Popular",
     Marketplacecategory: "Analytics",
