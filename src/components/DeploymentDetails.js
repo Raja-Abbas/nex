@@ -1,11 +1,16 @@
-import React from 'react';
+import React from "react";
 import Globe from "../assets/svgs/globe.svg";
 import { deploymentData } from "../constants/Framework";
 import NodeJs from "../assets/svgs/node.svg";
+import { useSelector } from "react-redux";
 
-const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, selectedCard }) => {
+const DeploymentDetails = ({
+  handleMenuClick,
+  toggleBuildPageDetailsHide,
+  selectedCard,
+}) => {
   const [activeMenu, setActiveMenu] = React.useState("Details");
-
+  const { namespace } = useSelector((state) => state.deployment);
   const menuItems = [
     { key: "Details", text: "Details" },
     { key: "Build", text: "Build" },
@@ -16,9 +21,8 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
     toggleBuildPageDetailsHide();
   };
 
- 
   const defaultCard = {
-    logo: NodeJs, 
+    logo: NodeJs,
     title: "Node.js",
   };
 
@@ -77,10 +81,15 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
             </p>
           </div> */}
         </div>
-        <a href={deploymentData.url} target='_blank' rel="noreferrer" className="pt-[15px] w-fit flex gap-[10px] items-center">
+        <a
+          href={`https://${namespace}.${cardToDisplay.slug}.alpha.nexlayer.ai`}
+          target="_blank"
+          rel="noreferrer"
+          className="pt-[15px] w-fit flex gap-[10px] items-center"
+        >
           <img src={Globe} alt="Globe Icon" />
           <p className="font-normal text-base text-dark-blue cursor-pointer">
-            https://{cardToDisplay.title.toLowerCase()}-3hp0.ondeployx.com
+            https://{namespace}.{cardToDisplay.slug}.alpha.nexlayer.ai
           </p>
         </a>
       </div>
