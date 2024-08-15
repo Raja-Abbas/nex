@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from 'react-redux';
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
@@ -16,7 +17,7 @@ export default function DeployTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [displayedData, setDisplayedData] = useState([]);
-  const [existingLines, setExistingLines] = useState(new Set());
+  const [, setExistingLines] = useState(new Set());
 
   const logsData = useSelector((state) => state.deployment.logsData);
   const error = useSelector((state) => state.deployment.error);
@@ -155,7 +156,7 @@ export default function DeployTabSidebar() {
           ) : (
             <div className="text-gray-500">No logs to display.</div>
           )}
-          <div ref={endOfLogRef} /> {/* This is the end reference */}
+          <div ref={endOfLogRef} />
         </pre>
       </div>
     </div>

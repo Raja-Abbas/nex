@@ -9,8 +9,6 @@ import Link from "../../assets/svgs/Link.svg";
 export default function CardsContent({ selectedMenu, onCardSelect }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const namespace = useSelector(state => state.deployment.namespace);
-  const message = useSelector(state => state.deployment.message);
   const isFetching = useSelector(state => state.deployment.isFetching);
 
   const filteredData = (selectedMenu === "All" ? cardsData : cardsData.filter((item) => item.category === selectedMenu)) || [];
