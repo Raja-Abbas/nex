@@ -17,6 +17,9 @@ import JsLogo from "../assets/svgs/node.svg";
 import Globe from "../assets/svgs/globe.svg";
 import TickCircle from "../assets/svgs/tick-circle.svg";
 import KdChat from "../assets/images/kd-chat-icon-Photoroom.png";
+import SaleorCommerce from "../assets/images/saleorCommerce.png";
+import LagoImage from "../assets/images/lagoImage.png";
+import CalImage from "../assets/images/calImage.png";
 
 export const steps = [
   {
@@ -104,6 +107,39 @@ export const cardsData = [
     category: "Popular",
     Marketplacecategory: "Analytics",
     templateID: "0001",
+    Downloads: "1.5K",
+  },
+  {
+    logo: SaleorCommerce,
+    title: "Saleor Commmerce",
+    slug: "saleor-commerce",
+    description: "High-performance e-commerce solution created with python and Django",
+    provider: "NexLayer",
+    category: "Popular",
+    Marketplacecategory: "Analytics",
+    templateID: "0002",
+    Downloads: "1.5K",
+  },
+  {
+    logo: LagoImage,
+    title: "Lago",
+    slug: "lago",
+    description: "Open Source Metering & Usage-Based Billing",
+    provider: "NexLayer",
+    category: "Popular",
+    Marketplacecategory: "Analytics",
+    templateID: "0003",
+    Downloads: "1.5K",
+  },
+  {
+    logo: CalImage,
+    title: "Cal.com",
+    slug: "cal.com",
+    description: "The open-source Calendly successor",
+    provider: "NexLayer",
+    category: "Popular",
+    Marketplacecategory: "Analytics",
+    templateID: "0004",
     Downloads: "1.5K",
   },
   {

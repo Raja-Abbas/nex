@@ -1,32 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { BuildlogsData } from "../constants/Framework";
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
-import { fetchLogsData } from "../redux/deploymentSlice";
 
-const colors = {
-  dateInfo: "#7FB7D9",
-  plusInfo: "#FFFFBC",
-  default: "#FFBDFF"
-};
-
-export default function BuildTabSidebar() {
+export default function BuildTabSidebar({ logs }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Live Logs");
-  const [displayedData, setDisplayedData] = useState([]);
-  const [existingLines, setExistingLines] = useState(new Set());
-
-  const namespace = useSelector((state) => state.deployment.namespace);
-  const templateID = useSelector((state) => state.deployment.templateID);
-  const logsData = useSelector((state) => state.deployment.logsData);
-  const isLogsFetched = useSelector((state) => state.deployment.isLogsFetched);
-  const error = useSelector((state) => state.deployment.error);
-
-  const dispatch = useDispatch();
-  const dataFetched = useRef(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -50,37 +33,20 @@ export default function BuildTabSidebar() {
   ];
 
   useEffect(() => {
-    if (namespace && templateID && !isLogsFetched[namespace] && !dataFetched.current) {
-      dispatch(fetchLogsData({ namespace, templateID }));
-      dataFetched.current = true;
-    }
-  }, [namespace, templateID, dispatch, isLogsFetched]);
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => {
+        const newIndex = prevIndex + 1;
+        if (newIndex <= BuildlogsData.length) {
+          return newIndex;
+        } else {
+          clearInterval(interval);
+          return prevIndex;
+        }
+      });
+    }, 1000);
 
-  useEffect(() => {
-    if (logsData) {
-      setDisplayedData([]);
-      setExistingLines(new Set());
-
-      const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
-      setDisplayedData(lines);
-      setExistingLines(new Set(lines));
-    }
-  }, [logsData]);
-
-  if (error) {
-    return <p className="p-10 text-white">Error: {error}</p>;
-  }
-
-  const getLineColor = (line) => {
-    const dateRegex = /^\d{1,4}[\/\-]\d{1,2}[\/\-]\d{1,4}/;
-    if (dateRegex.test(line)) {
-      return colors.dateInfo;
-    } else if (line.startsWith("[+]")) {
-      return colors.plusInfo;
-    } else {
-      return colors.default;
-    }
-  };
+    return () => clearInterval(interval);
+  }, [logs]);
 
   return (
     <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
@@ -123,7 +89,7 @@ export default function BuildTabSidebar() {
                     <img
                       className="w-[17px] h-[17px]"
                       src={ClockIcon}
-                      alt="Clock Icon"
+                      alt="CLock Icon"
                     />
                     <p className="font-normal text-sm text-white opacity-90">
                       {option}
@@ -146,21 +112,31 @@ export default function BuildTabSidebar() {
         </div>
       </div>
 
-      <div className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen scrollbar`}>
-        <pre className="text-white">
-          {displayedData.map((line, index) => (
-            <div
-              key={index}
-              className="flex gap-0 text-wrap py-1 text-[14px]"
-              style={{ color: getLineColor(line) }}
-            >
-              <span className="min-w-[30px] text-light-gray mr-2">
-                {`${index + 1}.`}
-              </span>
-              <span>{line}</span>
+      <div
+        className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen scrollbar`}
+      >
+        {BuildlogsData.slice(0, currentIndex).map((log, index) => (
+          <div
+            key={index}
+            className="font-medium text-base leading-7 flex"
+            style={{
+              color:
+                log.type === "error"
+                  ? "#FFBDFF"
+                  : log.type === "success"
+                  ? "#7FB7D9"
+                  : log.type === "warning"
+                  ? "#FFFFBC"
+                  : "#7FB7D9",
+            }}
+          >
+            <span className="w-[35px] text-light-gray">{`${index + 1}.`}</span>
+            <div className="overflow-x-auto scrollbar lg:w-[600px]">
+            {log.timestamp ? `${log.timestamp} - ` : ""}
+            {log.message}
             </div>
-          ))}
-        </pre>
+          </div>
+        ))}
       </div>
     </div>
   );
