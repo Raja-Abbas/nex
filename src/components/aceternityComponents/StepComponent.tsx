@@ -51,7 +51,8 @@ const StepComponent: React.FC<{
   index: number;
   toggleBuildPageDetails: () => void;
   disableLoading?: boolean;
-}> = ({ step, index, toggleBuildPageDetails, disableLoading = false }) => {
+  url?: string; 
+}> = ({ step, index, toggleBuildPageDetails, disableLoading = false, url }) => {
   const [isLoading, setIsLoading] = useState(!disableLoading);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [showInProgress, setShowInProgress] = useState(false);
@@ -293,7 +294,7 @@ const StepComponent: React.FC<{
               )}
               {step.details.some((detail) => detail.label === "Link") && (
                 <a
-                  href={step.details.find((detail) => detail.label === "Link")?.url}
+                  href={url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-4 flex gap-0 items-center w-fit"
@@ -307,9 +308,11 @@ const StepComponent: React.FC<{
                       }`}
                     />
                   )}
-                  <p className="text-dark-blue text-base">
-                    {step.details.find((detail) => detail.label === "Link")?.url}
-                  </p>
+                   {url && (
+                    <p className="text-dark-blue text-base">
+                      <p className="text-blue-400">{url}</p>
+                    </p>
+                  )}
                 </a>
               )}
               {step.details.some((detail) => detail.label === "Docker") && (
