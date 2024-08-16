@@ -8,29 +8,22 @@ body, * {
   background-position: center;
   background-size: cover;
 }
-.scrollbar {
-    scrollbar-width: thin; 
-    scrollbar-color: #4a4a4a #202020; 
-  }
+::-webkit-scrollbar {
+  width: 10px;
+}
   
-  .scrollbar::-webkit-scrollbar {
-    width: 4px;
-  }
+::-webkit-scrollbar-track {
+  background: #202020; 
+}
   
-  .scrollbar::-webkit-scrollbar-track {
-    background: #202020;
-  }
+::-webkit-scrollbar-thumb {
+  background:#4a4a4a; 
+}
   
-  .scrollbar::-webkit-scrollbar-thumb {
-    background-color: #4a4a4a;
-    border-radius: 100px;
-    border: 1px solid #202020;
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
   
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: #6b6b6b;
-  }
-
 @keyframes toastSlideIn {
   0% {
     transform: translateX(100%);

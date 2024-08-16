@@ -113,7 +113,7 @@ export default function BuildTabSidebar({ logs }) {
       </div>
 
       <div
-        className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen scrollbar`}
+        className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen max-lg:h-[80vh] scrollbar`}
       >
         {BuildlogsData.slice(0, currentIndex).map((log, index) => (
           <div

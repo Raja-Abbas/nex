@@ -139,7 +139,7 @@ export default function DeployTabSidebar() {
         </div>
       </div>
 
-      <div className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen scrollbar`}>
+      <div className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen max-lg:h-[80vh] scrollbar`}>
         {loading ? (
           <div className="flex justify-center items-center h-full">
             <PuffLoader color="#00aeff" size={60} />

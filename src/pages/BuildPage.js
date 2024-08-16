@@ -20,20 +20,28 @@ export default function BuildPage() {
 
   return (
     <div
-      className={`grid max-lg:px-4 w-full scrollbar overflow-x-hidden gap-4 sm:gap-[50px] justify-center ${
+      className={`grid max-lg:px-4 scrollbar overflow-y-auto w-full gap-4 max-lg:gap-[50px] justify-center ${
         showDeploymentDetails
-          ? "lg:grid-cols-2 max-lg:grid-cols-1 max-lg:grid-rows-2 max-lg:h-full lg:h-fit"
+          ? "lg:grid-cols-2 max-lg:grid-cols-1 max-lg:h-auto lg:h-fit"
           : "max-lg:grid-cols-1 max-lg:grid-rows-2 h-auto"
       }`}
     >
       {currentStep === 1 && !showDeploymentDetails && <ChatBotIcon />}
-      <GithubDeployment
-        toggleBuildPageDetails={toggleBuildPageDetails}
-        selectedCard={selectedCard}
-        setCurrentStep={setCurrentStep}
-      />
+      <div
+        className={`${
+          showDeploymentDetails
+            ? "lg:overflow-y-auto lg:overflow-x-hidden lg:h-[calc(100vh-140px)] scrollbar lg:px-[20px]"
+            : ""
+        }`}
+      >
+        <GithubDeployment
+          toggleBuildPageDetails={toggleBuildPageDetails}
+          selectedCard={selectedCard}
+          setCurrentStep={setCurrentStep}
+        />
+      </div>
       {showDeploymentDetails && (
-        <div className="shadow-2xl animation-toastSlideIn bg-medium-grey-color">
+        <div className="shadow-2xl animation-toastSlideIn overflow-hidden bg-medium-grey-color max-lg:block max-lg:h-[150vh] lg:h-auto lg:fixed lg:w-1/2 lg:right-0 lg:z-[0]">
           <DeploymentDetailsLayout
             handleMenuClick={() => {}}
             hideLayout={() => setShowDeploymentDetails(false)}
