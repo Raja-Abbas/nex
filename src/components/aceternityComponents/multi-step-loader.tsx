@@ -4,12 +4,24 @@ import TemplateWaitlistModal from "../TemplateWaitlistModal";
 import DeploymentAlert from "./DeploymentAlert";
 import ModalAlert from "./ModalAlert";
 import StepComponent, { Step } from "./StepComponent";
+import { useSelector } from "react-redux";
+import NodeJs from "../../assets/svgs/node.svg";
 
 interface MultiStepLoaderProps {
   steps: Step[];
   loading: boolean;
   toggleBuildPageDetails: () => void;
   selectedCard?: any;
+}
+
+// Define the state shape here
+interface DeploymentState {
+  namespace: string;
+}
+
+interface RootState {
+  deployment: DeploymentState;
+  // Add other slices if necessary
 }
 
 export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
@@ -25,6 +37,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   const [hasModalAlertShown, setHasModalAlertShown] = useState<boolean>(false);
   const [step4EndTime, setStep4EndTime] = useState<number | null>(null);
   const [modalAlertTime, setModalAlertTime] = useState<string>("");
+  const { namespace } = useSelector((state: RootState) => state.deployment); // Use the correct state type
 
   useEffect(() => {
     if (loading) {
@@ -90,6 +103,14 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
     setShowModal(false);
   };
 
+  const defaultCard = {
+    logo: NodeJs,
+    title: "Node.js",
+    slug: "default-slug",  // Add default slug
+  };
+  const cardToDisplay = selectedCard || defaultCard;
+  const url = `https://${namespace}.${cardToDisplay.slug}.alpha.nexlayer.ai`;
+
   return (
     <div className="max-lg:ml-7">
       {isAlertOpen && (
@@ -110,6 +131,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
               step={step}
               index={index}
               toggleBuildPageDetails={toggleBuildPageDetails}
+              url={url} 
             />
           </div>
         </div>
