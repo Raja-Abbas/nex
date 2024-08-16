@@ -31,12 +31,12 @@ export const fetchDeploymentData = createAsyncThunk(
 
       const data = await response.json();
       
-      // Check if namespace exists in the response
       if (!data.namespace || !data.message) {
         throw new Error("Namespace or message is missing in the response.");
       }
 
-      // Ensure logs fetching starts after the deployment data is successfully received
+      await delay(3000);
+
       dispatch(fetchLogsData({ namespace: data.namespace, templateID }));
 
       return data;
@@ -71,7 +71,7 @@ export const fetchLogsData = createAsyncThunk(
       const decoder = new TextDecoder("utf-8");
 
       let done = false;
-      let previousChunks = new Set(); // Use a Set to keep track of processed chunks
+      let previousChunks = new Set();
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
@@ -80,7 +80,6 @@ export const fetchLogsData = createAsyncThunk(
           stream: !done,
         });
 
-        // Only process the chunk if it's not already processed
         if (!previousChunks.has(chunk)) {
           previousChunks.add(chunk);
           await delay(1000);
@@ -119,7 +118,6 @@ const deploymentSlice = createSlice({
       state.isLogsFetched = {};
     },
     updateLogs: (state, action) => {
-      // Add the new chunk to logsData only if it's not already there
       if (!state.logsData.includes(action.payload.chunk)) {
         state.logsData.push(action.payload.chunk);
       }

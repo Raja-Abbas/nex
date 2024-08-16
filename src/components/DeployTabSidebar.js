@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-escape */
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from 'react-redux';
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
@@ -6,6 +5,7 @@ import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
+import { PuffLoader } from 'react-spinners';
 
 const colors = {
   dateInfo: "#7FB7D9",
@@ -21,6 +21,7 @@ export default function DeployTabSidebar() {
 
   const logsData = useSelector((state) => state.deployment.logsData);
   const error = useSelector((state) => state.deployment.error);
+  const loading = useSelector((state) => state.deployment.loading);
 
   const endOfLogRef = useRef(null);
 
@@ -139,25 +140,31 @@ export default function DeployTabSidebar() {
       </div>
 
       <div className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen scrollbar`}>
-        <pre className="text-white">
-          {displayedData.length > 0 ? (
-            displayedData.map((line, index) => (
-              <div
-                key={index}
-                className="flex gap-0 text-wrap py-1 text-[14px]"
-                style={{ color: getLineColor(line) }}
-              >
-                <span className="min-w-[30px] text-light-gray mr-2">
-                  {`${index + 1}.`}
-                </span>
-                <span>{line}</span>
-              </div>
-            ))
-          ) : (
-            <div className="text-gray-500">No logs to display.</div>
-          )}
-          <div ref={endOfLogRef} />
-        </pre>
+        {loading ? (
+          <div className="flex justify-center items-center h-full">
+            <PuffLoader color="#00aeff" size={60} />
+          </div>
+        ) : (
+          <pre className="text-white">
+            {displayedData.length > 0 ? (
+              displayedData.map((line, index) => (
+                <div
+                  key={index}
+                  className="flex gap-0 text-wrap py-1 text-[14px]"
+                  style={{ color: getLineColor(line) }}
+                >
+                  <span className="min-w-[30px] text-light-gray mr-2">
+                    {`${index + 1}.`}
+                  </span>
+                  <span>{line}</span>
+                </div>
+              ))
+            ) : (
+              <div className="text-gray-500">No logs to display.</div>
+            )}
+            <div ref={endOfLogRef} />
+          </pre>
+        )}
       </div>
     </div>
   );
