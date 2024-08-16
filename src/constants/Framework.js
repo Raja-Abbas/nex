@@ -101,7 +101,7 @@ export const cardsData = [
   {
     logo: KdChat,
     title: "K-d Chat",
-    slug: "kdchat",
+    slug: "kd-chat",
     description: "Chat interface to prompt Ollama's dolphin-phi model",
     provider: "NexLayer",
     category: "Popular",
