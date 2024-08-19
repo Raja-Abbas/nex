@@ -35,7 +35,7 @@ const Layout = ({ toggleBuildPageDetailsHide, selectedCard }) => {
   }
   
   return (
-    <div className="rounded-[10px] lg:overflow-y-auto lg:scrollbar lg:lg:h-[calc(100vh-140px)] lg:animation-detailsSlideIn">
+    <div className="rounded-[10px] flex flex-col lg:h-[calc(100vh-140px)] lg:animation-detailsSlideIn">
       <div className="bg-background pt-[20px]">
         <DeploymentDetails
           handleMenuClick={handleMenuClick}
