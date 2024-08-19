@@ -76,8 +76,8 @@ export default function DeployTabSidebar() {
   };
 
   return (
-    <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
-      <div className="flex gap-2 items-center">
+    <div className="max-w-[100%] max-h-[calc(100vh-462px)] max-lg:max-h-screen xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
+      <div className="flex gap-2 items-center sticky top-[-20px] bg-medium-grey-color h-[3rem]">
         <input
           className="w-full h-8 p-[10px] py-[6.5px] text-white font-normal text-tiny border-[2px] rounded-[7px] border-dark-gray bg-background"
           type="search"
@@ -139,7 +139,7 @@ export default function DeployTabSidebar() {
         </div>
       </div>
 
-      <div className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen max-lg:h-[80vh] scrollbar`}>
+      <div className={`pt-[30px] bg-gray-900 font-mono`}>
         {loading ? (
           <div className="flex justify-center items-center h-full">
             <PuffLoader color="#00aeff" size={60} />
