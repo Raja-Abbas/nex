@@ -20,6 +20,7 @@ import KdChat from "../assets/images/kd-chat-icon-Photoroom.png";
 import SaleorCommerce from "../assets/images/saleorCommerce.png";
 import LagoImage from "../assets/images/lagoImage.png";
 import CalImage from "../assets/images/calImage.png";
+import MattermostImage from "../assets/images/mattermost.png";
 
 export const steps = [
   {
@@ -140,6 +141,17 @@ export const cardsData = [
     category: "Popular",
     Marketplacecategory: "Analytics",
     templateID: "0004",
+    Downloads: "1.5K",
+  },
+  {
+    logo: MattermostImage,
+    title: "Mattermost",
+    slug: "mattermost",
+    description: "An open source platform for secure collaboration across the entire software development lifecycle",
+    provider: "NexLayer",
+    category: "Popular",
+    Marketplacecategory: "Analytics",
+    templateID: "0005",
     Downloads: "1.5K",
   },
   {
