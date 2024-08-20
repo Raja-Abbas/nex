@@ -1,12 +1,6 @@
 import Node from "../assets/svgs/node.svg";
-import Django from "../assets/svgs/django.svg";
-import Flask from "../assets/svgs/flask.svg";
 import AnythingLLM from "../assets/svgs/anythingLLM.svg";
-import MongoDB from "../assets/svgs/mongoDB.svg";
 import Strapi from "../assets/svgs/strapi.svg";
-import MySQL from "../assets/svgs/mySQL.svg";
-import PostgreSQL from "../assets/svgs/postgreSQL.svg";
-import Flowise from "../assets/svgs/flowise.svg";
 import BlueCube from "../assets/svgs/blueCube.svg";
 import BlueGithubLogoCard from "../assets/svgs/blueGithubLogo.svg";
 import NodejsTemplate from "../assets/svgs/nodejs2Template.svg";
@@ -111,14 +105,14 @@ export const cardsData = [
     Downloads: "1.5K",
   },
   {
-    logo: SaleorCommerce,
-    title: "Saleor Commmerce",
-    slug: "saleor-commerce",
-    description: "High-performance e-commerce solution created with Python and Django",
+    logo: CalImage,
+    title: "Cal.com",
+    slug: "cal.com",
+    description: "The open-source Calendly successor",
     provider: "NexLayer",
     category: "Popular",
     Marketplacecategory: "Analytics",
-    templateID: "0002",
+    templateID: "0004",
     Downloads: "1.5K",
   },
   {
@@ -133,14 +127,14 @@ export const cardsData = [
     Downloads: "1.5K",
   },
   {
-    logo: CalImage,
-    title: "Cal.com",
-    slug: "cal.com",
-    description: "The open-source Calendly successor",
+    logo: SaleorCommerce,
+    title: "Saleor Commmerce",
+    slug: "saleor-commerce",
+    description: "High-performance e-commerce solution created with Python and Django",
     provider: "NexLayer",
     category: "Popular",
     Marketplacecategory: "Analytics",
-    templateID: "0004",
+    templateID: "0002",
     Downloads: "1.5K",
   },
   {
@@ -169,45 +163,6 @@ export const cardsData = [
     Downloads: "2K",
   },
   {
-    logo: Node,
-    title: "Node.js",
-    slug: "nodejs",
-    description: "A minimal Node.js web application.",
-    provider: "NexLayer",
-    category: "Popular",
-    Marketplacecategory: "Analytics",
-    Downloads: "1.5K",
-  },
-  {
-    logo: Django,
-    title: "Django",
-    slug: "django",
-    description: "A simple Django Application",
-    provider: "NexLayer",
-    category: "Latest",
-    Marketplacecategory: "Analytics",
-    Downloads: "783",
-  },
-  {
-    logo: Flask,
-    title: "Flask",
-    slug: "flask",
-    description: "A minimal Flask application",
-    provider: "NexLayer",
-    category: "New",
-    Marketplacecategory: "AI/ML",
-    Downloads: "200",
-  },
-  {
-    logo: MongoDB,
-    title: "MongoDB",
-    slug: "mongodb",
-    description: "Mongo database with data persistence and TCP Proxy",
-    provider: "NexLayer",
-    category: "All",
-    Downloads: "456",
-  },
-  {
     logo: Strapi,
     title: "Strapi",
     slug: "strapi",
@@ -216,36 +171,6 @@ export const cardsData = [
     category: "All",
     Marketplacecategory: "Analytics",
     Downloads: "1K",
-  },
-  {
-    logo: MySQL,
-    title: "MySQL",
-    slug: "mysql",
-    description: "MySQL database with data persistence and TCP Proxy",
-    provider: "NexLayer",
-    category: "New",
-    Marketplacecategory: "Authentication",
-    Downloads: "994",
-  },
-  {
-    logo: PostgreSQL,
-    title: "PostgreSQL",
-    slug: "postgresql",
-    description: "PostgreSQL database with data persistence and TCP Proxy",
-    provider: "NexLayer",
-    category: "New",
-    Marketplacecategory: "Authentication",
-    Downloads: "400",
-  },
-  {
-    logo: Flowise,
-    title: "flowise-railway",
-    slug: "flowise-railway",
-    description: "Flowise - low- code LLM apps builder",
-    provider: "NexLayer",
-    category: "Latest",
-    Marketplacecategory: "AI/ML",
-    Downloads: "300",
   },
 ];
 
