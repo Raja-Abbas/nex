@@ -39,14 +39,12 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
           className="relative px-5 py-5 rounded-[5px] bg-light-black"
         >
           <div>
-            {item.title === "AnythingLLM" && (
               <img
                 src={Link}
                 alt="Link"
                 className="absolute right-2 top-2 w-[17px] h-[15px] cursor-pointer"
                 onClick={() => handleLinkClick(item.slug)}
               />
-            )}
             <img className="min-h-[40px] h-10" src={item.logo} alt={item.logo} />
             <p className="pt-3 font-normal text-xl text-white">{item.title}</p>
             <p className="min-h-[80px] pt-[5px] font-normal text-tiny text-description-color">

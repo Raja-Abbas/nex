@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import Globe from "../assets/svgs/globe.svg";
 import { deploymentData } from "../constants/Framework";
@@ -11,8 +11,6 @@ import ChatBotIcon from "../components/ChatBotIcon";
 function DashboardPage({ selectedCard }) {
   const { cardTitle } = useCardTitle();
   const { credit } = useCredit();
-  const [message] = useState('');
-  const [sentEmails] = useState([]);
   const navigate = useNavigate(); 
 
   const cardToDisplay = selectedCard || {
@@ -39,23 +37,6 @@ function DashboardPage({ selectedCard }) {
           Refer a Friend
         </button>
       </div>
-      {message && <p className="text-center text-green absolute inset-0 top-5">{message}</p>}
-      {sentEmails.length > 0 && (
-        <div className="text-white">
-          <h3 className="text-lg font-semibold text-light-blue">Invited users</h3>
-          <ul className="mt-2 flex flex-col gap-2">
-            {sentEmails.map(({ email, userName }, index) => (
-              <li key={index} className="flex p-2 px-5 bg-black w-[50%] rounded-lg">
-                <p className="min-w-[20px] text-description-color">{index + 1}.</p>
-                <div className="flex flex-col">
-                <p className="text-dark-blue">{userName}</p>
-                <p className="text-description-color">{email}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
       <div className="grid max-md:grid-cols-1 max-lg:grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 pb-10">
         <div className="bg-card-color flex flex-col justify-center items-start gap-3 max-md:text-nowrap max-md:w-[280px] md:w-[380px] border border-[#32474C] relative rounded-lg py-4 size-fit max-md:px-2 md:px-6 shadow-xl">
           <div className="flex w-full justify-between">
