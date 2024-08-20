@@ -155,6 +155,20 @@ export const cardsData = [
     Downloads: "1.5K",
   },
   {
+    logo: AnythingLLM,
+    title: "Anything LLM",
+    slug: "anything-llm",
+    description:
+      "A full-stack application that enables you to turn any resource into context that any LLM can use as references during chatting",
+    provider: "NexLayer",
+    category: "All",
+    tag:"true",
+    text: "ai-powered-document-analysis",
+    Marketplacecategory: "AI/ML",
+    templateID: "0006",
+    Downloads: "2K",
+  },
+  {
     logo: Node,
     title: "Node.js",
     slug: "nodejs",
@@ -183,19 +197,6 @@ export const cardsData = [
     category: "New",
     Marketplacecategory: "AI/ML",
     Downloads: "200",
-  },
-  {
-    logo: AnythingLLM,
-    title: "AnythingLLM",
-    slug: "anythingllm",
-    description:
-      "A multi-user ChatGPT for any LLMs and vector database with full privacy.",
-    provider: "NexLayer",
-    category: "All",
-    tag:"true",
-    text: "ai-powered-document-analysis",
-    Marketplacecategory: "AI/ML",
-    Downloads: "2K",
   },
   {
     logo: MongoDB,
