@@ -49,7 +49,7 @@ const BuildNavbar = () => {
       <div className="px-2 max-md:px-3 container mx-auto flex justify-between items-center py-[18.5px]">
         <a className="flex max-md:gap-[2px] md:gap-5" href="/">
           <img className="w-[29px] h-[28px]" src={Logo} alt="Logo" />
-          <p className="text-lg leading-[24px] text-white font-thin max-md:hidden">sasdeployer / {cardTitle} / production</p>
+          <p className="text-lg leading-[24px] text-white font-thin max-md:hidden">Template / {cardTitle} / production</p>
         </a>
         <div className="flex gap-6 items-center">
           <Link 

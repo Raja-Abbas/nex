@@ -63,7 +63,7 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
                 if (detail.value === "sasdeployer /ndejs:latest") {
                   return {
                     ...detail,
-                    value: `sasdeployer /${selectedCard.title.toLowerCase()}:latest`,
+                    value: `template /${selectedCard.title.toLowerCase()}`,
                   };
                 }
                 return detail;
