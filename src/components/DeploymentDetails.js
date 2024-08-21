@@ -56,15 +56,15 @@ const DeploymentDetails = ({
           </p>
         </div>
         <div className="pt-[15px] flex gap-x-14 items-center">
-          <div>
+          <div className="text-center">
             <label className="font-normal text-tiny text text-light-grey-color">
-              Feedback
+              Status
             </label>
             <p className="w-[53px] py-[1px] font-medium text-base text-center border rounded-full bg-dark-gray border-dark-blue text-dark-blue">
               {deploymentData.feedback}
             </p>
           </div>
-          <div>
+          <div className="text-center">
             <label className="font-normal text-tiny text-light-grey-color">
               Environment
             </label>
@@ -72,14 +72,6 @@ const DeploymentDetails = ({
               {deploymentData.environment}
             </p>
           </div>
-          {/* <div>
-            <label className="font-normal text-tiny text-light-grey-color">
-              Cluster
-            </label>
-            <p className="font-normal text-lg text-white">
-              {deploymentData.cluster}
-            </p>
-          </div> */}
         </div>
         <a
           href={`https://${namespace}.${cardToDisplay.slug}.alpha.nexlayer.ai`}

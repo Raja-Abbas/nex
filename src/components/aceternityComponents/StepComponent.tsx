@@ -248,14 +248,14 @@ const StepComponent: React.FC<{
               ))}
               {step.id === 5 && (
                 <div className="flex flex-row mt-[8px] max-md:gap-[10px] md:gap-[56px]">
-                  {step.details.some((detail) => detail.label === "Feedback") && (
+                  {step.details.some((detail) => detail.label === "Status") && (
                     <div className="mr-4">
-                      <p className="text-description-color text-tiny leading-[24px]">
-                        Feedback
+                      <p className="text-description-color text-center text-tiny leading-[24px]">
+                        Status
                       </p>
                       <p className="border mt-[1px] text-base leading-[24px] rounded-full text-center border-dark-blue bg-medium-grey-color text-dark-blue py-[1px] px-[14px]">
                         {
-                          step.details.find((detail) => detail.label === "Feedback")
+                          step.details.find((detail) => detail.label === "Status")
                             ?.value
                         }
                       </p>
@@ -265,7 +265,7 @@ const StepComponent: React.FC<{
                     (detail) => detail.label === "Environment"
                   ) && (
                     <div className="mr-4">
-                      <p className="text-description-color text-tiny leading-[24px]">
+                      <p className="text-description-color text-center text-tiny leading-[24px]">
                         Environment
                       </p>
                       <p className="text-white mt-[1px] leading-[24px] text-lg rounded-full py-[1px]">
