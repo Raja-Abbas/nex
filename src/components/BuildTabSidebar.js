@@ -7,6 +7,8 @@ import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
 import { PuffLoader } from 'react-spinners';
 import Highlighter from 'react-highlight-words';
+import { useCardTitle } from '../context/CardTitleContext';
+
 
 const colors = {
   dateInfo: "#7FB7D9",
@@ -14,15 +16,23 @@ const colors = {
   default: "#FFBDFF"
 };
 
+const getCurrentTime = () => {
+  const now = new Date();
+  const day = now.getDate().toString().padStart(2, '0');
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const year = now.getFullYear().toString().slice(-2);
+  return `${month}/${day}/${year}`;
+};
+
+
 export default function BuildTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Live Logs");
-  const [displayedData, setDisplayedData] = useState([]);
-  const [, setExistingLines] = useState(new Set());
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [activeSearchIndex, setActiveSearchIndex] = useState(0);
-
+  const { cardTitle } = useCardTitle(); 
+  const deploymentName = cardTitle;
   const logsData = useSelector((state) => state.deployment.logsData);
   const error = useSelector((state) => state.deployment.error);
   const loading = useSelector((state) => state.deployment.loading);
@@ -54,22 +64,14 @@ export default function BuildTabSidebar() {
   ];
 
   useEffect(() => {
-    if (logsData) {
-      const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
-      setDisplayedData(lines);
-      setExistingLines(new Set(lines));
-    }
-  }, [logsData]);
-
-  useEffect(() => {
     if (endOfLogRef.current) {
       endOfLogRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [displayedData]);
+  }, []);
 
   useEffect(() => {
     if (searchTerm) {
-      const results = displayedData
+      const results = logsData
         .map((line, index) => (line.toLowerCase().includes(searchTerm.toLowerCase()) ? index : -1))
         .filter(index => index !== -1);
       setSearchResults(results);
@@ -80,7 +82,7 @@ export default function BuildTabSidebar() {
     } else {
       setSearchResults([]);
     }
-  }, [searchTerm, displayedData]);
+  }, [searchTerm, logsData]);
 
   useEffect(() => {
     if (searchResults.length > 0) {
@@ -102,17 +104,6 @@ export default function BuildTabSidebar() {
     return <p className="p-10 text-white">Error: {error}</p>;
   }
 
-  const getLineColor = (line) => {
-    const dateRegex = /^\d{1,4}[\/\-]\d{1,2}[\/\-]\d{1,4}/;
-    if (dateRegex.test(line)) {
-      return colors.dateInfo;
-    } else if (line.startsWith("[+]")) {
-      return colors.plusInfo;
-    } else {
-      return colors.default;
-    }
-  };
-
   const handleSearchNavigation = (direction) => {
     if (searchResults.length === 0) return;
 
@@ -124,6 +115,11 @@ export default function BuildTabSidebar() {
     }
     setActiveSearchIndex(newIndex);
   };
+
+  const logMessages = [
+    `${getCurrentTime()} - Retrieving template ${deploymentName}...`,
+    `${getCurrentTime()} - Template retrieved`
+  ];
 
   return (
     <div className="max-w-[100%] max-h-[calc(100vh-462px)] max-lg:max-h-screen xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
@@ -196,19 +192,19 @@ export default function BuildTabSidebar() {
           </div>
         ) : (
           <pre className="text-white">
-            {displayedData.length > 0 ? (
-              displayedData.map((line, index) => (
+            {logMessages.length > 0 ? (
+              logMessages.map((message, index) => (
                 <div
                   key={index}
                   ref={searchResults.includes(index) && index === searchResults[activeSearchIndex] ? searchRef : null}
-                  className="flex gap-0 text-wrap py-1 text-[14px]"
-                  style={{ color: getLineColor(line) }}
+                  className="text-wrap py-1 text-[14px]"
+                  style={{ color: colors.default }}
                 >
                   <Highlighter
                     highlightClassName="bg-yellow-500"
                     searchWords={[searchTerm]}
                     autoEscape={true}
-                    textToHighlight={line}
+                    textToHighlight={message}
                   />
                 </div>
               ))
