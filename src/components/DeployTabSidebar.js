@@ -6,6 +6,7 @@ import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
 import { PuffLoader } from 'react-spinners';
+import Highlighter from 'react-highlight-words';
 
 const colors = {
   dateInfo: "#7FB7D9",
@@ -18,24 +19,30 @@ export default function DeployTabSidebar() {
   const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [displayedData, setDisplayedData] = useState([]);
   const [, setExistingLines] = useState(new Set());
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [activeSearchIndex, setActiveSearchIndex] = useState(0);
 
   const logsData = useSelector((state) => state.deployment.logsData);
   const error = useSelector((state) => state.deployment.error);
   const loading = useSelector((state) => state.deployment.loading);
 
   const endOfLogRef = useRef(null);
+  const searchRef = useRef(null);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false);
+  const handleOptionClick = (option, index) => {
+    if (index <= 1) {
+      setSelectedOption(option);
+      setIsOpen(false);
+    }
   };
 
   const options = [
-    "Live tail",
+    "Live Logs",
     "Last hour",
     "Last 4 hours",
     "Last 24 hours",
@@ -60,6 +67,37 @@ export default function DeployTabSidebar() {
     }
   }, [displayedData]);
 
+  useEffect(() => {
+    if (searchTerm) {
+      const results = displayedData
+        .map((line, index) => (line.toLowerCase().includes(searchTerm.toLowerCase()) ? index : -1))
+        .filter(index => index !== -1);
+      setSearchResults(results);
+      if (results.length > 0) {
+        setActiveSearchIndex(0);
+        scrollToActiveSearchResult();
+      }
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchTerm, displayedData]);
+
+  useEffect(() => {
+    if (searchResults.length > 0) {
+      scrollToActiveSearchResult();
+    }
+  }, [activeSearchIndex, searchResults]);
+
+  const scrollToActiveSearchResult = () => {
+    if (searchResults.length > 0 && searchRef.current) {
+      searchRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
+  };
+
   if (error) {
     return <p className="p-10 text-white">Error: {error}</p>;
   }
@@ -75,6 +113,18 @@ export default function DeployTabSidebar() {
     }
   };
 
+  const handleSearchNavigation = (direction) => {
+    if (searchResults.length === 0) return;
+
+    let newIndex = activeSearchIndex + direction;
+    if (newIndex < 0) {
+      newIndex = searchResults.length - 1;
+    } else if (newIndex >= searchResults.length) {
+      newIndex = 0;
+    }
+    setActiveSearchIndex(newIndex);
+  };
+
   return (
     <div className="max-w-[100%] max-h-[calc(100vh-462px)] max-lg:max-h-screen xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
       <div className="flex gap-2 items-center sticky top-[-20px] bg-medium-grey-color h-[3rem]">
@@ -82,6 +132,8 @@ export default function DeployTabSidebar() {
           className="w-full h-8 p-[10px] py-[6.5px] text-white font-normal text-tiny border-[2px] rounded-[7px] border-dark-gray bg-background"
           type="search"
           placeholder="Natural language search....."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <div className="relative max-[440px]:w-[270px] w-60 xl:w-56">
           <div
@@ -105,12 +157,10 @@ export default function DeployTabSidebar() {
               {options.map((option, index) => (
                 <div
                   key={index}
-                  className={`mt-[2px] p-2 flex justify-between items-center rounded-[7px] mx-[2px] cursor-pointer hover:bg-[#1a393d] ${
-                    selectedOption === option
-                      ? "bg-[#1a393d] rounded-[7px] mx-[2px]"
-                      : ""
-                  }`}
-                  onClick={() => handleOptionClick(option)}
+                  className={`mt-[2px] p-[4px] flex justify-between items-center rounded-[7px] mx-[2px] ${
+                    index > 1 ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-[#1a393d]"
+                  } ${selectedOption === option && "bg-[#1a393d] rounded-[7px] mx-[2px]"}`}
+                  onClick={() => handleOptionClick(option, index)}
                 >
                   <div className="flex gap-2">
                     <img
@@ -150,13 +200,16 @@ export default function DeployTabSidebar() {
               displayedData.map((line, index) => (
                 <div
                   key={index}
+                  ref={searchResults.includes(index) && index === searchResults[activeSearchIndex] ? searchRef : null}
                   className="flex gap-0 text-wrap py-1 text-[14px]"
                   style={{ color: getLineColor(line) }}
                 >
-                  <span className="min-w-[30px] text-light-gray mr-2">
-                    {`${index + 1}.`}
-                  </span>
-                  <span>{line}</span>
+                  <Highlighter
+                    highlightClassName="bg-yellow-500"
+                    searchWords={[searchTerm]}
+                    autoEscape={true}
+                    textToHighlight={line}
+                  />
                 </div>
               ))
             ) : (
