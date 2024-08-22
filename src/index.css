@@ -70,5 +70,45 @@ body, * {
     transform: rotate(360deg);
   }
 }
+.example-2 .inner {
+  margin: 1px 3px 1px 2px;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.example-2::before {
+  content: "";
+  display: block;
+  background: linear-gradient(
+    90deg,
+    #1eb8cd 0%,
+    #1eb8cd 50%,
+    #1eb8cd 100%
+  );
+  height: 200px;
+  width: 40px;
+  transform: translate(0);
+  position: absolute;
+  animation: rotate 4s linear forwards infinite;
+  filter: blur(8px);
+  z-index: 0;
+  top: 50%;
+  left:50%;
+  transform-origin: top;
+}
+.card .inner {
+  background: #222;
+  color: #fff;
+}
 
-
+.cards {
+  max-width: 800px;
+}

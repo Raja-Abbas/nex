@@ -2,11 +2,10 @@ import React, { useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import GithubDeployment from "../components/GithubDeployment";
 import DeploymentDetailsLayout from "../components/layouts/DeploymentDetailsLayout";
-import ChatBotIcon from "../components/ChatBotIcon";
 
 export default function BuildPage() {
   const [showDeploymentDetails, setShowDeploymentDetails] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [, setCurrentStep] = useState(1);
   const location = useLocation();
   const { selectedCard } = location.state || {};
 
@@ -26,7 +25,6 @@ export default function BuildPage() {
           : "max-lg:grid-cols-1 max-lg:grid-rows-2 h-auto"
       }`}
     >
-      {currentStep === 1 && !showDeploymentDetails && <ChatBotIcon />}
       <div
         className={`${
           showDeploymentDetails
@@ -41,7 +39,7 @@ export default function BuildPage() {
         />
       </div>
       {showDeploymentDetails && (
-        <div className="shadow-2xl animation-toastSlideIn overflow-hidden bg-medium-grey-color max-lg:block max-lg:h-[150vh] lg:h-auto lg:fixed lg:w-1/2 lg:right-0 lg:z-[0]">
+        <div className="shadow-2xl animation-toastSlideIn overflow-hidden bg-medium-grey-color max-lg:block max-lg:h-[150vh] lg:h-auto lg:fixed lg:w-1/2 lg:right-0 z-[100]">
           <DeploymentDetailsLayout
             handleMenuClick={() => {}}
             hideLayout={() => setShowDeploymentDetails(false)}
