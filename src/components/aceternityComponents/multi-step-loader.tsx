@@ -6,6 +6,7 @@ import ModalAlert from "./ModalAlert";
 import StepComponent, { Step } from "./StepComponent";
 import { useSelector } from "react-redux";
 import NodeJs from "../../assets/svgs/node.svg";
+import ChatBotIcon from '../ChatBotIcon'; // Import the updated ChatBotIcon component
 
 interface MultiStepLoaderProps {
   steps: Step[];
@@ -14,14 +15,12 @@ interface MultiStepLoaderProps {
   selectedCard?: any;
 }
 
-// Define the state shape here
 interface DeploymentState {
   namespace: string;
 }
 
 interface RootState {
   deployment: DeploymentState;
-  // Add other slices if necessary
 }
 
 export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
@@ -37,7 +36,10 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   const [hasModalAlertShown, setHasModalAlertShown] = useState<boolean>(false);
   const [step4EndTime, setStep4EndTime] = useState<number | null>(null);
   const [modalAlertTime, setModalAlertTime] = useState<string>("");
-  const { namespace } = useSelector((state: RootState) => state.deployment); // Use the correct state type
+  const { namespace } = useSelector((state: RootState) => state.deployment);
+
+  // Determine if step 5 is visible
+  const isStep5Visible = visibleSteps.some(step => step.id === 5);
 
   useEffect(() => {
     if (loading) {
@@ -106,7 +108,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   const defaultCard = {
     logo: NodeJs,
     title: "Node.js",
-    slug: "default-slug",  // Add default slug
+    slug: "default-slug",  
   };
   const cardToDisplay = selectedCard || defaultCard;
   const url = `https://${namespace}.${cardToDisplay.slug}.alpha.nexlayer.ai`;
@@ -179,6 +181,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
       ) : (
         <Waitlist isOpen={showModal} onClose={closeSelectedCardModal} />
       )}
+      <ChatBotIcon isStep5Visible={isStep5Visible} />
     </div>
   );
 };
