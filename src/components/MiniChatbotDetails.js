@@ -7,9 +7,12 @@ import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import EditIcon from "../assets/svgs/editIcon.svg";
 import CrossIcon from "../assets/svgs/crossIcon.svg";
 import CommentIcon from "../assets/svgs/commentIcon.svg";
+import Avatar from "../assets/images/avatar.png";
 import PaperClipIcon from "../assets/svgs/paperclip.svg";
+import ThinkingIcon from "../assets/svgs/thinking";
 import Trash from "../assets/svgs/trash.svg";
-import { addMessage, resetMessages, toggleTyping, setCategory, deleteCategory } from "../redux/chatActions"; // Adjust the path as necessary
+import { addMessage, resetMessages, toggleTyping, setCategory, deleteCategory, fetchMessages } from "../redux/chatActions";
+import { useCardTitle } from '../context/CardTitleContext';
 
 const getTimeCategory = (timestamp) => {
   const now = new Date();
@@ -28,12 +31,12 @@ const MiniChatbotDetails = ({ onClose }) => {
   const isTyping = useSelector((state) => state.chat.isTyping);
   const selectedCategory = useSelector((state) => state.chat.selectedCategory);
   const categories = useSelector((state) => state.chat.categories);
-
+  const namespace = useSelector((state) => state.deployment.namespace);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
   const [showList, setShowList] = useState(false);
-
+  const { cardTitle, setCardTitle } = useCardTitle();
   const messagesEndRef = useRef(null);
 
   const formatTime = (date) => {
@@ -71,19 +74,13 @@ const MiniChatbotDetails = ({ onClose }) => {
       dispatch(addMessage(newMessage));
       setInput("");
       dispatch(toggleTyping(true));
-
+      dispatch(fetchMessages(input, namespace, cardTitle));
       setTimeout(() => {
-        dispatch(
-          addMessage({
-            sender: "Liz",
-            text: "I'm Liz, your AI assistant. I'm here to assist you with any queries you have.",
-            timestamp: new Date().toISOString(),
-          })
-        );
         dispatch(toggleTyping(false));
-      }, 2000);
+      }, 1000);
     }
   };
+
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -213,35 +210,49 @@ const MiniChatbotDetails = ({ onClose }) => {
           </div>
           <div className="text-white text-base text-center mb-[10px]"></div>
           <div className="p-2">
-            <div className="flex flex-col gap-2 rounded-[7px] max-h-[300px] w-max overflow-y-auto">
+          <div className="flex flex-col gap-2 justify-start text-base rounded-[7px] max-h-[300px] max-w-max overflow-y-auto">
               {filteredMessages.map((message, index) => (
-                <div key={index} className="flex gap-2">
-                  <div className="lg:flex">
+                <div
+                  key={index}
+                  className={`flex ${message.sender === "User" ? "justify-end" : "justify-start"} pr-8`}
+                >
+                  <div
+                    className={`flex gap-2 max-w-full p-2 rounded-lg ${
+                      message.sender === "User"
+                        ? "bg-[#333636] text-white items-center"
+                        : "text-white flex"
+                    }`}
+                  >
                     <img
                       src={StarChatbotImage}
                       alt="StarChatbotImage"
-                      className="w-[18px] h-[18px] mt-2 mr-2"
+                      className={`${message.sender === "User" ? "hidden" : "w-[18px] h-[18px]"}`}
+                      
                     />
+                     <img
+                      src={Avatar}
+                      alt="Avatar"
+                      className={`${message.sender === "User" ? "w-[30px] h-[30px] mr-[4.5px]" : "hidden"}`}
+                      
+                    />
+                    <p className="text-base">{message.text}</p>
                   </div>
-                  <p className="max-md:w-[300px] md:w-[410px] pr-11 text-base text-white">
-                    {message.text}
-                  </p>
                 </div>
               ))}
+              <div ref={messagesEndRef} />
               {isTyping && (
-                <div className="flex gap-2">
-                  <div className="flex">
+                <div className="flex gap-2 pl-1 mt-1">
+                  <div className="flex gap-2">
                     <img
-                      src={WhiteStarChatbotImage}
+                      src={StarChatbotImage}
                       alt="StarChatbotImage"
-                      className="w-[16px] h-[16px] mt-1"
+                      className="w-[18px] h-[18px] mt-1"
                     />
-                    <p className="text-light-blue">Liz:</p>
+                    <p className="pr-0 text-base text-white">Thinking</p>
                   </div>
-                  <p className="rounded-full bg-light-blue h-4 w-4 animate-bounce text-base text-white"></p>
+                  <ThinkingIcon/>
                 </div>
               )}
-              <div ref={messagesEndRef} />
             </div>
             <div className="mt-[30px] overflow-hidden border-2 border-[#333636] flex justify-between items-center bg-[#1b1c1c] rounded-[7px]">
               <input

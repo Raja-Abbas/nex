@@ -96,7 +96,7 @@ export const cardsData = [
   {
     logo: CalImage,
     title: "Cal.com",
-    slug: "cal.com",
+    slug: "cal",
     description: "The open-source Calendly successor",
     provider: "NexLayer",
     category: "Popular",

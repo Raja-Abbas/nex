@@ -37,7 +37,7 @@ export const fetchDeploymentData = createAsyncThunk(
       await delay(3000);
 
       dispatch(fetchLogsData({ namespace: data.namespace, templateID }));
-
+      dispatch(setNamespace(data.namespace));
       return data;
     } catch (error) {
       console.error("Error in fetchDeploymentData:", error);
@@ -121,6 +121,9 @@ const deploymentSlice = createSlice({
         state.logsData.push(action.payload.chunk);
       }
     },
+    setNamespace(state, action) {
+      state.namespace = action.payload;
+    },
     setFetching: (state, action) => {
       state.isFetching = action.payload;
     },
@@ -162,6 +165,6 @@ const deploymentSlice = createSlice({
   },
 });
 
-export const { resetDeploymentState, updateLogs, setFetching } = deploymentSlice.actions;
+export const { resetDeploymentState, updateLogs, setFetching, setNamespace } = deploymentSlice.actions;
 
 export default deploymentSlice.reducer;

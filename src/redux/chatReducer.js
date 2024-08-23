@@ -1,3 +1,4 @@
+// chatReducer.js
 import { ADD_MESSAGE, RESET_MESSAGES, TOGGLE_TYPING, SET_CATEGORY, DELETE_CATEGORY } from './chatActions';
 
 const initialState = {
@@ -44,32 +45,32 @@ const initialState = {
   ],
 };
 
-export const chatReducer = (state = initialState, action) => {
+const chatReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_MESSAGE:
-      return {
-        ...state,
-        messages: [...state.messages, action.payload],
-      };
+   return {
+     ...state,
+     messages: [...state.messages, action.payload]
+   };
     case RESET_MESSAGES:
       return {
         ...state,
-        messages: [],
+        messages: []
       };
     case TOGGLE_TYPING:
       return {
         ...state,
-        isTyping: action.payload,
+        isTyping: action.payload
       };
     case SET_CATEGORY:
       return {
         ...state,
-        selectedCategory: action.payload,
+        selectedCategory: action.payload
       };
     case DELETE_CATEGORY:
       return {
         ...state,
-        categories: state.categories.filter(category => category.id !== action.payload),
+        categories: state.categories.filter(category => category.id !== action.payload)
       };
     default:
       return state;
