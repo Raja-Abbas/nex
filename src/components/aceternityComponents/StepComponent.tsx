@@ -57,9 +57,17 @@ const StepComponent: React.FC<{
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [showInProgress, setShowInProgress] = useState(false);
   const [buildTimer, setBuildTimer] = useState<number>(10);
-
+  const [showDetails, setShowDetails] = useState(false);
  
+  useEffect(() => {
+    if (step.details) {
+      const detailsTimeout = setTimeout(() => {
+        setShowDetails(true);
+      }, 5000);
 
+      return () => clearTimeout(detailsTimeout);
+    }
+  }, [step.details]);
   useEffect(() => {
     if (index !== 0 && !disableLoading) {
       const timeout = setTimeout(() => {
@@ -86,7 +94,7 @@ const StepComponent: React.FC<{
   };
 
   useEffect(() => {
-    if ((step.id === 2 || step.id === 4) && buildTimer > 0) {
+    if ((step.id === 2 || step.id === 3) && buildTimer > 0) {
       const countdown = setTimeout(() => {
         setBuildTimer((prev) => prev - 1);
       }, 1000);
@@ -129,8 +137,8 @@ const StepComponent: React.FC<{
           }`}
         >
           <p
-            className={`font-medium leading-[150%] ${
-              step.id === 5
+            className={`font-medium max-w-max type leading-[150%] ${
+              step.id === 4
                 ? "text-white text-2xl"
                 : "text-description-color text-xl"
             }`}
@@ -138,17 +146,17 @@ const StepComponent: React.FC<{
             {step.heading}
           </p>
           {step.subheading && (
-            <p className="mt-1 text-base text-description-color font-normal leading-[150%]">
+            <p className="mt-1 text-base text-description-color max-w-max type2 font-normal leading-[150%]">
               {step.subheading}
             </p>
           )}
           {step.description && (
-            <p className="mt-1 text-base text-white font-[450]">
+            <p className="mt-1 text-base max-w-max type2 text-white font-[450]">
               Status:{" "}
               <span className="text-green ml-[8px]">
                 {step.id === 2 ? (
                   buildTimer > 0 ? `Building (0:0${10 - buildTimer})` : "Build Successful"
-                ) : step.id === 4 ? (
+                ) : step.id === 3 ? (
                   buildTimer > 0 ? "Deployment in Progress" : "Deployment Successful"
                 ) : (
                   step.description
@@ -157,27 +165,14 @@ const StepComponent: React.FC<{
             </p>
           )}
           {step.builder && (
-            <p className="mt-[20px] text-base text-white font-[450] leading-[150%]">
+            <p className="mt-[20px] max-w-max type3 text-base text-white font-[450] leading-[150%]">
               {step.builder}
             </p>
           )}
-          {step.buttons && (
-            <div className="flex items-center gap-2 mt-2">
-              {step.buttons.map((button: any, index) => (
-                <button
-                  key={index}
-                  className="flex gap-2 items-center justify-center border rounded-lg border-dark-blue bg-medium-grey-color text-dark-blue py-1 px-3 cursor-pointer hover:shadow-2xl hover:border-opacity-50 transition-all"
-                >
-                  {button.image && <img src={button.image} alt="Button" />}
-                  <p className="text-tiny">{button.label}</p>
-                </button>
-              ))}
-            </div>
-          )}
-          {step.details && (
+          {showDetails && step.details && (
             <div
-              className={`max-md:w-auto ${
-                step.id === 5 ? "flex flex-col" : "grid grid-cols-2 grid-rows-2"
+              className={`max-md:w-auto fade-in ${
+                step.id === 4 ? "flex flex-col" : "grid grid-cols-2 grid-rows-2"
               } sm:w-[600px] lg:w-[500px] xl:w-[600px] md:min-h-[77px] gap-y-[8px] border border-[#363838] hover:shadow-xl cardDetails cursor-pointer ${disableLoading ? "sm:w-[100vw-0px] lg:w-[700px] max-sm:w-[100vw-50px] 2xl:w-[900px]":"2xl:w-[700px]"} bg-medium-grey-color bg-opacity/50 max-md:ml-[-50px] md:ml-[-50px] z-[1000] mt-[10px] md:py-[15px] md:px-[50px] max-md:p-3 max-md:py-8 rounded-lg relative`}
               onClick={toggleBuildPageDetails}
             >
@@ -190,7 +185,7 @@ const StepComponent: React.FC<{
                 <div
                   key={index}
                   className={`text-description-color flex max-md:gap-[4px] md:gap-[12px] items-center mb-0 ${
-                    step.id === 5 && detail.label ? "hidden" : ""
+                    step.id === 4 && detail.label ? "hidden" : ""
                   }`}
                 >
                   {detail.image && (
@@ -198,7 +193,7 @@ const StepComponent: React.FC<{
                       src={detail.image}
                       alt={detail.label}
                       className={`ml-[0px] ${
-                        step.id === 5 ? "w-auto h-10" : "w-5 h-5"
+                        step.id === 4 ? "w-auto h-10" : "w-5 h-5"
                       }`}
                     />
                   )}
@@ -218,7 +213,7 @@ const StepComponent: React.FC<{
                       <span className="text-description-color max-md:text-tiny md:text-base font-normal">
                         {step.id === 2 && buildTimer > 0
                           ? "Build in Progress"
-                          : step.id === 4 ? (
+                          : step.id === 3 ? (
                               showInProgress ? "Deployment in Progress" : formatTimeAgo(timeElapsed)
                             ) : formatTimeAgo(timeElapsed)}
                       </span>
@@ -227,7 +222,7 @@ const StepComponent: React.FC<{
                    {detail.label === "Deploying" && (
                     <>
                     <div className="text-white max-md:text-tiny md:text-base font-normal">
-                      { step.id === 4 ? (
+                      { step.id === 3 ? (
                         buildTimer > 0 ? `(0:0${10 - buildTimer})` : "Successful"
                       ) : (
                         step.description
@@ -246,7 +241,7 @@ const StepComponent: React.FC<{
                   </span>
                 </div>
               ))}
-              {step.id === 5 && (
+              {step.id === 4 && (
                 <div className="flex flex-row mt-[8px] max-md:gap-[10px] md:gap-[56px]">
                   {step.details.some((detail) => detail.label === "Status") && (
                     <div className="mr-4">
@@ -304,14 +299,14 @@ const StepComponent: React.FC<{
                       src={step.details.find((detail) => detail.label === "Link")?.image}
                       alt={step.details.find((detail) => detail.label === "Link")?.label}
                       className={`mr-2 ${
-                        step.id === 5 ? "w-4 h-4" : "w-4 h-4"
+                        step.id === 4 ? "w-4 h-4" : "w-4 h-4"
                       }`}
                     />
                   )}
                    {url && (
-                    <p className="text-dark-blue text-base">
+                    <div className="text-dark-blue text-base">
                       <p className="text-blue-400">{url}</p>
-                    </p>
+                    </div>
                   )}
                 </a>
               )}
@@ -322,7 +317,7 @@ const StepComponent: React.FC<{
                       src={step.details.find((detail) => detail.label === "Docker")?.image}
                       alt={step.details.find((detail) => detail.label === "Docker")?.label}
                       className={`mr-2 ${
-                        step.id === 5 ? "w-4 h-4" : "w-4 h-4"
+                        step.id === 4 ? "w-4 h-4" : "w-4 h-4"
                       }`}
                     />
                   )}

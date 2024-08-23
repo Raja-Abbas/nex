@@ -112,3 +112,56 @@ body, * {
 .cards {
   max-width: 800px;
 }
+
+.type{
+  font-size: 2.5rem;
+  overflow: hidden;
+  border-right: .15em solid transparent;
+  white-space: nowrap; 
+  width: 0;
+  animation: 
+    typing 1s steps(25, end) forwards;
+}
+.type2{
+  font-size: 2.5rem; 
+  overflow: hidden;
+  border-right: .15em solid transparent;
+  white-space: nowrap; 
+  width: 0;
+  animation: 
+    typing 1s steps(25, end) forwards;
+  animation-delay: 1.5s;
+}
+.type3{
+  font-size: 2.5rem; 
+  overflow: hidden;
+  border-right: .15em solid transparent; 
+  white-space: nowrap; 
+  width: 0;
+  animation: 
+    typing 1s steps(25, end) forwards;
+  animation-delay: 2.5s;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+@keyframes blink {
+  from { border-color: transparent }
+  to { border-color: transparent; }
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}

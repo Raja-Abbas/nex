@@ -40,7 +40,7 @@ interface ModalAlertProps {
   
     return (
       <div
-        className={`fixed max-md:top-[84px] md:top-[84px] right-1 z-[100] inset-0 flex h-fit justify-end ${showModal? "animation-toastSlideIn" : "hidden"
+        className={`fixed max-md:top-[84px] md:top-[84px] right-1 z-[1000] inset-0 flex h-fit justify-end ${showModal? "animation-toastSlideIn" : "hidden"
           }`}
       >
         <div className="bg-card-color flex items-start gap-[10px] w-[346px] border border-dark-blue border-opacity-50 relative rounded-[7px] px-[15px] pt-[10px] pb-[10px] shadow-xl">

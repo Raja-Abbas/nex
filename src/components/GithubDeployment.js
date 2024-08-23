@@ -56,7 +56,7 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
                 return detail;
               }),
             };
-          } else if (step.id === 4) {
+          } else if (step.id === 3) {
             return {
               ...step,
               details: step.details.map((detail) => {
@@ -69,7 +69,7 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
                 return detail;
               }),
             };
-          } else if (step.id === 5) {
+          } else if (step.id === 4) {
             return {
               ...step,
               details: step.details.map((detail) => {
@@ -97,8 +97,6 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
 
   return (
     <div className={`w-full lg:w-[450px] xl:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}>
-      <p className="text-white mb-2">Name: {namespace || "Loading..."}</p>
-      <p className="text-white mb-10">Message: {message || "Loading..."}</p>
       {namespace && message && (
         <MultiStepLoader
           steps={updatedSteps}

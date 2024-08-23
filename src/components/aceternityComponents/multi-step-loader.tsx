@@ -38,8 +38,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   const [modalAlertTime, setModalAlertTime] = useState<string>("");
   const { namespace } = useSelector((state: RootState) => state.deployment);
 
-  // Determine if step 5 is visible
-  const isStep5Visible = visibleSteps.some(step => step.id === 5);
+  const isStep5Visible = visibleSteps.some(step => step.id === 4);
 
   useEffect(() => {
     if (loading) {
@@ -59,16 +58,16 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
             return prevSteps;
           });
 
-          const stepDuration = (steps[index].id === 2 || steps[index].id === 4) ? 10000 : steps[index].duration || 2500;
+          const stepDuration = (steps[index].id === 2 || steps[index].id === 3) ? 10000 : steps[index].duration || 2500;
           setTimeout(() => {
-            if (steps[index].id === 4) {
+            if (steps[index].id === 3) {
               setStep4EndTime(Date.now());
             }
             index++;
             showNextStep();
           }, stepDuration);
         } else {
-          setTimeout(() => setShowModal(true), 2000);
+          setTimeout(() => setShowModal(true), 8000);
         }
       };
 
@@ -87,7 +86,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
         }
         setShowModalAlert(true);
         setHasModalAlertShown(true);
-      }, 2000);
+      }, 5000);
     }
   }, [visibleSteps, steps.length, hasModalAlertShown, step4EndTime]);
 

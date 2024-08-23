@@ -2,8 +2,6 @@ import Node from "../assets/svgs/node.svg";
 import AnythingLLM from "../assets/svgs/anythingLLM.svg";
 import Strapi from "../assets/svgs/strapi.svg";
 import BlueCube from "../assets/svgs/blueCube.svg";
-import BlueGithubLogoCard from "../assets/svgs/blueGithubLogo.svg";
-import NodejsTemplate from "../assets/svgs/nodejs2Template.svg";
 import Nodejs from "../assets/svgs/nodejsTemplate.svg";
 import ProjectXBox from "../assets/svgs/projectXBox.svg";
 import GithubLogoCard from "../assets/svgs/githubLogoCard.svg";
@@ -21,16 +19,8 @@ export const steps = [
     id: 1,
     type: "step",
     heading: "Source",
-    subheading: "Connected your service to your Github repo",
+    subheading: "Connected to your service",
     image: "SourceLoadingState",
-    buttons: [
-      {
-        label: "Repo Connected",
-        action: "repoConnected",
-        image: BlueGithubLogoCard,
-      },
-      { label: "Connect Image", action: "connectImage", image: NodejsTemplate },
-    ],
   },
   {
     id: 2,
@@ -46,15 +36,15 @@ export const steps = [
       { label: "", value: "Nexlayer Builder", image: ProjectXBox },
     ],
   },
+  // {
+  //   id: 3,
+  //   type: "step",
+  //   heading: "Package",
+  //   description: "Image created and pushed successfully",
+  //   image: "PackageLoadingState",
+  // },
   {
     id: 3,
-    type: "step",
-    heading: "Package",
-    description: "Image created and pushed successfully",
-    image: "PackageLoadingState",
-  },
-  {
-    id: 4,
     type: "step",
     heading: "Deploy",
     description: "Deployment successful",
@@ -67,7 +57,7 @@ export const steps = [
     ],
   },
   {
-    id: 5,
+    id: 4,
     type: "final",
     heading: "Congratulations! Your app is now live!🚀",
     description: "",

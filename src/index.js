@@ -11,11 +11,13 @@ import { Provider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from "./redux/store";
 
+const Loading = () => <div>Loading...</div>;
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
+    <PersistGate loading={<Loading />} persistor={persistor}>
       <CreditProvider>
         <CardTitleProvider>
           <DeploymentProvider>
