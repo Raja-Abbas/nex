@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import BuildPage from "./BuildPage";
 import HomePage from "./HomePage";
@@ -10,7 +10,11 @@ import DashboardPage from "./DashboardPage";
 import DynamicPage from "./Details/[...slug]";
 import MarketPlace from "./MarketPlace";
 import Refer from "./dashboard/refer";
+import { initializeTagManager } from "../gtm/gtm";
 function App() {
+  useEffect(() => {
+    initializeTagManager();
+  }, []);
   const location = useLocation();
   const isDynamicPage = location.pathname.startsWith("/details/");
   const isMarketPlace = location.pathname === "/marketplace";
