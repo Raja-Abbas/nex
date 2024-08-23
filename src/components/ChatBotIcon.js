@@ -17,7 +17,7 @@ export default function ChatBotIcon({ isStep5Visible }) {
   }, [isStep5Visible]);
 
   return (
-    <div className="absolute bottom-1 right-1 z-[1000]">
+    <div className="absolute bottom-1 right-1 z-[1]">
       {!isChatBotVisible && !isStep5Visible && (
         <div className="relative bg-medium-grey-color text-white mr-4 max-w-[230px] text-center border-2 border-[#333636] rounded-full text-tiny overflow-hidden card example-2">
           <div className="inner py-4 px-2 rounded-full">
