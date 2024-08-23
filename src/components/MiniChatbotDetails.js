@@ -77,7 +77,7 @@ const MiniChatbotDetails = ({ onClose }) => {
       dispatch(fetchMessages(input, namespace, cardTitle));
       setTimeout(() => {
         dispatch(toggleTyping(false));
-      }, 1000);
+      }, 1500);
     }
   };
 
@@ -217,7 +217,7 @@ const MiniChatbotDetails = ({ onClose }) => {
                   className={`flex ${message.sender === "User" ? "justify-end" : "justify-start"} pr-8`}
                 >
                   <div
-                    className={`flex gap-2 max-w-full p-2 rounded-lg ${
+                    className={`flex gap-2 max-w-full p-2 rounded-[7px] ${
                       message.sender === "User"
                         ? "bg-[#333636] text-white items-center"
                         : "text-white flex"
