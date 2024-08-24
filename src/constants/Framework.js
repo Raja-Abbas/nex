@@ -11,7 +11,7 @@ import TickCircle from "../assets/svgs/tick-circle.svg";
 import KdChat from "../assets/images/kd-chat-icon-Photoroom.png";
 import SaleorCommerce from "../assets/images/saleorCommerce.png";
 import LagoImage from "../assets/images/lagoImage.png";
-import CalImage from "../assets/images/calImage.png";
+import CalImage from "../assets/images/cal.png";
 import MattermostImage from "../assets/images/mattermost.png";
 
 export const steps = [
