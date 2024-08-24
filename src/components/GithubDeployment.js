@@ -89,6 +89,12 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
               }),
             };
           }
+          else if (step.id === 1 && step.subtextvalue === "Nodejs") {
+            step.subtextvalue = selectedCard.title;
+          }
+          else if (step.id === 1 && step.namespacetextvalue === "sharp-swan") {
+            step.namespacetextvalue = namespace;
+          }
         }
         return step;
       })

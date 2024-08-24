@@ -20,6 +20,10 @@ export const steps = [
     type: "step",
     heading: "Source",
     subheading: "Connected to your service",
+    subtext: "Template Selected:",
+    subtextvalue: "Nodejs",
+    namepacetext: "Created namespace:",
+    namespacetextvalue: "sharp-swan",
     image: "SourceLoadingState",
   },
   {

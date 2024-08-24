@@ -37,6 +37,10 @@ export interface Step {
   heading: string;
   subheading?: string;
   builder?: string;
+  subtext?:string;
+  subtextvalue?:string;
+  namepacetext?: string;
+  namespacetextvalue?: string;
   description?: string;
   image: ImageKey;
   text: string;
@@ -145,9 +149,16 @@ const StepComponent: React.FC<{
           >
             {step.heading}
           </p>
-          {step.subheading && (
-            <p className="mt-1 text-base text-description-color max-w-max type2 font-normal leading-[150%]">
-              {step.subheading}
+           {step.subtext && (
+            <p className="mt-1 flex text-base text-description-color max-w-max type2 font-normal leading-[150%]">
+              {step.subtext}
+              <p className="ml-2 text-white">{step.subtextvalue}</p>
+            </p>
+          )}
+           {step.namepacetext && (
+            <p className="mt-1 flex text-base text-description-color max-w-max type2 font-normal leading-[150%]">
+              {step.namepacetext}
+              <p className="ml-2 text-white">{step.namespacetextvalue}</p>
             </p>
           )}
           {step.description && (
