@@ -111,7 +111,6 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   };
   const cardToDisplay = selectedCard || defaultCard;
   const url = `https://${namespace}.${cardToDisplay.slug}.alpha.nexlayer.ai`;
-
   return (
     <div className="max-lg:ml-7">
       {isAlertOpen && (
@@ -133,6 +132,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
               index={index}
               toggleBuildPageDetails={toggleBuildPageDetails}
               url={url} 
+              namespaceStepper={namespace}
             />
           </div>
         </div>

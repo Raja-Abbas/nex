@@ -56,7 +56,8 @@ const StepComponent: React.FC<{
   toggleBuildPageDetails: () => void;
   disableLoading?: boolean;
   url?: string; 
-}> = ({ step, index, toggleBuildPageDetails, disableLoading = false, url }) => {
+  namespaceStepper?: string;
+}> = ({ step, index, toggleBuildPageDetails, disableLoading = false, url , namespaceStepper }) => {
   const [isLoading, setIsLoading] = useState(!disableLoading);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [showInProgress, setShowInProgress] = useState(false);
@@ -156,9 +157,9 @@ const StepComponent: React.FC<{
             </p>
           )}
            {step.namepacetext && (
-            <p className="mt-1 flex text-base text-description-color max-w-max type2 font-normal leading-[150%]">
+            <p className="mt-1 flex text-base text-description-color max-w-max type3 font-normal leading-[150%]">
               {step.namepacetext}
-              <p className="ml-2 text-white">{step.namespacetextvalue}</p>
+              <p className="ml-2 text-white">{namespaceStepper}</p>
             </p>
           )}
           {step.description && (

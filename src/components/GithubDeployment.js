@@ -1,46 +1,22 @@
-import React, { useMemo, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useMemo, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import { MultiStepLoader } from "./aceternityComponents/multi-step-loader";
 import { steps } from "../constants/Framework";
-import { fetchDeploymentData, fetchLogsData } from "../redux/deploymentSlice";
 
 const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
-  const dispatch = useDispatch();
-  const { namespace, message, isLogsFetched } = useSelector((state) => state.deployment);
-  const hasTriggered = useRef(false);
-
-  useEffect(() => {
-    const hasFetchedData = sessionStorage.getItem('hasFetchedDeploymentData');
-
-    if (selectedCard && !hasFetchedData && !hasTriggered.current) {
-      dispatch(fetchDeploymentData())
-        .unwrap()
-        .then((data) => {
-          if (data.namespace && !isLogsFetched[data.namespace]) {
-            dispatch(fetchLogsData({ namespace: data.namespace }));
-          }
-        })
-        .catch((error) => {
-          console.error("Failed to fetch deployment data:", error);
-        });
-      sessionStorage.setItem('hasFetchedDeploymentData', 'true');
-      hasTriggered.current = true;
-    }
-  }, [selectedCard, dispatch, isLogsFetched]);
+  const { message } = useSelector((state) => state.deployment);
+  const { namespace } = useSelector((state) => state.deployment);
 
   useEffect(() => {
     console.log("Namespace:", namespace);
     console.log("Message:", message);
   }, [namespace, message]);
-
   const updatedSteps = useMemo(() => {
     const processedStepIds = new Set();
-
     return steps
       .map((step) => {
         if (selectedCard && !processedStepIds.has(step.id)) {
           processedStepIds.add(step.id);
-
           if (step.id === 2) {
             return {
               ...step,
@@ -89,11 +65,8 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
               }),
             };
           }
-          else if (step.id === 1 && step.subtextvalue === "Nodejs") {
+          else if (step.subtextvalue === "Nodejs") {
             step.subtextvalue = selectedCard.title;
-          }
-          else if (step.id === 1 && step.namespacetextvalue === "sharp-swan") {
-            step.namespacetextvalue = namespace;
           }
         }
         return step;
