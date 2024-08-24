@@ -11,7 +11,7 @@ const Modal = ({ isOpen, onClose, children }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-opacity-75 bg-[#070707] flex justify-center md:items-center z-[1000]"
+      className="fixed inset-0 bg-opacity-75 bg-[#070707] flex justify-center md:items-center z-[10000]"
       onClick={handleOverlayClick}
     >
       <div className="md:bg-background max-md:mx-6 max-md:w-full max-md:h-fit max-md:my-10 text-black rounded-[10px] relative z-50">

@@ -112,7 +112,7 @@ const MiniChatbotDetails = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed max-md:bottom-[125px] md:bottom-[105px] lg:right-10 right-2 max-md:w-[340px] md:w-[483px] pt-[18px] bg-background border-2 border-[#333636] p-4 rounded-lg shadow-lg z-[100]">
+    <div className="fixed max-md:bottom-[125px] md:bottom-[105px] lg:right-10 right-2 max-md:w-[340px] md:w-[483px] pt-[18px] bg-background border-2 border-[#333636] p-4 rounded-lg shadow-lg z-[10000]">
       <div className="flex justify-between items-center mb-[30px]">
         <div className="flex gap-2 cursor-pointer" onClick={handleToggle}>
           <img src={WhiteStarChatbotImage} alt="WhiteStarChatbot" />

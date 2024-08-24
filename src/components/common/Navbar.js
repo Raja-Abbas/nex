@@ -20,7 +20,7 @@ const Navbar = () => {
   }, [location.pathname]);
 
   return (
-    <div className="bg-background z-[100]">
+    <div className="bg-background z-[1000]">
       {navbarContent}
     </div>
   );

@@ -6,7 +6,7 @@ import ModalAlert from "./ModalAlert";
 import StepComponent, { Step } from "./StepComponent";
 import { useSelector } from "react-redux";
 import NodeJs from "../../assets/svgs/node.svg";
-import ChatBotIcon from '../ChatBotIcon'; // Import the updated ChatBotIcon component
+import ChatBotIcon from '../ChatBotIcon';
 
 interface MultiStepLoaderProps {
   steps: Step[];
