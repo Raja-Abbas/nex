@@ -81,7 +81,7 @@ const DetailsPage = () => {
         text: "white",
       },
       { label: "", value: "10 seconds ago" },
-      { label: "", value: "ProjextX Builder", image: ProjectXBox },
+      { label: "", value: "Nexlayer Builder", image: ProjectXBox },
     ],
   };
 
@@ -108,9 +108,13 @@ const DetailsPage = () => {
           <GlowingStarsBackgroundCard>
             <div className="flex flex-col justify-center items-center">
               <GlowingStarsDescription>
-                <div
-                  className={`z-10 absolute left-[15px] top-0 bottom-20 border border-custom-color animate-fill transition-all duration-[500ms]`}
-                ></div>
+                <>
+                  {isVisible && (
+                    <div
+                      className={`z-10 absolute left-[15px] top-0 bottom-20 border border-custom-color animate-fill transition-all duration-[500ms]`}
+                    ></div>
+                  )}
+                </>
                 <StepComponent
                   step={step4}
                   index={1}
