@@ -5,6 +5,7 @@ import { deploymentData } from "../constants/Framework";
 import { useCardTitle } from "../context/CardTitleContext";
 import { useCredit } from "../context/CreditContext";
 import ChatBotIcon from "../components/ChatBotIcon";
+import { useSelector } from "react-redux";
 
 
 
@@ -12,6 +13,7 @@ function DashboardPage({ selectedCard }) {
   const { cardTitle } = useCardTitle();
   const { credit } = useCredit();
   const navigate = useNavigate(); 
+  const { namespace } = useSelector((state) => state.deployment);
 
   const cardToDisplay = selectedCard || {
     title: cardTitle.charAt(0).toUpperCase() + cardTitle.slice(1),
@@ -60,7 +62,7 @@ function DashboardPage({ selectedCard }) {
           >
             <img src={Globe} alt="Globe" className="w-4 h-5" />
             <p className="text-base text-dark-blue leading-[24px] font-normal">
-              https://{cardToDisplay.title.toLowerCase()}-3hp0.ondeployx.com
+                https://{namespace}.{cardToDisplay.slug}.alpha.nexlayer.ai
             </p>
           </a>
           <p className="text-base text-white leading-[24px]">1 service </p>
