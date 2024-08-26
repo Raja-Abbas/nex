@@ -17,7 +17,8 @@ export default function CardsContent({ selectedMenu }) {
       : cardsData.filter((item) => item.category === selectedMenu);
 
   const handleLinkClick = (slug) => {
-    navigate(`/details/${slug}`);
+    navigate(`/details/${slug}`, { state: { slug } });
+    console.log('Slug:', slug);
   };
 
   const handleDeployClick = (card) => {
