@@ -27,7 +27,7 @@ function DashboardPage({ selectedCard }) {
       <div className="max-w-[1200px] flex flex-col gap-10">
         <div className="relative w-full lg:py-3 xl:h-[56px] flex items-center max-md:px-2 md:px-6 bg-[black] text-white border border-[#3D3F40] rounded-[7px]">
           <p className="font-normal max-md:px-1 max-md:text-base md:text-lg rounded-lg py-1 md:px-3 text-dark-blue">
-            Exclusive nexlayer credits{" "}
+            Exclusive NexLayer credits{" "}
             <span className="max-md:text-[10px] md:text-xl font-thin mx-5">
               {" "}
               |{" "}
