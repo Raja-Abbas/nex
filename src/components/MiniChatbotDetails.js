@@ -229,12 +229,6 @@ const MiniChatbotDetails = ({ onClose }) => {
                       className={`${message.sender === "User" ? "hidden" : "w-[18px] h-[18px]"}`}
                       
                     />
-                     <img
-                      src={Avatar}
-                      alt="Avatar"
-                      className={`${message.sender === "User" ? "w-[30px] h-[30px] mr-[4.5px]" : "hidden"}`}
-                      
-                    />
                     <p className="text-base">{message.text}</p>
                   </div>
                 </div>
