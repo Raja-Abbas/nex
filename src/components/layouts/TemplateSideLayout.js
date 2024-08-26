@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import TemplateLeftSidebar from "../common/TemplateLeftSidebar";
-import CardsContent from "../common/CardsContent";
+import TemplateLeftSidebar from "../common/home/TemplateLeftSidebar";
+import CardsContent from "../common/home/CardsContent";
 
 const TemplateSideLayout = ({ onCardSelect }) => {
   const [selectedMenu, setSelectedMenu] = useState("All");

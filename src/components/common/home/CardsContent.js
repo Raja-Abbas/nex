@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDeploymentData } from "../../redux/deploymentSlice";
-import { cardsData } from "../../constants/Framework";
-import NexLayer from "../../assets/svgs/nexLayer.svg";
-import Link from "../../assets/svgs/Link.svg";
+import { fetchDeploymentData } from "../../../redux/deploymentSlice";
+import { cardsData } from "../../../constants/Framework";
+import NexLayer from "../../../assets/svgs/nexLayer.svg";
+import Link from "../../../assets/svgs/Link.svg";
 
 export default function CardsContent({ selectedMenu, onCardSelect }) {
   const navigate = useNavigate();
@@ -14,7 +14,8 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
   const filteredData = (selectedMenu === "All" ? cardsData : cardsData.filter((item) => item.category === selectedMenu)) || [];
 
   const handleLinkClick = (slug) => {
-    navigate(`/details/${slug}`);
+    navigate(`/details/${slug}`, { state: { slug } });
+    console.log('Slug:', slug);
   };
 
   const handleDeployClick = (item) => {
@@ -30,7 +31,7 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
       console.log("Deployment is already in progress.");
     }
   };
-
+  
   return (
     <div className="px-0 md:px-5 py-5 grid gap-[14px] max-[470px]:grid-cols-1 grid-cols-2 lg:grid-cols-3">
       {filteredData.map((item, index) => (

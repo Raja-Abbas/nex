@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import TemplateLeftSidebar from "../components/common/MarketplaceTemplateSidebar";
-import CardsContent from "../components/common/MarketplaceCardsContent";
+import TemplateLeftSidebar from "../components/common/marketplace/MarketplaceTemplateSidebar";
+import CardsContent from "../components/common/marketplace/MarketplaceCardsContent";
 
 const MarketPlace = ({ onCardSelect }) => {
   const [selectedMenu, setSelectedMenu] = useState("All");

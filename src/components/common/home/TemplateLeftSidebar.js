@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Tick from "../../assets/svgs/tick.svg";
-import TemplateLogo from "../../assets/svgs/templateLogo.svg";
+import Tick from "../../../assets/svgs/tick.svg";
+import TemplateLogo from "../../../assets/svgs/templateLogo.svg";
 
 const TemplateLeftSidebar = ({ handleMenuClick }) => {
   const [activeMenu, setActiveMenu] = useState("All");

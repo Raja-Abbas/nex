@@ -1,5 +1,5 @@
 import React from 'react';
-import HomeSvg from '../../assets/svgs/homeSvg.svg';
+import HomeSvg from '../../../assets/svgs/homeSvg.svg';
 
 const BrokenPage = () => {
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Loading from './common/SpinnerWaitlist';
+import Loading from './common/spinner/SpinnerWaitlist';
 import { useCredit } from '../context/CreditContext';
 
 const Waitlist = ({ isOpen, onClose }) => {

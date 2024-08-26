@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { cardsData } from "../../constants/Framework";
-import NexLayer from "../../assets/svgs/nexLayer.svg";
-import Download from "../../assets/svgs/download.svg";
-import Link from "../../assets/svgs/Link.svg";
-import GithubDeploymentModal from "../MarketplaceTemplateModal";
+import { cardsData } from "../../../constants/Framework";
+import NexLayer from "../../../assets/svgs/nexLayer.svg";
+import Download from "../../../assets/svgs/download.svg";
+import Link from "../../../assets/svgs/Link.svg";
+import GithubDeploymentModal from "../../MarketplaceTemplateModal";
 
 export default function CardsContent({ selectedMenu }) {
   const navigate = useNavigate();
