@@ -1,4 +1,3 @@
-// gtm.js
 import TagManager from 'react-gtm-module';
 
 const gtmId = process.env.REACT_APP_GTM_ID;

@@ -93,7 +93,6 @@ export default function CardsContent({ selectedMenu }) {
         ))}
       </div>
 
-      {/* Render the modal */}
       {isModalVisible && selectedCard && (
         <div
           className="fixed inset-0 bg-opacity-75 bg-[#070707] flex justify-center md:items-center z-[10000]"

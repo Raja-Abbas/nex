@@ -3,7 +3,7 @@ import Globe from "../assets/svgs/globe.svg";
 import { deploymentData } from "../constants/Framework";
 import NodeJs from "../assets/svgs/node.svg";
 import { useSelector } from "react-redux";
-
+import Route from "../components/common/route/route"
 const DeploymentDetails = ({
   handleMenuClick,
   toggleBuildPageDetailsHide,
@@ -73,17 +73,7 @@ const DeploymentDetails = ({
             </p>
           </div>
         </div>
-        <a
-          href={`https://${namespace}.${cardToDisplay.slug}.alpha.nexlayer.ai`}
-          target="_blank"
-          rel="noreferrer"
-          className="pt-[15px] w-fit flex gap-[10px] items-center"
-        >
-          <img src={Globe} alt="Globe Icon" />
-          <p className="font-normal text-base text-dark-blue cursor-pointer">
-            https://{namespace}.{cardToDisplay.slug}.alpha.nexlayer.ai
-          </p>
-        </a>
+        <Route/>
       </div>
 
       <div className="flex justify-between items-center">

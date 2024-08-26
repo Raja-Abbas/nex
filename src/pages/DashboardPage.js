@@ -1,11 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { useNavigate } from "react-router-dom";
 import Globe from "../assets/svgs/globe.svg";
 import { deploymentData } from "../constants/Framework";
 import { useCardTitle } from "../context/CardTitleContext";
 import { useCredit } from "../context/CreditContext";
 import ChatBotIcon from "../components/ChatBotIcon";
 import { useSelector } from "react-redux";
+import Route from "../components/common/route/route"
 
 function DashboardPage({ selectedCard }) {
   const { cardTitle } = useCardTitle();
@@ -34,14 +35,14 @@ function DashboardPage({ selectedCard }) {
             ${credit.toFixed(0)}
           </p>
           <button
-            onClick={handleReferFriend} // Update click handler
+            onClick={handleReferFriend}
             className="z-20 text-black absolute end-1 bg-light-blue hover:bg-opacity-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md max-md:text-xs md:text-lg px-4 lg:py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Refer a Friend
           </button>
         </div>
         <div className="grid max-md:grid-cols-1 max-lg:grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 pb-10">
-          <div className="bg-card-color flex flex-col justify-center items-start gap-3 max-md:text-nowrap max-md:w-[280px] md:w-[380px] border border-[#32474C] relative rounded-lg py-4 size-fit max-md:px-2 md:px-6 shadow-xl">
+          <div className="bg-card-color flex flex-col justify-center items-start gap-3 text-nowrap max-md:w-[280px] border border-[#32474C] relative rounded-lg py-4 size-fit max-md:px-2 md:px-6 shadow-xl">
             <div className="flex w-full justify-between">
               <div className="text-lg text-white tracking-0 font-[300]">
                 {cardToDisplay.title} Application
@@ -55,17 +56,7 @@ function DashboardPage({ selectedCard }) {
                 </a>
               </div>
             </div>
-            <a
-              href={deploymentData.url}
-              className="flex gap-2 items-center"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <img src={Globe} alt="Globe" className="w-4 h-5" />
-              <p className="text-base text-dark-blue leading-[24px] font-normal">
-                https://{namespace}.{cardToDisplay.title.toLowerCase()}.alpha.nexlayer.ai
-              </p>
-            </a>
+            <Route/>
             <p className="text-base text-white leading-[24px]">1 service </p>
           </div>
         </div>
