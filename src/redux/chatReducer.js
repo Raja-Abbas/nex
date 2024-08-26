@@ -1,4 +1,3 @@
-// chatReducer.js
 import { ADD_MESSAGE, RESET_MESSAGES, TOGGLE_TYPING, SET_CATEGORY, DELETE_CATEGORY } from './chatActions';
 
 const initialState = {

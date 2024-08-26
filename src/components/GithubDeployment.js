@@ -2,7 +2,6 @@ import React, { useMemo, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { MultiStepLoader } from "./aceternityComponents/multi-step-loader";
 import { steps } from "../constants/Framework";
-
 const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
   const { message } = useSelector((state) => state.deployment);
   const { namespace } = useSelector((state) => state.deployment);

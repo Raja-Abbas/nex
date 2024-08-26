@@ -9,6 +9,7 @@ import GithubLogoCard from "../../assets/svgs/githubLogoCard.svg";
 import ProjectXBox from "../../assets/svgs/projectXBox.svg";
 import NodejsTemplate from "../../assets/svgs/nodejsTemplate.svg";
 import Node from "../../assets/svgs/node.svg";
+import Route from "../../components/common/route/route"
 
 const images = {
   SourceLoadingState,
@@ -68,7 +69,7 @@ const StepComponent: React.FC<{
     if (step.details) {
       const detailsTimeout = setTimeout(() => {
         setShowDetails(true);
-      }, 5000);
+      }, 7000);
 
       return () => clearTimeout(detailsTimeout);
     }
@@ -254,7 +255,7 @@ const StepComponent: React.FC<{
                 </div>
               ))}
               {step.id === 4 && (
-                <div className="flex flex-row mt-[8px] max-md:gap-[10px] md:gap-[56px]">
+                <div className="flex flex-row mt-[8px] max-md:gap-[10px] md:gap-[26px]">
                   {step.details.some((detail) => detail.label === "Status") && (
                     <div className="mr-4">
                       <p className="text-description-color text-center text-tiny leading-[24px]">
@@ -300,27 +301,11 @@ const StepComponent: React.FC<{
                 </div>
               )}
               {step.details.some((detail) => detail.label === "Link") && (
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <div
                   className="mt-4 flex gap-0 items-center w-fit"
                 >
-                  {step.details.some((detail) => detail.label === "Link") && (
-                    <img
-                      src={step.details.find((detail) => detail.label === "Link")?.image}
-                      alt={step.details.find((detail) => detail.label === "Link")?.label}
-                      className={`mr-2 ${
-                        step.id === 4 ? "w-4 h-4" : "w-4 h-4"
-                      }`}
-                    />
-                  )}
-                   {url && (
-                    <div className="text-dark-blue text-base">
-                      <p className="text-blue-400">{url}</p>
-                    </div>
-                  )}
-                </a>
+                  <Route/>
+                </div>
               )}
               {step.details.some((detail) => detail.label === "Docker") && (
                 <div className="mt-2 flex gap-0 items-center">

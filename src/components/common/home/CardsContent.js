@@ -5,10 +5,12 @@ import { fetchDeploymentData } from "../../../redux/deploymentSlice";
 import { cardsData } from "../../../constants/Framework";
 import NexLayer from "../../../assets/svgs/nexLayer.svg";
 import Link from "../../../assets/svgs/Link.svg";
+import { useSlug } from '../../../context/SlugContext';
 
 export default function CardsContent({ selectedMenu, onCardSelect }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { slug, setSlug } = useSlug(); // Access context values
   const isFetching = useSelector(state => state.deployment.isFetching);
 
   const filteredData = (selectedMenu === "All" ? cardsData : cardsData.filter((item) => item.category === selectedMenu)) || [];
@@ -27,6 +29,8 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
       dispatch(fetchDeploymentData(item.templateID));
       console.log("Template ID is defined. Deployment can proceed.");
       if (onCardSelect) onCardSelect(item);
+
+      setSlug(item.slug);
     } else {
       console.log("Deployment is already in progress.");
     }
