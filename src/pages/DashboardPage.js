@@ -63,7 +63,7 @@ function DashboardPage({ selectedCard }) {
             >
               <img src={Globe} alt="Globe" className="w-4 h-5" />
               <p className="text-base text-dark-blue leading-[24px] font-normal">
-                https://{namespace}.{cardToDisplay.slug}.alpha.nexlayer.ai
+                https://{namespace}.{cardToDisplay.title.toLowerCase()}.alpha.nexlayer.ai
               </p>
             </a>
             <p className="text-base text-white leading-[24px]">1 service </p>
