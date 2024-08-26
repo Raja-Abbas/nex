@@ -51,7 +51,7 @@ const DetailsSlugNavbar = () => {
         <a className="flex max-md:gap-[2px] md:gap-5" href="/">
           <img className="w-[29px] h-[28px]" src={Logo} alt="Logo" />
           <p className="text-lg leading-[24px] text-white font-thin max-md:hidden">
-            {isMarketplacePage ? "Template / All Templates" : `Template / ${cardTitle}`}
+            {isMarketplacePage ? "Nexlayer" : `Nexlayer`}
           </p>
         </a>
         <div className="flex gap-6 items-center">
