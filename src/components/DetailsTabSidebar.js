@@ -19,7 +19,7 @@ export default function DetailsTabSidebar({ selectedCard }) {
         </div>
         <div>
           <p className="font-normal text-base text-white">
-            nexlayer-templates/{cardToDisplay.title.toLowerCase()}
+            NexLayer-templates/{cardToDisplay.title.toLowerCase()}
           </p>
           <p className="font-normal text-tiny text-description-color">
             {detailsData.logoDescription}
