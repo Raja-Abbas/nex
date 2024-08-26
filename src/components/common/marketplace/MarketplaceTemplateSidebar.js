@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Tick from "../../assets/svgs/tick-marketplace.svg";
+import Tick from "../../../assets/svgs/tick-marketplace.svg";
 
 const MarketPlaceTemplateSidebar = ({ handleMenuClick }) => {
   const [activeMenu, setActiveMenu] = useState("All");

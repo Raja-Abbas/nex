@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Logo from "../../assets/images/logoBuild.png";
+import Logo from "../../../assets/images/logoBuild.png";
 import Avatar from 'react-avatar';
 import { Link, useLocation } from "react-router-dom";
-import { useCredit } from '../../context/CreditContext';
-import { useCardTitle } from '../../context/CardTitleContext';
+import { useCredit } from '../../../context/CreditContext';
+import { useCardTitle } from '../../../context/CardTitleContext';
 
 const DashboardPageNavbar = () => {
   const location = useLocation();
