@@ -4,7 +4,6 @@ import githubIcon from "../assets/svgs/github.svg";
 
 const MarketplaceTemplateWaitlistModal = ({ isOpen, onClose, cardData }) => {
   const handleShareIdeasClick = () => {
-    // Assuming setCredit is from a context or similar
     // setCredit(100);
     onClose();
   };

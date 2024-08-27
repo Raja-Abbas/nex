@@ -11,16 +11,16 @@ export default function ChatBotIcon({ isStep5Visible }) {
     setIsChatBotVisible(!isChatBotVisible);
   };
 
-  useEffect(() => {
-    if (isStep5Visible) {
-      setIsChatBotVisible(false);
-    }
-  }, [isStep5Visible]);
+  // useEffect(() => {
+  //   if (isStep5Visible) {
+  //     setIsChatBotVisible(false);
+  //   }
+  // }, [isStep5Visible]);
 
   const isDashboard = location.pathname === '/dashboard';
 
   return (
-    <div className="absolute bottom-1 right-1">
+    <div className="absolute fade-in bottom-1 right-1">
       {!isChatBotVisible && !isStep5Visible && !isDashboard && (
         <div className="relative bg-medium-grey-color text-white mr-4 max-w-[230px] text-center border-2 border-[#333636] rounded-full text-tiny overflow-hidden card example-2">
           <div className="inner py-4 px-2 rounded-full">

@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux/store";
 import { SlugProvider } from "./context/SlugContext";
+import { LogCompletionProvider } from "./context/LogCompletionContext";
 
 const Loading = () => <div>Loading...</div>;
 
@@ -19,6 +20,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={<Loading />} persistor={persistor}>
+      <LogCompletionProvider>
         <SlugProvider>
           <CreditProvider>
             <CardTitleProvider>
@@ -30,6 +32,7 @@ root.render(
             </CardTitleProvider>
           </CreditProvider>
         </SlugProvider>
+        </LogCompletionProvider>
       </PersistGate>
     </Provider>
   </React.StrictMode>

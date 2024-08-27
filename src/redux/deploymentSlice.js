@@ -35,10 +35,10 @@ export const fetchDeploymentData = createAsyncThunk(
         throw new Error("Namespace or message is missing in the response.");
       }
 
+      dispatch(setNamespace(data.namespace));
       await delay(2000);
 
       dispatch(fetchLogsData({ namespace: data.namespace, templateID }));
-      dispatch(setNamespace(data.namespace));
       return data;
     } catch (error) {
       console.error("Error in fetchDeploymentData:", error);
