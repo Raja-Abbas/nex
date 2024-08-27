@@ -73,7 +73,6 @@ const MiniChatbotDetails = ({ onClose }) => {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         dispatch(addMessage(greetingMessage));
         setInitialGreeting(true);
-        dispatch(toggleTyping(false));
       }
     };
 
@@ -89,13 +88,9 @@ const MiniChatbotDetails = ({ onClose }) => {
       };
 
       if (!messages.some((msg) => msg.text === secondMessage.text)) {
-        // Stop typing indicator after showing the message
         dispatch(addMessage(secondMessage));
         dispatch(toggleTyping(false));
       }
-    } else {
-      // Show typing indicator until logsCompleted is true
-      dispatch(toggleTyping(true));
     }
   }, [logsCompleted, dispatch, messages, namespace, slug]);
 
@@ -110,6 +105,7 @@ const MiniChatbotDetails = ({ onClose }) => {
 
       if (!messages.some((msg) => msg.text === secondMessage.text)) {
         dispatch(addMessage(secondMessage));
+        dispatch(toggleTyping(false));
       }
     }
   }, [isOpen, logsCompleted, dispatch, namespace, slug, messages]);
