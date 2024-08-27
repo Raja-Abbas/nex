@@ -120,7 +120,7 @@ body, * {
   white-space: nowrap; 
   width: 0;
   animation: 
-    typing 1s steps(25, end) forwards;
+    typing 300ms steps(25, end) forwards;
 }
 .type2{
   font-size: 2.5rem; 
@@ -130,7 +130,7 @@ body, * {
   width: 0;
   animation: 
     typing 1s steps(25, end) forwards;
-  animation-delay: 2s;
+  animation-delay: 1.5s;
 }
 .type3{
   font-size: 2.5rem; 
@@ -140,7 +140,7 @@ body, * {
   width: 0;
   animation: 
     typing 1s steps(25, end) forwards;
-  animation-delay: 3s;
+  animation-delay: 2s;
 }
 
 @keyframes typing {

@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import deploymentReducer from './deploymentSlice';
 import chatReducer from './chatReducer';
 
+
 const persistConfig = {
   key: 'root',
   storage,

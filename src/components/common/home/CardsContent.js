@@ -10,7 +10,7 @@ import { useSlug } from '../../../context/SlugContext';
 export default function CardsContent({ selectedMenu, onCardSelect }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { slug, setSlug } = useSlug(); // Access context values
+  const { slug, setSlug } = useSlug(); 
   const isFetching = useSelector(state => state.deployment.isFetching);
 
   const filteredData = (selectedMenu === "All" ? cardsData : cardsData.filter((item) => item.category === selectedMenu)) || [];

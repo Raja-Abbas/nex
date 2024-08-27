@@ -1,15 +1,11 @@
-import { ADD_MESSAGE, RESET_MESSAGES, TOGGLE_TYPING, SET_CATEGORY, DELETE_CATEGORY } from './chatActions';
+import { ADD_MESSAGE, RESET_MESSAGES, TOGGLE_TYPING, SET_CATEGORY, DELETE_CATEGORY, FETCH_MESSAGES_REQUEST, FETCH_MESSAGES_SUCCESS, FETCH_MESSAGES_FAILURE, SET_LOGS_COMPLETED } from './chatActions';
 
 const initialState = {
-  messages: [
-    {
-      sender: 'Liz',
-      text: "Hey there, I'm Liz―your AI deployment and scaling assistant. I'm still in alpha, which means I'm like a toddler with superpowers: But don't worry, I've got this. We're almost there just adding the finishing touches. Hang tight, your app will be live in no time!",
-      timestamp: new Date().toISOString(),
-    },
-  ],
+  messages: [],
   isTyping: false,
   selectedCategory: "Today",
+  inProgressRequests: new Set(), 
+  logsCompleted: false,
   categories: [
     {
       id: 1,
@@ -46,11 +42,34 @@ const initialState = {
 
 const chatReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_LOGS_COMPLETED:
+      return {
+        ...state,
+        logsCompleted: action.payload
+      };
+
+    case FETCH_MESSAGES_REQUEST:
+      return {
+        ...state,
+        inProgressRequests: new Set(state.inProgressRequests).add(action.payload),
+      };
+    case FETCH_MESSAGES_SUCCESS:
+    case FETCH_MESSAGES_FAILURE:
+      const updatedRequests = new Set(state.inProgressRequests);
+      updatedRequests.delete(action.payload);
+      return {
+        ...state,
+        inProgressRequests: updatedRequests,
+      };
     case ADD_MESSAGE:
-   return {
-     ...state,
-     messages: [...state.messages, action.payload]
-   };
+      const newMessage = action.payload;
+      const isDuplicate = state.messages.some(
+        message => message.text === newMessage.text && message.time === newMessage.time
+      );
+      return {
+        ...state,
+        messages: isDuplicate ? state.messages : [...state.messages, newMessage]
+      };
     case RESET_MESSAGES:
       return {
         ...state,

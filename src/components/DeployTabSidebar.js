@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
+import { setLogsCompleted } from "../redux/chatActions";
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
-import { PuffLoader } from 'react-spinners';
-import Highlighter from 'react-highlight-words';
+import { PuffLoader } from "react-spinners";
+import Highlighter from "react-highlight-words";
 
 const colors = {
   dateInfo: "#7FB7D9",
   plusInfo: "#FFFFBC",
-  default: "#FFBDFF"
+  default: "#FFBDFF",
 };
 
 export default function DeployTabSidebar() {
@@ -20,13 +21,13 @@ export default function DeployTabSidebar() {
   const [displayedData, setDisplayedData] = useState([]);
   const [, setExistingLines] = useState(new Set());
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [activeSearchIndex, setActiveSearchIndex] = useState(0);
-
+  const [searchResults] = useState([]);
+  const [activeSearchIndex] = useState(0);
   const logsData = useSelector((state) => state.deployment.logsData);
   const error = useSelector((state) => state.deployment.error);
   const loading = useSelector((state) => state.deployment.loading);
-
+  const logsCompleted = useSelector((state) => state.chat.logsCompleted);
+  const dispatch = useDispatch();
   const endOfLogRef = useRef(null);
   const searchRef = useRef(null);
 
@@ -58,8 +59,14 @@ export default function DeployTabSidebar() {
       const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
       setDisplayedData(lines);
       setExistingLines(new Set(lines));
+
+      if (lines.some((line) => line.includes("Deployment Complete"))) {
+        dispatch(setLogsCompleted(true));
+      } else {
+        dispatch(setLogsCompleted(false));
+      }
     }
-  }, [logsData]);
+  }, [logsData, dispatch]);
 
   useEffect(() => {
     if (endOfLogRef.current) {
@@ -68,25 +75,10 @@ export default function DeployTabSidebar() {
   }, [displayedData]);
 
   useEffect(() => {
-    if (searchTerm) {
-      const results = displayedData
-        .map((line, index) => (line.toLowerCase().includes(searchTerm.toLowerCase()) ? index : -1))
-        .filter(index => index !== -1);
-      setSearchResults(results);
-      if (results.length > 0) {
-        setActiveSearchIndex(0);
-        scrollToActiveSearchResult();
-      }
-    } else {
-      setSearchResults([]);
-    }
-  }, [searchTerm, displayedData]);
-
-  useEffect(() => {
     if (searchResults.length > 0) {
       scrollToActiveSearchResult();
     }
-  }, [activeSearchIndex, searchResults]);
+  });
 
   const scrollToActiveSearchResult = () => {
     if (searchResults.length > 0 && searchRef.current) {
@@ -111,18 +103,6 @@ export default function DeployTabSidebar() {
     } else {
       return colors.default;
     }
-  };
-
-  const handleSearchNavigation = (direction) => {
-    if (searchResults.length === 0) return;
-
-    let newIndex = activeSearchIndex + direction;
-    if (newIndex < 0) {
-      newIndex = searchResults.length - 1;
-    } else if (newIndex >= searchResults.length) {
-      newIndex = 0;
-    }
-    setActiveSearchIndex(newIndex);
   };
 
   return (
@@ -158,8 +138,13 @@ export default function DeployTabSidebar() {
                 <div
                   key={index}
                   className={`mt-[2px] p-[4px] flex justify-between items-center rounded-[7px] mx-[2px] ${
-                    index > 1 ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-[#1a393d]"
-                  } ${selectedOption === option && "bg-[#1a393d] rounded-[7px] mx-[2px]"}`}
+                    index > 1
+                      ? "cursor-not-allowed opacity-50"
+                      : "cursor-pointer hover:bg-[#1a393d]"
+                  } ${
+                    selectedOption === option &&
+                    "bg-[#1a393d] rounded-[7px] mx-[2px]"
+                  }`}
                   onClick={() => handleOptionClick(option, index)}
                 >
                   <div className="flex gap-2">
@@ -192,16 +177,21 @@ export default function DeployTabSidebar() {
       <div className={`pt-[30px] bg-gray-900 font-mono`}>
         {loading ? (
           <div className="flex justify-center items-center h-full">
-            <PuffLoader color="#00aeff" size={60} />
+            <PuffLoader color="#00aeff" />
           </div>
         ) : (
-          <pre className="text-white">
-            {displayedData.length > 0 ? (
-              displayedData.map((line, index) => (
+          <>
+            <div>
+              {displayedData.map((line, index) => (
                 <div
                   key={index}
-                  ref={searchResults.includes(index) && index === searchResults[activeSearchIndex] ? searchRef : null}
-                  className="flex gap-0 text-wrap py-1 text-[14px]"
+                  ref={
+                    searchResults.includes(index) &&
+                    index === searchResults[activeSearchIndex]
+                      ? searchRef
+                      : null
+                  }
+                  className="whitespace-pre-line text-wrap py-1 text-[14px]"
                   style={{ color: getLineColor(line) }}
                 >
                   <Highlighter
@@ -211,14 +201,18 @@ export default function DeployTabSidebar() {
                     textToHighlight={line}
                   />
                 </div>
-              ))
-            ) : (
-              <div className="text-gray-500">No logs to display.</div>
-            )}
-            <div ref={endOfLogRef} />
-          </pre>
+              ))}
+              <div ref={endOfLogRef} />
+            </div>
+          </>
         )}
       </div>
+
+      {logsCompleted && (
+        <div className="bg-[#1e1e1e] mt-5 hidden text-[#40a348] font-normal text-[10px] md:text-xs lg:text-sm border-[#40a348] border-2 px-[10px] py-2 rounded-md">
+          Congratulations! Deployment Completed Successfully.
+        </div>
+      )}
     </div>
   );
 }

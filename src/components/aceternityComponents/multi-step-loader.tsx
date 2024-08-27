@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Waitlist from '../WaitlistComponent';
-import TemplateWaitlistModal from "../TemplateWaitlistModal";
 import DeploymentAlert from "./DeploymentAlert";
 import ModalAlert from "./ModalAlert";
 import StepComponent, { Step } from "./StepComponent";
@@ -30,12 +28,13 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   selectedCard,
 }) => {
   const [visibleSteps, setVisibleSteps] = useState<Step[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [, setShowModal] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [showModalAlert, setShowModalAlert] = useState<boolean>(false);
   const [hasModalAlertShown, setHasModalAlertShown] = useState<boolean>(false);
   const [step4EndTime, setStep4EndTime] = useState<number | null>(null);
   const [modalAlertTime, setModalAlertTime] = useState<string>("");
+  const [showChatBotIcon, setShowChatBotIcon] = useState<boolean>(false);
   const { namespace } = useSelector((state: RootState) => state.deployment);
 
   const isStep5Visible = visibleSteps.some(step => step.id === 4);
@@ -47,6 +46,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
       setHasModalAlertShown(false);
       setVisibleSteps([]);
       setStep4EndTime(null);
+      setShowChatBotIcon(false);
 
       let index = 0;
       const showNextStep = () => {
@@ -90,6 +90,14 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
     }
   }, [visibleSteps, steps.length, hasModalAlertShown, step4EndTime]);
 
+  useEffect(() => {
+    const chatBotTimeout = setTimeout(() => {
+      setShowChatBotIcon(true);
+    }, 3000);
+
+    return () => clearTimeout(chatBotTimeout);
+  }, []);
+
   if (!loading) return null;
 
   const closeDeploymentAlert = () => {
@@ -100,10 +108,6 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
     setShowModalAlert(false);
   };
 
-  const closeSelectedCardModal = () => {
-    setShowModal(false);
-  };
-
   const defaultCard = {
     logo: NodeJs,
     title: "Node.js",
@@ -111,6 +115,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   };
   const cardToDisplay = selectedCard || defaultCard;
   const url = `https://${namespace}.${cardToDisplay.slug}.alpha.nexlayer.ai`;
+
   return (
     <div className="max-lg:ml-7">
       {isAlertOpen && (
@@ -175,12 +180,12 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
           animation: fade-in 0.5s forwards;
         }
       `}</style>
-      {selectedCard ? (
+      {/* {selectedCard ? (
         <TemplateWaitlistModal isOpen={showModal} onClose={closeSelectedCardModal} selectedCard={selectedCard} />
       ) : (
         <Waitlist isOpen={showModal} onClose={closeSelectedCardModal} />
-      )}
-      <ChatBotIcon isStep5Visible={isStep5Visible} />
+      )} */}
+      {showChatBotIcon && <ChatBotIcon isStep5Visible={isStep5Visible} />}
     </div>
   );
 };
