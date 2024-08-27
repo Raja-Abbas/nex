@@ -1,17 +1,25 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import BuildPage from "./BuildPage";
 import HomePage from "./HomePage";
 import Footer from "../components/common/footer/Footer";
 import BrokenPage from "../components/common/404/404";
-import '../App.css';
+import "../App.css";
 import Navbar from "../components/common/navbar/Navbar";
 import DashboardPage from "./DashboardPage";
 import DynamicPage from "./details/[...slug]";
 import MarketPlace from "./MarketPlace";
 import Refer from "./dashboard/refer";
+
 import { initializeTagManager } from "../gtm/gtm";
 function App() {
+
+
   useEffect(() => {
     initializeTagManager();
   }, []);
@@ -29,7 +37,9 @@ function App() {
   return (
     <div className="min-h-screen scrollbar max-h-screen flex flex-col">
       <Navbar />
-      <div className={`relative flex-1 ${backgroundClass} flex justify-center mb-[0px] max-h-[calc(100vh-60px)]`}>
+      <div
+        className={`relative flex-1 ${backgroundClass} flex justify-center mb-[0px] max-h-[calc(100vh-60px)]`}
+      >
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/build" element={<BuildPage />} />

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Waitlist from '../WaitlistComponent';
-import TemplateWaitlistModal from "../TemplateWaitlistModal";
 import DeploymentAlert from "./DeploymentAlert";
 import ModalAlert from "./ModalAlert";
 import StepComponent, { Step } from "./StepComponent";
@@ -30,7 +28,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   selectedCard,
 }) => {
   const [visibleSteps, setVisibleSteps] = useState<Step[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [, setShowModal] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [showModalAlert, setShowModalAlert] = useState<boolean>(false);
   const [hasModalAlertShown, setHasModalAlertShown] = useState<boolean>(false);
@@ -108,10 +106,6 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
 
   const closeModalAlert = () => {
     setShowModalAlert(false);
-  };
-
-  const closeSelectedCardModal = () => {
-    setShowModal(false);
   };
 
   const defaultCard = {

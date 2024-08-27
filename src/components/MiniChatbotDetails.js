@@ -7,7 +7,6 @@ import {
   setCategory,
   deleteCategory,
   fetchMessages,
-  setLogsCompleted
 } from "../redux/chatActions";
 import { useCardTitle } from "../context/CardTitleContext";
 import Header from "./chatbot/Header";
@@ -32,7 +31,7 @@ const MiniChatbotDetails = ({ onClose }) => {
   const { cardTitle } = useCardTitle();
   const messagesEndRef = useRef(null);
   const [initialGreeting, setInitialGreeting] = useState(false);
-  const [dispatchedMessages, setDispatchedMessages] = useState(new Set());
+  const [, setDispatchedMessages] = useState(new Set());
   const { slug } = useSlug();
 
   const formatTime = (date) => {
@@ -79,7 +78,7 @@ const MiniChatbotDetails = ({ onClose }) => {
     };
 
     greetAndAskForURL();
-  }, [initialGreeting, dispatch, namespace, cardTitle]);
+  });
 
   useEffect(() => {
     if (logsCompleted) {
@@ -90,12 +89,30 @@ const MiniChatbotDetails = ({ onClose }) => {
       };
 
       if (!messages.some((msg) => msg.text === secondMessage.text)) {
+        // Stop typing indicator after showing the message
         dispatch(addMessage(secondMessage));
+        dispatch(toggleTyping(false));
       }
-      dispatch(toggleTyping(false));
+    } else {
+      // Show typing indicator until logsCompleted is true
+      dispatch(toggleTyping(true));
     }
   }, [logsCompleted, dispatch, messages, namespace, slug]);
 
+
+  useEffect(() => {
+    if (isOpen && logsCompleted) {
+      const secondMessage = {
+        sender: "Liz",
+        text: `Boom! Your app is live now https://${namespace}.${slug}.alpha.nexlayer.ai`,
+        timestamp: new Date().toISOString(),
+      };
+
+      if (!messages.some((msg) => msg.text === secondMessage.text)) {
+        dispatch(addMessage(secondMessage));
+      }
+    }
+  }, [isOpen, logsCompleted, dispatch, namespace, slug, messages]);
 
   const handleSend = useCallback(() => {
     if (input.trim()) {

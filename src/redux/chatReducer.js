@@ -4,7 +4,7 @@ const initialState = {
   messages: [],
   isTyping: false,
   selectedCategory: "Today",
-  inProgressRequests: [], 
+  inProgressRequests: new Set(), 
   logsCompleted: false,
   categories: [
     {
