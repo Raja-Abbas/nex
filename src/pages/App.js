@@ -12,7 +12,7 @@ import BrokenPage from "../components/common/404/404";
 import "../App.css";
 import Navbar from "../components/common/navbar/Navbar";
 import DashboardPage from "./DashboardPage";
-import DynamicPage from "./details/[...slug]";
+import DynamicPage from "./Details/[...slug]";
 import MarketPlace from "./MarketPlace";
 import Refer from "./dashboard/refer";
 

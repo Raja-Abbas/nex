@@ -1,14 +1,4 @@
-import React from 'react';
-  
-  const ChatUtils = () =>  {
-	return (
-	  <div>
-	  </div>
-	);
-  }
-  
-  export default ChatUtils;
-  export const getTimeCategory = (timestamp) => {
+export const getTimeCategory = (timestamp) => {
     const now = new Date();
     const messageDate = new Date(timestamp);
     const diffDays = Math.floor((now - messageDate) / (1000 * 60 * 60 * 24));
