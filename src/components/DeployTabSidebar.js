@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { setLogsCompleted } from '../redux/chatActions'; // Import the action
+import { setLogsCompleted } from '../redux/chatActions';
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
@@ -58,13 +58,16 @@ export default function DeployTabSidebar() {
       setDisplayedData(lines);
       setExistingLines(new Set(lines));
   
-      if (lines.some(line => line.includes("Deployment Complete"))) {
+      const isCompleted = lines.some(line => line.includes("Deployment Complete"));
+      if (isCompleted) {
+        console.log("Dispatching logs completed action");
         dispatch(setLogsCompleted(true));
       } else {
         dispatch(setLogsCompleted(false));
       }
     }
   }, [logsData, dispatch]);
+  
 
   useEffect(() => {
     if (endOfLogRef.current) {

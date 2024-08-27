@@ -7,7 +7,7 @@ import {
   setCategory,
   deleteCategory,
   fetchMessages,
-  setLogsCompleted // Import the action
+  setLogsCompleted
 } from "../redux/chatActions";
 import { useCardTitle } from "../context/CardTitleContext";
 import Header from "./chatbot/Header";
@@ -70,7 +70,6 @@ const MiniChatbotDetails = ({ onClose }) => {
         timestamp: new Date().toISOString(),
       };
 
-      // Add the first message
       if (!messages.some((msg) => msg.text === greetingMessage.text)) {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         dispatch(addMessage(greetingMessage));
@@ -84,20 +83,19 @@ const MiniChatbotDetails = ({ onClose }) => {
 
   useEffect(() => {
     if (logsCompleted) {
-      console.log("logs state:" , logsCompleted)
       const secondMessage = {
         sender: "Liz",
         text: `Boom! Your app is live now https://${namespace}.${slug}.alpha.nexlayer.ai`,
         timestamp: new Date().toISOString(),
       };
 
-      // Check if the second message is not already in the messages
       if (!messages.some((msg) => msg.text === secondMessage.text)) {
         dispatch(addMessage(secondMessage));
       }
       dispatch(toggleTyping(false));
     }
-  }, [logsCompleted, dispatch, namespace, slug, messages]);
+  }, [logsCompleted, dispatch, messages, namespace, slug]);
+
 
   const handleSend = useCallback(() => {
     if (input.trim()) {

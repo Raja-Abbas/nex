@@ -93,7 +93,6 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   }, [visibleSteps, steps.length, hasModalAlertShown, step4EndTime]);
 
   useEffect(() => {
-    // Show the ChatBotIcon after 3 seconds
     const chatBotTimeout = setTimeout(() => {
       setShowChatBotIcon(true);
     }, 3000);
