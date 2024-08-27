@@ -67,7 +67,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
             showNextStep();
           }, stepDuration);
         } else {
-          setTimeout(() => setShowModal(true), 8000);
+          //setTimeout(() => setShowModal(true), 8000);
         }
       };
 

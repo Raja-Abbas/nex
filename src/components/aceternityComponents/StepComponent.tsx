@@ -69,7 +69,7 @@ const StepComponent: React.FC<{
     if (step.details) {
       const detailsTimeout = setTimeout(() => {
         setShowDetails(true);
-      }, 7000);
+      }, 4000); //7000
 
       return () => clearTimeout(detailsTimeout);
     }
@@ -143,10 +143,10 @@ const StepComponent: React.FC<{
           }`}
         >
           <p
-            className={`font-medium max-w-max type leading-[150%] ${
+            className={`font-medium max-w-max leading-[150%] ${
               step.id === 4
-                ? "text-white text-2xl"
-                : "text-description-color text-xl"
+                ? "text-white type4 text-2xl"
+                : "text-description-color type text-xl"
             }`}
           >
             {step.heading}
