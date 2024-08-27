@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { setLogsCompleted } from '../redux/chatActions'; // Import the action
+import { useSelector, useDispatch } from "react-redux";
+import { setLogsCompleted } from "../redux/chatActions"; // Import the action
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
-import { PuffLoader } from 'react-spinners';
-import Highlighter from 'react-highlight-words';
+import { PuffLoader } from "react-spinners";
+import Highlighter from "react-highlight-words";
+
 const colors = {
   dateInfo: "#7FB7D9",
   plusInfo: "#FFFFBC",
-  default: "#FFBDFF"
+  default: "#FFBDFF",
 };
+
 export default function DeployTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Live Logs");
@@ -57,8 +59,8 @@ export default function DeployTabSidebar() {
       const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
       setDisplayedData(lines);
       setExistingLines(new Set(lines));
-  
-      if (lines.some(line => line.includes("Deployment Complete"))) {
+
+      if (lines.some((line) => line.includes("Deployment Complete"))) {
         dispatch(setLogsCompleted(true));
       } else {
         dispatch(setLogsCompleted(false));
@@ -75,8 +77,10 @@ export default function DeployTabSidebar() {
   useEffect(() => {
     if (searchTerm) {
       const results = displayedData
-        .map((line, index) => (line.toLowerCase().includes(searchTerm.toLowerCase()) ? index : -1))
-        .filter(index => index !== -1);
+        .map((line, index) =>
+          line.toLowerCase().includes(searchTerm.toLowerCase()) ? index : -1
+        )
+        .filter((index) => index !== -1);
       setSearchResults(results);
       if (results.length > 0) {
         setActiveSearchIndex(0);
@@ -163,8 +167,13 @@ export default function DeployTabSidebar() {
                 <div
                   key={index}
                   className={`mt-[2px] p-[4px] flex justify-between items-center rounded-[7px] mx-[2px] ${
-                    index > 1 ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-[#1a393d]"
-                  } ${selectedOption === option && "bg-[#1a393d] rounded-[7px] mx-[2px]"}`}
+                    index > 1
+                      ? "cursor-not-allowed opacity-50"
+                      : "cursor-pointer hover:bg-[#1a393d]"
+                  } ${
+                    selectedOption === option &&
+                    "bg-[#1a393d] rounded-[7px] mx-[2px]"
+                  }`}
                   onClick={() => handleOptionClick(option, index)}
                 >
                   <div className="flex gap-2">

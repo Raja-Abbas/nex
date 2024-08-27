@@ -84,7 +84,6 @@ const MiniChatbotDetails = ({ onClose }) => {
 
   useEffect(() => {
     if (logsCompleted) {
-      console.log("logs state:" , logsCompleted)
       const secondMessage = {
         sender: "Liz",
         text: `Boom! Your app is live now https://${namespace}.${slug}.alpha.nexlayer.ai`,
@@ -98,6 +97,20 @@ const MiniChatbotDetails = ({ onClose }) => {
       dispatch(toggleTyping(false));
     }
   }, [logsCompleted, dispatch, namespace, slug, messages]);
+
+  useEffect(() => {
+    if (isOpen && logsCompleted) {
+      const secondMessage = {
+        sender: "Liz",
+        text: `Boom! Your app is live now https://${namespace}.${slug}.alpha.nexlayer.ai`,
+        timestamp: new Date().toISOString(),
+      };
+
+      if (!messages.some((msg) => msg.text === secondMessage.text)) {
+        dispatch(addMessage(secondMessage));
+      }
+    }
+  }, [isOpen, logsCompleted, dispatch, namespace, slug, messages]);
 
   const handleSend = useCallback(() => {
     if (input.trim()) {

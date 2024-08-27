@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+import { setLogsCompleted } from "./chatActions";
 const SOCKET_SERVER_URL = "http://localhost:3003";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -30,7 +30,7 @@ export const fetchDeploymentData = createAsyncThunk(
       }
 
       const data = await response.json();
-      
+
       if (!data.namespace || !data.message) {
         throw new Error("Namespace or message is missing in the response.");
       }
@@ -72,6 +72,7 @@ export const fetchLogsData = createAsyncThunk(
 
       let done = false;
       let previousChunks = new Set();
+      let deploymentComplete = false;
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
@@ -85,10 +86,21 @@ export const fetchLogsData = createAsyncThunk(
           await delay(1000);
           console.log("Chunk received:", chunk);
           dispatch(updateLogs({ namespace, chunk }));
+
+          // Check if the chunk indicates that the deployment is complete
+          if (chunk.includes("Deployment Complete")) {
+            deploymentComplete = true;
+          }
         }
       }
 
-      return { namespace, completed: true };
+      if (deploymentComplete) {
+        dispatch(setLogsCompleted(true));
+      } else {
+        dispatch(setLogsCompleted(false));
+      }
+
+      return { namespace, completed: deploymentComplete };
     } catch (error) {
       console.error("Error in fetchLogsData:", error);
       return rejectWithValue(error.message);
@@ -166,6 +178,7 @@ const deploymentSlice = createSlice({
   },
 });
 
-export const { resetDeploymentState, updateLogs, setFetching, setNamespace } = deploymentSlice.actions;
+export const { resetDeploymentState, updateLogs, setFetching, setNamespace } =
+  deploymentSlice.actions;
 
 export default deploymentSlice.reducer;
