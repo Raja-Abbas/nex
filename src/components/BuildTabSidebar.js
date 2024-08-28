@@ -88,7 +88,7 @@ export default function BuildTabSidebar() {
     if (searchResults.length > 0) {
       scrollToActiveSearchResult();
     }
-  }, [activeSearchIndex, scrollToActiveSearchResult , searchResults]);
+  }, [activeSearchIndex, searchResults]);
 
   const scrollToActiveSearchResult = () => {
     if (searchResults.length > 0 && searchRef.current) {
