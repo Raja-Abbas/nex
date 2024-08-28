@@ -38,11 +38,7 @@ const BuildNavbar = () => {
     if (selectedCard && selectedCard.title.toLowerCase() !== cardTitle) {
       setCardTitle(selectedCard.title.toLowerCase());
     }
-  }, [location.state, setCardTitle]);
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  }, [location.state, cardTitle , setCardTitle]);
 
   return (
     <div className="bg-background border-b border-line-color">

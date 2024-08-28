@@ -1,18 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Globe from "../assets/svgs/globe.svg";
-import { deploymentData } from "../constants/Framework";
 import { useCardTitle } from "../context/CardTitleContext";
 import { useCredit } from "../context/CreditContext";
 import ChatBotIcon from "../components/ChatBotIcon";
-import { useSelector } from "react-redux";
 import Route from "../components/common/route/route"
 
 function DashboardPage({ selectedCard }) {
   const { cardTitle } = useCardTitle();
   const { credit } = useCredit();
   const navigate = useNavigate();
-  const { namespace } = useSelector((state) => state.deployment);
 
   const cardToDisplay = selectedCard || {
     title: cardTitle.charAt(0).toUpperCase() + cardTitle.slice(1),

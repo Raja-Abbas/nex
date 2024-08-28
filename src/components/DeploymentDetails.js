@@ -1,8 +1,6 @@
 import React from "react";
-import Globe from "../assets/svgs/globe.svg";
 import { deploymentData } from "../constants/Framework";
 import NodeJs from "../assets/svgs/node.svg";
-import { useSelector } from "react-redux";
 import Route from "../components/common/route/route"
 const DeploymentDetails = ({
   handleMenuClick,
@@ -10,7 +8,6 @@ const DeploymentDetails = ({
   selectedCard,
 }) => {
   const [activeMenu, setActiveMenu] = React.useState("Details");
-  const { namespace } = useSelector((state) => state.deployment);
   const menuItems = [
     { key: "Details", text: "Details" },
     { key: "Build", text: "Build" },

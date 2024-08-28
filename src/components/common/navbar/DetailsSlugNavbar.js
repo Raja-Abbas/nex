@@ -39,11 +39,8 @@ const DetailsSlugNavbar = () => {
     if (slug && slug.toLowerCase() !== cardTitle) {
       setCardTitle(slug.toLowerCase());
     }
-  }, [location.state, setCardTitle]);
+  }, [location.state, cardTitle , setCardTitle]);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   return (
     <div className="bg-background border-b border-line-color">

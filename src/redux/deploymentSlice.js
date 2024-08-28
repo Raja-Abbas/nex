@@ -71,7 +71,6 @@ export const fetchLogsData = createAsyncThunk(
       const decoder = new TextDecoder("utf-8");
 
       let done = false;
-      let previousChunks = new Set();
       let deploymentComplete = false;
 
       while (!done) {

@@ -38,7 +38,7 @@ const DashboardPageNavbar = () => {
     if (selectedCard && selectedCard.title.toLowerCase() !== cardTitle) {
       setCardTitle(selectedCard.title.toLowerCase());
     }
-  }, [location.state, setCardTitle]);
+  }, [location.state, cardTitle ,setCardTitle]);
 
 
 

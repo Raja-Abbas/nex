@@ -130,7 +130,7 @@ const MessageList = ({ filteredMessages, isTyping, messagesEndRef }) => {
               alt="StarChatbotImage"
               className="w-[18px] h-[18px] mt-1"
             />
-            <p className="pr-0 text-base text-white">Thinking</p>
+            <p className="pr-0 text-base text-white type">Thinking</p>
           </div>
           <ThinkingIcon />
         </div>
