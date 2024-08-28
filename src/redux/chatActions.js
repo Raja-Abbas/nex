@@ -36,25 +36,27 @@ export const deleteCategory = (id) => ({
   type: DELETE_CATEGORY,
   payload: id,
 });
-export const fetchLogsData = () => async dispatch => {
-  dispatch({ type: 'FETCH_LOGS_REQUEST' });
+export const fetchLogsData = () => async (dispatch) => {
+  dispatch({ type: "FETCH_LOGS_REQUEST" });
   try {
-    const response = await fetch('/api/logs');
+    const response = await fetch("/api/logs");
     const data = await response.json();
-    dispatch({ type: 'SET_LOGS_DATA', payload: data });
+    dispatch({ type: "SET_LOGS_DATA", payload: data });
 
     const lines = Array.isArray(data) ? data : data.split("\n");
-    const logsCompleted = lines.some(line => line.includes("Deployment Complete"));
+    const logsCompleted = lines.some((line) =>
+      line.includes("Deployment Complete")
+    );
     dispatch(setLogsCompleted(logsCompleted));
   } catch (error) {
-    dispatch({ type: 'FETCH_LOGS_FAILURE', payload: error });
+    dispatch({ type: "FETCH_LOGS_FAILURE", payload: error });
   }
 };
 
 export const fetchMessages =
   (input, namespace, cardTitle, requestId) => async (dispatch, getState) => {
     const { inProgressRequests } = getState().chat;
-    if (inProgressRequests.has(requestId)) {
+    if (inProgressRequests.includes(requestId)) {
       return;
     }
 
@@ -67,11 +69,13 @@ export const fetchMessages =
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
       let result = "";
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         result += decoder.decode(value, { stream: true });
       }
+
       dispatch(
         addMessage({
           sender: "AI",
@@ -86,4 +90,3 @@ export const fetchMessages =
       dispatch({ type: FETCH_MESSAGES_FAILURE, payload: requestId });
     }
   };
-

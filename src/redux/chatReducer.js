@@ -1,11 +1,24 @@
-import { ADD_MESSAGE, RESET_MESSAGES, TOGGLE_TYPING, SET_CATEGORY, DELETE_CATEGORY, FETCH_MESSAGES_REQUEST, FETCH_MESSAGES_SUCCESS, FETCH_MESSAGES_FAILURE, SET_LOGS_COMPLETED } from './chatActions';
+import {
+  START_TYPING_ANIMATION,
+  COMPLETE_TYPING_ANIMATION,
+  ADD_MESSAGE,
+  RESET_MESSAGES,
+  TOGGLE_TYPING,
+  SET_CATEGORY,
+  DELETE_CATEGORY,
+  FETCH_MESSAGES_REQUEST,
+  FETCH_MESSAGES_SUCCESS,
+  FETCH_MESSAGES_FAILURE,
+  SET_LOGS_COMPLETED,
+} from "./chatActions";
 
 const initialState = {
   messages: [],
   isTyping: false,
   selectedCategory: "Today",
-  inProgressRequests: new Set(), 
+  inProgressRequests: [],
   logsCompleted: false,
+  typingAnimationInProgress: false,
   categories: [
     {
       id: 1,
@@ -45,51 +58,65 @@ const chatReducer = (state = initialState, action) => {
     case SET_LOGS_COMPLETED:
       return {
         ...state,
-        logsCompleted: action.payload
+        logsCompleted: action.payload,
       };
 
     case FETCH_MESSAGES_REQUEST:
       return {
         ...state,
-        inProgressRequests: new Set(state.inProgressRequests).add(action.payload),
+        inProgressRequests: state.inProgressRequests.includes(action.payload)
+          ? state.inProgressRequests
+          : [...state.inProgressRequests, action.payload],
       };
+
     case FETCH_MESSAGES_SUCCESS:
     case FETCH_MESSAGES_FAILURE:
-      const updatedRequests = new Set(state.inProgressRequests);
-      updatedRequests.delete(action.payload);
       return {
         ...state,
-        inProgressRequests: updatedRequests,
+        inProgressRequests: state.inProgressRequests.filter(
+          (request) => request !== action.payload
+        ),
       };
+
     case ADD_MESSAGE:
       const newMessage = action.payload;
       const isDuplicate = state.messages.some(
-        message => message.text === newMessage.text && message.time === newMessage.time
+        (message) =>
+          message.text === newMessage.text && message.time === newMessage.time
       );
       return {
         ...state,
-        messages: isDuplicate ? state.messages : [...state.messages, newMessage]
+        messages: isDuplicate
+          ? state.messages
+          : [...state.messages, newMessage],
       };
+
     case RESET_MESSAGES:
       return {
         ...state,
-        messages: []
+        messages: [],
       };
+
     case TOGGLE_TYPING:
       return {
         ...state,
-        isTyping: action.payload
+        isTyping: action.payload,
       };
+
     case SET_CATEGORY:
       return {
         ...state,
-        selectedCategory: action.payload
+        selectedCategory: action.payload,
       };
+
     case DELETE_CATEGORY:
       return {
         ...state,
-        categories: state.categories.filter(category => category.id !== action.payload)
+        categories: state.categories.filter(
+          (category) => category.id !== action.payload
+        ),
       };
+
     default:
       return state;
   }

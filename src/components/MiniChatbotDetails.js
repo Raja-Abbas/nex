@@ -30,7 +30,7 @@ const MiniChatbotDetails = ({ onClose }) => {
   const [showList, setShowList] = useState(false);
   const { cardTitle } = useCardTitle();
   const messagesEndRef = useRef(null);
-  const [initialGreeting, setInitialGreeting] = useState(false);
+  const [isSecondMessageShown, setIsSecondMessageShown] = useState(false);
   const [, setDispatchedMessages] = useState(new Set());
   const { slug } = useSlug();
 
@@ -39,7 +39,7 @@ const MiniChatbotDetails = ({ onClose }) => {
     const minutes = date.getMinutes().toString().padStart(2, "0");
     const ampm = hours >= 12 ? "PM" : "AM";
     hours = hours % 12;
-    hours = hours ? 12 : hours;
+    hours = hours || 12;
     return `${hours}:${minutes} ${ampm}`;
   };
 
@@ -57,58 +57,31 @@ const MiniChatbotDetails = ({ onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  useEffect(() => {
-    if (initialGreeting) return;
-
-    const greetAndAskForURL = async () => {
-      dispatch(toggleTyping(true));
-
-      const greetingMessage = {
+  const showSecondMessage = useCallback(() => {
+    if (!isSecondMessageShown) {
+      const secondMessage = {
         sender: "Liz",
-        text: "Hey there, I'm Liz, your AI deployment assistant. I'm still in alpha, which means I am like a toddler with superpowers: But don't worry, I've got this. We are almost there, just adding the finishing touches. Hang tight, your app will be live in no time.",
+        text: `Boom! Your app is live now https://${namespace}.${slug}.alpha.nexlayer.ai`,
         timestamp: new Date().toISOString(),
       };
 
-      if (!messages.some((msg) => msg.text === greetingMessage.text)) {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        dispatch(addMessage(greetingMessage));
-        setInitialGreeting(true);
-      }
-    };
+      dispatch(toggleTyping(true));
 
-    greetAndAskForURL();
-  });
+      setTimeout(() => {
+        dispatch(addMessage(secondMessage));
+        dispatch(toggleTyping(false));
+        setIsSecondMessageShown(true);
+      }, 2500);
+    }
+  }, [isSecondMessageShown, dispatch, namespace, slug]);
 
   useEffect(() => {
     if (logsCompleted) {
-      const secondMessage = {
-        sender: "Liz",
-        text: `Boom! Your app is live now https://${namespace}.${slug}.alpha.nexlayer.ai`,
-        timestamp: new Date().toISOString(),
-      };
-
-      if (!messages.some((msg) => msg.text === secondMessage.text)) {
-        dispatch(addMessage(secondMessage));
-        dispatch(toggleTyping(false));
-      }
+      showSecondMessage();
+    } else {
+      dispatch(toggleTyping(true));
     }
-  }, [logsCompleted, dispatch, messages, namespace, slug]);
-
-
-  useEffect(() => {
-    if (isOpen && logsCompleted) {
-      const secondMessage = {
-        sender: "Liz",
-        text: `Boom! Your app is live now https://${namespace}.${slug}.alpha.nexlayer.ai`,
-        timestamp: new Date().toISOString(),
-      };
-
-      if (!messages.some((msg) => msg.text === secondMessage.text)) {
-        dispatch(addMessage(secondMessage));
-        dispatch(toggleTyping(false));
-      }
-    }
-  }, [isOpen, logsCompleted, dispatch, namespace, slug, messages]);
+  }, [logsCompleted, showSecondMessage, dispatch]);
 
   const handleSend = useCallback(() => {
     if (input.trim()) {
@@ -118,11 +91,12 @@ const MiniChatbotDetails = ({ onClose }) => {
         timestamp: new Date().toISOString(),
       };
 
+      dispatch(toggleTyping(true));
       dispatch(addMessage(newMessage));
       setDispatchedMessages((prev) => new Set(prev).add(input));
       setInput("");
-      dispatch(toggleTyping(true));
       dispatch(fetchMessages(input, namespace, cardTitle));
+
       setTimeout(() => {
         dispatch(toggleTyping(false));
       }, 2500);
