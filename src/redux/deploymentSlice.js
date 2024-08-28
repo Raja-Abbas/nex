@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setLogsCompleted } from "./chatActions";
+
 const SOCKET_SERVER_URL = "http://localhost:3003";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,7 +15,7 @@ export const fetchDeploymentData = createAsyncThunk(
     try {
       dispatch(setFetching(true));
       const response = await fetch(
-        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
+        `/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -53,7 +54,7 @@ export const fetchLogsData = createAsyncThunk(
   async ({ namespace, templateID }, { rejectWithValue, dispatch }) => {
     try {
       const response = await fetch(
-        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
+        `/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {
