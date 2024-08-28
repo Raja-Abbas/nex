@@ -155,16 +155,6 @@ export const cardsData = [
     templateID: "0006",
     Downloads: "2K",
   },
-  {
-    logo: Strapi,
-    title: "Strapi",
-    slug: "strapi",
-    description: "A popular self-hosted CMS",
-    provider: "NexLayer",
-    category: "All",
-    Marketplacecategory: "Analytics",
-    Downloads: "1K",
-  },
 ];
 
 

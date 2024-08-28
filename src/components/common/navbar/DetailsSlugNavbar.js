@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Logo from "../../../assets/images/logoBuild.png";
+import Logo from "../../../assets/images/logo.png";
 import Avatar from 'react-avatar';
 import { Link, useLocation } from "react-router-dom";
 import { useCredit } from '../../../context/CreditContext';
@@ -46,10 +46,10 @@ const DetailsSlugNavbar = () => {
     <div className="bg-background border-b border-line-color">
       <div className="px-2 max-md:px-3 container mx-auto flex justify-between items-center py-[18.5px]">
         <a className="flex max-md:gap-[2px] md:gap-5" href="/">
-          <img className="w-[29px] h-[28px]" src={Logo} alt="Logo" />
-          <p className="text-lg leading-[24px] text-white font-thin max-md:hidden">
+          <img className="max-sm:ml-[10px] w-[106px] h-[19px]" src={Logo} alt="Logo" />
+          {/* <p className="text-lg leading-[24px] text-white font-thin max-md:hidden">
             {isMarketplacePage ? "Nexlayer" : `Nexlayer`}
-          </p>
+          </p> */}
         </a>
         <div className="flex gap-6 items-center">
           <Link 

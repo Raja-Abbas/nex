@@ -5,7 +5,8 @@ import StepComponent, { Step } from "./StepComponent";
 import { useSelector } from "react-redux";
 import NodeJs from "../../assets/svgs/node.svg";
 import ChatBotIcon from '../ChatBotIcon';
-
+import TemplateWaitlistModal from "../TemplateWaitlistModal";
+import Waitlist from "../WaitlistComponent";
 interface MultiStepLoaderProps {
   steps: Step[];
   loading: boolean;
@@ -28,7 +29,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   selectedCard,
 }) => {
   const [visibleSteps, setVisibleSteps] = useState<Step[]>([]);
-  const [, setShowModal] = useState(false);
+  const [showModal , setShowModal] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [showModalAlert, setShowModalAlert] = useState<boolean>(false);
   const [hasModalAlertShown, setHasModalAlertShown] = useState<boolean>(false);
@@ -67,7 +68,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
             showNextStep();
           }, stepDuration);
         } else {
-          setTimeout(() => setShowModal(true), 8000);
+          setTimeout(() => setShowModal(true), 10000);
         }
       };
 
@@ -107,7 +108,9 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   const closeModalAlert = () => {
     setShowModalAlert(false);
   };
-
+  const closeSelectedCardModal = () => {
+    setShowModal(false);
+  };
   const defaultCard = {
     logo: NodeJs,
     title: "Node.js",
@@ -180,11 +183,11 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
           animation: fade-in 0.5s forwards;
         }
       `}</style>
-      {/* {selectedCard ? (
+      {selectedCard ? (
         <TemplateWaitlistModal isOpen={showModal} onClose={closeSelectedCardModal} selectedCard={selectedCard} />
       ) : (
         <Waitlist isOpen={showModal} onClose={closeSelectedCardModal} />
-      )} */}
+      )}
       {showChatBotIcon && <ChatBotIcon isStep5Visible={isStep5Visible} />}
     </div>
   );

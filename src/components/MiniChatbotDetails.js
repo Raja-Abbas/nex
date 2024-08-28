@@ -65,7 +65,7 @@ const MiniChatbotDetails = ({ onClose }) => {
 
       const greetingMessage = {
         sender: "Liz",
-        text: "Hey there, I'm Liz",
+        text: "Hey there, I'm Liz, your AI deployment assistant. I'm still in alpha, which means I am like a toddler with superpowers: But don't worry, I've got this. We are almost there, just adding the finishing touches. Hang tight, your app will be live in no time.",
         timestamp: new Date().toISOString(),
       };
 

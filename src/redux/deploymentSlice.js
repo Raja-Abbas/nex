@@ -13,7 +13,6 @@ export const fetchDeploymentData = createAsyncThunk(
 
     try {
       dispatch(setFetching(true));
-
       const response = await fetch(
         `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
         {
