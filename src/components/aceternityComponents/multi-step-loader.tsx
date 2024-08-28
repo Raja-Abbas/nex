@@ -4,9 +4,10 @@ import ModalAlert from "./ModalAlert";
 import StepComponent, { Step } from "./StepComponent";
 import { useSelector } from "react-redux";
 import NodeJs from "../../assets/svgs/node.svg";
-import ChatBotIcon from '../ChatBotIcon';
+import ChatBotIcon from "../ChatBotIcon";
 import TemplateWaitlistModal from "../TemplateWaitlistModal";
 import Waitlist from "../WaitlistComponent";
+
 interface MultiStepLoaderProps {
   steps: Step[];
   loading: boolean;
@@ -29,7 +30,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   selectedCard,
 }) => {
   const [visibleSteps, setVisibleSteps] = useState<Step[]>([]);
-  const [showModal , setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [showModalAlert, setShowModalAlert] = useState<boolean>(false);
   const [hasModalAlertShown, setHasModalAlertShown] = useState<boolean>(false);
@@ -37,8 +38,8 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   const [modalAlertTime, setModalAlertTime] = useState<string>("");
   const [showChatBotIcon, setShowChatBotIcon] = useState<boolean>(false);
   const { namespace } = useSelector((state: RootState) => state.deployment);
-
-  const isStep5Visible = visibleSteps.some(step => step.id === 4);
+  const logsCompleted = useSelector((state: any) => state.chat.logsCompleted);
+  const isStep5Visible = visibleSteps.some((step) => step.id === 4);
 
   useEffect(() => {
     if (loading) {
@@ -53,13 +54,19 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
       const showNextStep = () => {
         if (index < steps.length) {
           setVisibleSteps((prevSteps) => {
-            if (steps[index] && !prevSteps.some(step => step?.id === steps[index]?.id)) {
+            if (
+              steps[index] &&
+              !prevSteps.some((step) => step?.id === steps[index]?.id)
+            ) {
               return [...prevSteps, steps[index]];
             }
             return prevSteps;
           });
 
-          const stepDuration = (steps[index].id === 2 || steps[index].id === 3) ? 10000 : steps[index].duration || 4000;
+          const stepDuration =
+            steps[index].id === 2 || steps[index].id === 3
+              ? 10000
+              : steps[index].duration || 4000;
           setTimeout(() => {
             if (steps[index].id === 3) {
               setStep4EndTime(Date.now());
@@ -79,7 +86,11 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   }, [loading, steps]);
 
   useEffect(() => {
-    if (visibleSteps.length === steps.length && !hasModalAlertShown) {
+    if (
+      visibleSteps.length === steps.length &&
+      !hasModalAlertShown &&
+      logsCompleted
+    ) {
       setTimeout(() => {
         if (step4EndTime) {
           const timeElapsed = Math.floor((Date.now() - step4EndTime) / 1000);
@@ -89,7 +100,13 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
         setHasModalAlertShown(true);
       }, 5000);
     }
-  }, [visibleSteps, steps.length, hasModalAlertShown, step4EndTime]);
+  }, [
+    visibleSteps,
+    steps.length,
+    hasModalAlertShown,
+    step4EndTime,
+    logsCompleted,
+  ]);
 
   useEffect(() => {
     const chatBotTimeout = setTimeout(() => {
@@ -108,14 +125,17 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   const closeModalAlert = () => {
     setShowModalAlert(false);
   };
+
   const closeSelectedCardModal = () => {
     setShowModal(false);
   };
+
   const defaultCard = {
     logo: NodeJs,
     title: "Node.js",
-    slug: "default-slug",  
+    slug: "default-slug",
   };
+
   const cardToDisplay = selectedCard || defaultCard;
   const url = `https://${namespace}.${cardToDisplay.slug}.alpha.nexlayer.ai`;
 
@@ -132,20 +152,33 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
       {visibleSteps.map((step, index) => (
         <div key={index} className="relative flex gap-4 items-center">
           {index < visibleSteps.length - 1 && (
-            <div className={`z-10 absolute left-[15px] top-0 bottom-0 border border-custom-color animate-fill transition-all duration-[500ms] ${visibleSteps.length - 1 ? 'bottom-0' : ''}`}></div>
+            <div
+              className={`z-10 absolute left-[15px] top-0 bottom-0 border border-custom-color animate-fill transition-all duration-[500ms] ${
+                index === 2 && !logsCompleted
+                  ? ""
+                  : visibleSteps.length - 1
+                  ? "bottom-0"
+                  : ""
+              }`}
+              style={{ display: index < 2 || logsCompleted ? "block" : "none" }}
+            ></div>
           )}
-          <div className={`z-20 min-h-full transition-all opacity-100 transform animate-fade-in ${visibleSteps ? "opacity-100" : "opacity-0"}`}>
+          <div
+            className={`z-20 min-h-full transition-all opacity-100 transform animate-fade-in ${
+              visibleSteps ? "opacity-100" : "opacity-0"
+            }`}
+          >
             <StepComponent
               step={step}
               index={index}
               toggleBuildPageDetails={toggleBuildPageDetails}
-              url={url} 
+              url={url}
               namespaceStepper={namespace}
             />
           </div>
         </div>
       ))}
-      {showModalAlert && (
+      {showModalAlert && logsCompleted && (
         <ModalAlert
           isOpen={showModalAlert}
           message="Deployment Successful"
@@ -183,9 +216,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
           animation: fade-in 0.5s forwards;
         }
       `}</style>
-      {selectedCard ? (
-        <TemplateWaitlistModal isOpen={showModal} onClose={closeSelectedCardModal} selectedCard={selectedCard} />
-      ) : (
+      {logsCompleted && (
         <Waitlist isOpen={showModal} onClose={closeSelectedCardModal} />
       )}
       {showChatBotIcon && <ChatBotIcon isStep5Visible={isStep5Visible} />}

@@ -31,7 +31,7 @@ const MiniChatbotDetails = ({ onClose }) => {
   const { cardTitle } = useCardTitle();
   const messagesEndRef = useRef(null);
   const [isSecondMessageShown, setIsSecondMessageShown] = useState(false);
-  const [, setDispatchedMessages] = useState(new Set());
+  const [activeConversation, setActiveConversation] = useState(false);
   const { slug } = useSlug();
 
   const formatTime = (date) => {
@@ -57,8 +57,16 @@ const MiniChatbotDetails = ({ onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    dispatch(toggleTyping(true));
+
+    return () => {
+      dispatch(toggleTyping(false));
+    };
+  }, [dispatch]);
+
   const showSecondMessage = useCallback(() => {
-    if (!isSecondMessageShown) {
+    if (!isSecondMessageShown && !activeConversation) {
       const secondMessage = {
         sender: "Liz",
         text: `Boom! Your app is live now https://${namespace}.${slug}.alpha.nexlayer.ai`,
@@ -73,15 +81,14 @@ const MiniChatbotDetails = ({ onClose }) => {
         setIsSecondMessageShown(true);
       }, 2500);
     }
-  }, [isSecondMessageShown, dispatch, namespace, slug]);
+  }, [isSecondMessageShown, dispatch, namespace, slug, activeConversation]);
 
   useEffect(() => {
-    if (logsCompleted) {
+    if (logsCompleted && !activeConversation) {
+      dispatch(toggleTyping(false));
       showSecondMessage();
-    } else {
-      dispatch(toggleTyping(true));
     }
-  }, [logsCompleted, showSecondMessage, dispatch]);
+  }, [logsCompleted, showSecondMessage, dispatch, activeConversation]);
 
   const handleSend = useCallback(() => {
     if (input.trim()) {
@@ -93,12 +100,14 @@ const MiniChatbotDetails = ({ onClose }) => {
 
       dispatch(toggleTyping(true));
       dispatch(addMessage(newMessage));
-      setDispatchedMessages((prev) => new Set(prev).add(input));
       setInput("");
       dispatch(fetchMessages(input, namespace, cardTitle));
 
+      setActiveConversation(true);
+
       setTimeout(() => {
         dispatch(toggleTyping(false));
+        setActiveConversation(false);
       }, 2500);
     }
   }, [input, namespace, cardTitle, dispatch]);
@@ -171,6 +180,8 @@ const MiniChatbotDetails = ({ onClose }) => {
             filteredMessages={filteredMessages}
             isTyping={isTyping}
             messagesEndRef={messagesEndRef}
+            showSecondMessage={showSecondMessage}
+            isSecondMessageShown={isSecondMessageShown}
           />
           <InputArea
             input={input}

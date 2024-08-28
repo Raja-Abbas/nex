@@ -9,7 +9,8 @@ import GithubLogoCard from "../../assets/svgs/githubLogoCard.svg";
 import ProjectXBox from "../../assets/svgs/projectXBox.svg";
 import NodejsTemplate from "../../assets/svgs/nodejsTemplate.svg";
 import Node from "../../assets/svgs/node.svg";
-import Route from "../../components/common/route/route"
+import Route from "../../components/common/route/route";
+import { useSelector } from "react-redux";
 
 const images = {
   SourceLoadingState,
@@ -38,8 +39,8 @@ export interface Step {
   heading: string;
   subheading?: string;
   builder?: string;
-  subtext?:string;
-  subtextvalue?:string;
+  subtext?: string;
+  subtextvalue?: string;
   namepacetext?: string;
   namespacetextvalue?: string;
   description?: string;
@@ -56,24 +57,28 @@ const StepComponent: React.FC<{
   index: number;
   toggleBuildPageDetails: () => void;
   disableLoading?: boolean;
-  url?: string; 
+  url?: string;
   namespaceStepper?: string;
-}> = ({ step, index, toggleBuildPageDetails, disableLoading = false, url , namespaceStepper }) => {
+}> = ({ step, index, toggleBuildPageDetails, disableLoading = false, url, namespaceStepper }) => {
   const [isLoading, setIsLoading] = useState(!disableLoading);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [showInProgress, setShowInProgress] = useState(false);
-  const [buildTimer, setBuildTimer] = useState<number>(10);
+  const [buildTimer, setBuildTimer] = useState<number>(0);
   const [showDetails, setShowDetails] = useState(false);
- 
+  const [deploymentSuccessful, setDeploymentSuccessful] = useState<boolean>(false);
+
+  const logsCompleted = useSelector((state: any) => state.chat.logsCompleted);
+
   useEffect(() => {
     if (step.details) {
       const detailsTimeout = setTimeout(() => {
         setShowDetails(true);
-      }, 4000); //7000
+      }, 4000);
 
       return () => clearTimeout(detailsTimeout);
     }
   }, [step.details]);
+
   useEffect(() => {
     if (index !== 0 && !disableLoading) {
       const timeout = setTimeout(() => {
@@ -91,6 +96,40 @@ const StepComponent: React.FC<{
     }
   }, [index, disableLoading]);
 
+  useEffect(() => {
+    if (step.id === 2 || step.id === 3) {
+      if (!logsCompleted) {
+        const countdown = setInterval(() => {
+          setBuildTimer((prev) => prev + 1);
+        }, 1000);
+  
+        return () => clearInterval(countdown);
+      } else {
+        setDeploymentSuccessful(true);
+      }
+    }
+  }, [step.id, logsCompleted]);
+  
+  const formatBuildTimer = (buildTimer: number): string => {
+    if (buildTimer < 60) {
+      return `0:${buildTimer < 10 ? `0${buildTimer}` : buildTimer}`;
+    } else if (buildTimer < 3600) {
+      const minutes = Math.floor(buildTimer / 60);
+      const seconds = buildTimer % 60;
+      return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+    } else {
+      const minutes = Math.floor((buildTimer % 3600) / 60);
+      return `${minutes < 10 ? `0${minutes}` : minutes}`;
+    }
+  };
+  
+
+  useEffect(() => {
+    if (logsCompleted && step.id === 3) {
+      setDeploymentSuccessful(true);
+    }
+  }, [logsCompleted, step.id]);
+
   const startElapsedTime = () => {
     const timer = setInterval(() => {
       setTimeElapsed((prevTime) => prevTime + 5);
@@ -98,15 +137,6 @@ const StepComponent: React.FC<{
 
     return () => clearInterval(timer);
   };
-
-  useEffect(() => {
-    if ((step.id === 2 || step.id === 3) && buildTimer > 0) {
-      const countdown = setTimeout(() => {
-        setBuildTimer((prev) => prev - 1);
-      }, 1000);
-      return () => clearTimeout(countdown);
-    }
-  }, [step.id, buildTimer]);
 
   const formatTimeAgo = (timeElapsed: number): string => {
     if (timeElapsed < 60) {
@@ -122,7 +152,10 @@ const StepComponent: React.FC<{
   }
 
   const Image = images[step.image];
-
+  const isDeploymentSuccessful = logsCompleted && step.id === 3 && deploymentSuccessful;
+  if (step.id === 4 && !logsCompleted) {
+    return null;
+  }
   return (
     <div className="flex gap-[12px] pb-[45px]">
       {index !== 0 && isLoading ? (
@@ -151,13 +184,13 @@ const StepComponent: React.FC<{
           >
             {step.heading}
           </p>
-           {step.subtext && (
+          {step.subtext && (
             <p className="mt-1 flex text-base text-description-color max-w-max type2 font-normal leading-[150%]">
               {step.subtext}
               <p className="ml-2 text-white">{step.subtextvalue}</p>
             </p>
           )}
-           {step.namepacetext && (
+          {step.namepacetext && (
             <p className="mt-1 flex text-base text-description-color max-w-max type3 font-normal leading-[150%]">
               {step.namepacetext}
               <p className="ml-2 text-white">{namespaceStepper}</p>
@@ -168,9 +201,9 @@ const StepComponent: React.FC<{
               Status:{" "}
               <span className="text-green ml-[8px]">
                 {step.id === 2 ? (
-                  buildTimer > 0 ? `Building (0:0${10 - buildTimer})` : "Build Successful"
+                  buildTimer > 0 ? `Building (0:${formatBuildTimer(buildTimer)})` : "Build Successful"
                 ) : step.id === 3 ? (
-                  buildTimer > 0 ? "Deployment in Progress" : "Deployment Successful"
+                  isDeploymentSuccessful ? "Deployment Successful" : "Deployment in Progress"
                 ) : (
                   step.description
                 )}
@@ -222,26 +255,22 @@ const StepComponent: React.FC<{
                     </span>
                   )}
                   {detail.label === "Time" && (
-                    <>
-                      <span className="text-description-color max-md:text-tiny md:text-base font-normal">
-                        {step.id === 2 && buildTimer > 0
-                          ? "Build in Progress"
-                          : step.id === 3 ? (
-                              showInProgress ? "Deployment in Progress" : formatTimeAgo(timeElapsed)
-                            ) : formatTimeAgo(timeElapsed)}
-                      </span>
-                    </>
+                    <span className="text-description-color max-md:text-tiny md:text-base font-normal">
+                      {step.id === 2 && buildTimer > 0
+                        ? formatTimeAgo(timeElapsed)
+                        : step.id === 3 ? (
+                            isDeploymentSuccessful ? formatTimeAgo(timeElapsed) : "Deployment in Progress"
+                          ) : formatTimeAgo(timeElapsed)}
+                    </span>
                   )}
-                   {detail.label === "Deploying" && (
-                    <>
+                  {detail.label === "Deploying" && (
                     <div className="text-white max-md:text-tiny md:text-base font-normal">
-                      { step.id === 3 ? (
-                        buildTimer > 0 ? `(0:0${10 - buildTimer})` : "Successful"
+                      {step.id === 3 ? (
+                        buildTimer > 0 ? `(0:${formatBuildTimer(buildTimer)})` : "Successful"
                       ) : (
                         step.description
                       )}
                     </div>
-                    </>
                   )}
                   <span
                     className={`${
@@ -301,9 +330,7 @@ const StepComponent: React.FC<{
                 </div>
               )}
               {step.details.some((detail) => detail.label === "Link") && (
-                <div
-                  className="mt-4 flex gap-0 items-center w-fit"
-                >
+                <div className="mt-4 flex gap-0 items-center w-fit">
                   <Route/>
                 </div>
               )}
@@ -334,5 +361,3 @@ const StepComponent: React.FC<{
 };
 
 export default StepComponent;
-
-

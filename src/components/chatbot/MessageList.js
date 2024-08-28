@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import StarChatbotImage from "../../assets/svgs/StarChatbot.svg";
 import ThinkingIcon from "../../assets/svgs/thinking";
 import { highlightURLs } from "../../utils/chatUtils";
-import { useSlug } from "../../context/SlugContext";
-import { useSelector } from "react-redux";
 
 const typingSpeed = 25;
 
-const MessageList = ({ filteredMessages, isTyping, messagesEndRef }) => {
+const MessageList = ({
+  filteredMessages,
+  isTyping,
+  messagesEndRef,
+  isSecondMessageShown,
+  showSecondMessage
+}) => {
   const [displayedMessages, setDisplayedMessages] = useState([]);
   const [messageIndex, setMessageIndex] = useState(0);
-  const [completedTyping, setCompletedTyping] = useState(false);
-  const { namespace } = useSelector((state) => state.deployment);
-  const { slug } = useSlug();
+  const [completedMessages, setCompletedMessages] = useState(new Set());
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const typingComplete = useRef(true);
 
   useEffect(() => {
-    const storedMessages =
-      JSON.parse(localStorage.getItem("displayedMessages")) || [];
+    const storedMessages = JSON.parse(localStorage.getItem("displayedMessages")) || [];
     setDisplayedMessages(storedMessages);
     const storedIndex = localStorage.getItem("messageIndex") || 0;
     setMessageIndex(Number(storedIndex));
@@ -25,38 +28,37 @@ const MessageList = ({ filteredMessages, isTyping, messagesEndRef }) => {
   useEffect(() => {
     setDisplayedMessages([]);
     setMessageIndex(0);
+    setCompletedMessages(new Set());
+    setIsTypingComplete(false);
     localStorage.removeItem("displayedMessages");
     localStorage.removeItem("messageIndex");
-  }, [namespace, slug]);
+  }, []);
+
+  const typeMessage = useCallback((message, index) => {
+    let i = 0;
+    const stringResponse = message.text;
+    typingComplete.current = false;
+
+    const intervalId = setInterval(() => {
+      setDisplayedMessages((prevMessages) => {
+        const updatedMessages = [...prevMessages];
+        updatedMessages[index].text = stringResponse.slice(0, i);
+        return updatedMessages;
+      });
+
+      i++;
+
+      if (i > stringResponse.length) {
+        clearInterval(intervalId);
+        typingComplete.current = true;
+        setCompletedMessages((prev) => new Set(prev).add(message.text));
+      }
+    }, typingSpeed);
+  }, []);
 
   useEffect(() => {
-    const typeMessage = (message) => {
-      setCompletedTyping(false);
-
-      let i = 0;
-      const stringResponse = message.text;
-
-      const intervalId = setInterval(() => {
-        setDisplayedMessages((prevMessages) => {
-          const updatedMessages = [...prevMessages];
-          updatedMessages[updatedMessages.length - 1].text =
-            stringResponse.slice(0, i);
-          return updatedMessages;
-        });
-
-        i++;
-
-        if (i > stringResponse.length) {
-          clearInterval(intervalId);
-          setCompletedTyping(true);
-        }
-      }, typingSpeed);
-    };
-
     const typeMessages = async () => {
       if (filteredMessages.length === 0) return;
-
-      setCompletedTyping(false);
 
       for (let i = messageIndex; i < filteredMessages.length; i++) {
         const message = filteredMessages[i];
@@ -67,32 +69,47 @@ const MessageList = ({ filteredMessages, isTyping, messagesEndRef }) => {
           (msg) => msg.text === message.text && msg.sender === message.sender
         );
 
-        if (!isDuplicate) {
+        if (!isDuplicate && !completedMessages.has(message.text)) {
           setDisplayedMessages((prevMessages) => [
             ...prevMessages,
-            { ...message },
+            { ...message, text: "" },
           ]);
 
-          typeMessage(message);
+          typeMessage(message, displayedMessages.length);
           setMessageIndex(i + 1);
 
           localStorage.setItem(
             "displayedMessages",
-            JSON.stringify([...displayedMessages, { ...message }])
+            JSON.stringify([...displayedMessages, { ...message, text: "" }])
           );
           localStorage.setItem("messageIndex", i + 1);
 
-          while (!completedTyping) {
-            await new Promise((resolve) => setTimeout(resolve, typingSpeed));
-          }
+          await new Promise((resolve) => {
+            const checkTypingCompletion = setInterval(() => {
+              if (typingComplete.current) {
+                clearInterval(checkTypingCompletion);
+                resolve();
+              }
+            }, typingSpeed);
+          });
         }
+      }
+
+      if (!isSecondMessageShown && isTypingComplete) {
+        showSecondMessage();
       }
     };
 
     typeMessages();
 
     return () => clearInterval(typingSpeed);
-  }, [filteredMessages, messageIndex, completedTyping, displayedMessages]);
+  }, [filteredMessages, messageIndex, completedMessages, displayedMessages, showSecondMessage, isSecondMessageShown, typeMessage, isTypingComplete]);
+
+  useEffect(() => {
+    if (completedMessages.size === filteredMessages.length) {
+      setIsTypingComplete(true);
+    }
+  }, [completedMessages, filteredMessages.length]);
 
   return (
     <div className="flex flex-col gap-2 justify-start text-base rounded-[7px] max-h-[300px] max-w-max overflow-y-auto">
