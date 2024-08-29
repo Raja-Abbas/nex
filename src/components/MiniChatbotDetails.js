@@ -49,6 +49,7 @@ function Chatbot({ onClose }) {
   const { namespace } = useSelector((state) => state.deployment);
   const messagesEndRef = useRef(null);
   const [showList, setShowList] = useState(false);
+  const { url } = useSelector((state) => state.deployment);
   const [isSecondMessageShown, setIsSecondMessageShown] = useState(
     () => JSON.parse(localStorage.getItem("isSecondMessageShown")) || false
   );
@@ -94,7 +95,7 @@ function Chatbot({ onClose }) {
     if (!isSecondMessageShown && !activeConversation) {
       const secondMessage = {
         sender: "Bot",
-        text: `Boom! Your app is live now https://${namespace}.${slug}.alpha.nexlayer.ai`,
+        text: `Boom! Your app is live now ${url}`,
         timestamp: new Date().toISOString(),
       };
 

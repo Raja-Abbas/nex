@@ -34,6 +34,11 @@ export const fetchDeploymentData = createAsyncThunk(
         throw new Error("Namespace or message is missing in the response.");
       }
 
+      // Log the URL if it exists in the response
+      if (data.url) {
+        console.log("Deployment URL:", data.url);
+      }
+
       dispatch(setNamespace(data.namespace));
       await delay(2000);
 
@@ -47,6 +52,7 @@ export const fetchDeploymentData = createAsyncThunk(
     }
   }
 );
+
 
 export const fetchLogsData = createAsyncThunk(
   "/getDeploymentLogs/:namespace/:templateID",
@@ -112,6 +118,7 @@ const deploymentSlice = createSlice({
     namespace: null,
     message: null,
     responseData: null,
+    url: null,
     logsData: [],
     isLogsFetched: {},
     loading: false,
@@ -150,6 +157,7 @@ const deploymentSlice = createSlice({
         state.namespace = action.payload.namespace;
         state.templateID = action.meta.arg;
         state.message = action.payload.message;
+        state.url = action.payload.url;
       })
       .addCase(fetchDeploymentData.rejected, (state, action) => {
         console.error("Failed to fetch deployment data:", action.payload);
