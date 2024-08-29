@@ -6,7 +6,8 @@ import MiniChatbotDetails from './MiniChatbotDetails';
 export default function ChatBotIcon({ isStep5Visible }) {
   const [isChatBotVisible, setIsChatBotVisible] = useState(false);
   const location = useLocation();
-
+  const [isOpen, setIsOpen] = useState(true);
+  const toggleChat = () => setIsOpen(!isOpen);
   const toggleChatBot = () => {
     setIsChatBotVisible(!isChatBotVisible);
   };

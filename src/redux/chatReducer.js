@@ -78,18 +78,11 @@ const chatReducer = (state = initialState, action) => {
         ),
       };
 
-    case ADD_MESSAGE:
-      const newMessage = action.payload;
-      const isDuplicate = state.messages.some(
-        (message) =>
-          message.text === newMessage.text && message.time === newMessage.time
-      );
-      return {
-        ...state,
-        messages: isDuplicate
-          ? state.messages
-          : [...state.messages, newMessage],
-      };
+      case 'ADD_MESSAGE':
+        return {
+          ...state,
+          messages: [...state.messages, action.payload],
+        };
 
     case RESET_MESSAGES:
       return {

@@ -18,35 +18,47 @@ AnythingLLM on NexLayer is here!
 
 ## Supported LLMS
 
+- Any open-source llama.cpp compatible model
 - OpenAI
+- OpenAI (Generic)
 - Azure OpenAI
-- Anthropic ClaudeV2
+- AWS Bedrock
+- Anthropic
 - Google Gemini Pro
-- Ollama (mac/i model)
-- LLM Suite (all models)
+- Hugging Face (chat models)
+- Ollama (chat models)
+- LM Studio (all models)
 - LocalAI (all models)
 - Together AI (chat models)
+- Perplexity (chat models)
+- OpenRouter (chat models)
 - Mistral
+- Groq
+- Cohere
+- KoboldCPP
+- LiteLLM
+- Text Generation Web UI
 
 ## Supported Embedding modules
 
-- Native Embedder (default)
+- AnythingLLM Native Embedder (default)
 - OpenAI
 - Azure OpenAI
-- LLM Suite (all)
 - LocalAI (all)
+- Ollama (all)
+- LM Studio (all)
+- Cohere
 
 ## Supported Vector Databases
 
 - LanceDB (default)
-- Atlas DB
+- Astra DB
 - Pinecone
+- Chroma
 - Weaviate
 - Qdrant
 - Milvus
 - Zilliz
-
-**Note: This image is updated often but is not always in sync with the ``latest`` tag on Docker for the ``master`` branch. If something is missing ping us on Discord!**
 
 ## LICENSE
 
@@ -55,15 +67,15 @@ AnythingLLM on NexLayer is here!
 ---
 
 ## Template Content  
-  
-
 
 <div className="mt-[0px] px-5 py-4 flex gap-[14px] max-w-[750px] 2xl:max-w-[1014px] items-center rounded-[7px] bg-card-color">
   <div className="flex justify-center items-center rounded-[7px] p-2 w-[38px] h-[38px] bg-background">
     ![BlueCube](/blueCube.svg)
   </div>    
   <div>
-    <p className="font-normal text-base text-white">anythingllm-docker</p>
-    <p className="font-normal text-tiny text-description-color">mintplexlabs/anythingllm:nexlayer</p>
+    <a href="https://github.com/Mintplex-Labs/anything-llm" target="_blank" rel="noopener noreferrer">
+      <p className="font-normal text-base text-white">anythingllm-container</p>
+      <p className="font-normal text-tiny text-description-color">mintplexlabs/anythingllm:nexlayer</p>
+    </a>
   </div>
 </div>
