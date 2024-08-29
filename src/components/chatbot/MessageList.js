@@ -41,7 +41,6 @@ const MessageList = ({ filteredMessages, isTyping, messagesEndRef, showSecondMes
         JSON.stringify([...displayedMessages, ...newMessages])
       );
 
-      // Dispatch the second message if not shown
       if (!isSecondMessageShown) {
         showSecondMessage();
       }
@@ -51,11 +50,11 @@ const MessageList = ({ filteredMessages, isTyping, messagesEndRef, showSecondMes
   }, [filteredMessages, displayedMessages, showSecondMessage, isSecondMessageShown]);
 
   return (
-    <div className="flex flex-col gap-2 justify-start text-base rounded-[7px] max-h-[300px] max-w-max overflow-y-auto">
+    <div className="flex flex-col gap-2 justify-start overflow-hidden text-base rounded-[7px] max-h-[300px] max-w-max overflow-y-auto">
       {displayedMessages.map((message, index) => (
         <div
           key={index}
-          className={`flex fade-in ${
+          className={`flex md:w-[460px] fade-in ${
             message.sender === "User" ? "justify-end" : "justify-start"
           } pr-8`}
         >
