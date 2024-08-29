@@ -84,12 +84,11 @@ const chatReducer = (state = initialState, action) => {
           messages: [...state.messages, action.payload],
         };
 
-    case RESET_MESSAGES:
+        case 'RESET_MESSAGES':
       return {
         ...state,
         messages: [],
       };
-
     case TOGGLE_TYPING:
       return {
         ...state,

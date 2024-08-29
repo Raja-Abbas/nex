@@ -9,7 +9,6 @@ const CategoryList = ({
   input,
   setInput,
   handleKeyDown,
-  toggleCategories
 }) => {
   return (
     <div className="flex flex-col items-start gap-[30px]">

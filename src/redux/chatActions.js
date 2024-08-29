@@ -1,5 +1,5 @@
 export const ADD_MESSAGE = "ADD_MESSAGE";
-export const RESET_MESSAGES = "RESET_MESSAGES";
+export const RESET_MESSAGES = 'RESET_MESSAGES';
 export const TOGGLE_TYPING = "TOGGLE_TYPING";
 export const SET_CATEGORY = "SET_CATEGORY";
 export const DELETE_CATEGORY = "DELETE_CATEGORY";
