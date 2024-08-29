@@ -4,10 +4,10 @@ import DropDownAngle from "../../assets/svgs/dropDownAngle.svg";
 import EditIcon from "../../assets/svgs/editIcon.svg";
 import CrossIcon from "../../assets/svgs/crossIcon.svg";
 
-const Header = ({ handleToggle, handleEditClick, onClose, isOpen }) => {
+const Header = ({ handleToggle, handleEditClick, onClose, isOpen, toggleCategories }) => {
   return (
     <div className="flex justify-between items-center mb-[30px]">
-      <div className="flex gap-2 cursor-pointer" onClick={handleToggle}>
+      <div className="flex gap-2 cursor-pointer" onClick={toggleCategories}>
         <img src={WhiteStarChatbotImage} alt="WhiteStarChatbot" />
         <div className="text-white flex gap-2 items-center">
           <span>Ask Liz</span>
