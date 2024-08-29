@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-// Define a component that will be shown after the successful submission
 const WaitlistAfter = () => (
   <div className="text-center mt-[30px]">
         <h2 className="text-light-blue text-3xl mb-[27px] font-bold leading-[150%]">
@@ -16,19 +15,18 @@ const WaitlistAfter = () => (
 
 const NewsletterForm = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("idle"); // idle, loading, success, error
+  const [status, setStatus] = useState("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [showWaitlistAfter, setShowWaitlistAfter] = useState(false);
 
-  // Effect to handle post-success display logic
   useEffect(() => {
     let timer;
     if (status === "success") {
       timer = setTimeout(() => {
-        setShowWaitlistAfter(true); // Show the WaitlistAfter component after 5 seconds
+        setShowWaitlistAfter(true);
       }, 5000);
     }
-    return () => clearTimeout(timer); // Cleanup the timer on component unmount or status change
+    return () => clearTimeout(timer);
   }, [status]);
 
   const handleSubmit = async (event) => {
@@ -39,7 +37,6 @@ const NewsletterForm = ({ isOpen, onClose }) => {
     const previousTimestamp = localStorage.getItem("loops-form-timestamp");
     const timestamp = new Date().valueOf();
 
-    // Rate limiting to prevent too many submissions in a short time
     if (previousTimestamp && Number(previousTimestamp) + 60000 > timestamp) {
       setErrorMessage("Too many signups, please try again in a little while");
       setStatus("error");
