@@ -56,9 +56,9 @@ const BuildNavbar = () => {
           >
             Dashboard
           </Link>
-          <p className="font-normal text-lg text-description-color max-md:hidden">
+          <a href="https://feedback.nexlayer.io" className="font-normal text-lg text-description-color max-md:hidden">
             Feedback
-          </p>
+          </a>
           <p className="font-normal max-md:text-base md:text-lg border rounded-lg py-1 px-3 border-dark-blue bg-medium-gray text-dark-blue">
             NexLayer Credit <span className="text-xl font-thin">|</span> $
             {animatedCredit.toFixed(0)}
