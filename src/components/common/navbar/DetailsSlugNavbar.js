@@ -60,7 +60,7 @@ const DetailsSlugNavbar = () => {
           >
             Dashboard
           </Link>
-          <a href="https://feedback.nexlayer.io" className="font-normal text-lg text-description-color max-md:hidden">
+          <a href="https://feedback.nexlayer.io" rel="noreferrer" target="_blank" className="font-normal text-lg text-description-color max-md:hidden">
             Feedback
           </a>
           <p className="font-normal max-md:text-base md:text-lg border rounded-lg py-1 px-3 border-dark-blue bg-medium-gray text-dark-blue">
