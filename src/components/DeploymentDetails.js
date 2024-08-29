@@ -1,11 +1,13 @@
-import React from 'react';
-import Globe from "../assets/svgs/globe.svg";
+import React from "react";
 import { deploymentData } from "../constants/Framework";
 import NodeJs from "../assets/svgs/node.svg";
-
-const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, selectedCard }) => {
+import Route from "../components/common/route/route"
+const DeploymentDetails = ({
+  handleMenuClick,
+  toggleBuildPageDetailsHide,
+  selectedCard,
+}) => {
   const [activeMenu, setActiveMenu] = React.useState("Details");
-
   const menuItems = [
     { key: "Details", text: "Details" },
     { key: "Build", text: "Build" },
@@ -16,9 +18,8 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
     toggleBuildPageDetailsHide();
   };
 
- 
   const defaultCard = {
-    logo: NodeJs, 
+    logo: NodeJs,
     title: "Node.js",
   };
 
@@ -52,15 +53,15 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
           </p>
         </div>
         <div className="pt-[15px] flex gap-x-14 items-center">
-          <div>
+          <div className="text-center">
             <label className="font-normal text-tiny text text-light-grey-color">
-              Feedback
+              Status
             </label>
             <p className="w-[53px] py-[1px] font-medium text-base text-center border rounded-full bg-dark-gray border-dark-blue text-dark-blue">
               {deploymentData.feedback}
             </p>
           </div>
-          <div>
+          <div className="text-center">
             <label className="font-normal text-tiny text-light-grey-color">
               Environment
             </label>
@@ -68,21 +69,8 @@ const DeploymentDetails = ({ handleMenuClick, toggleBuildPageDetailsHide, select
               {deploymentData.environment}
             </p>
           </div>
-          {/* <div>
-            <label className="font-normal text-tiny text-light-grey-color">
-              Cluster
-            </label>
-            <p className="font-normal text-lg text-white">
-              {deploymentData.cluster}
-            </p>
-          </div> */}
         </div>
-        <a href={deploymentData.url} target='_blank' rel="noreferrer" className="pt-[15px] w-fit flex gap-[10px] items-center">
-          <img src={Globe} alt="Globe Icon" />
-          <p className="font-normal text-base text-dark-blue cursor-pointer">
-            https://{cardToDisplay.title.toLowerCase()}-3hp0.ondeployx.com
-          </p>
-        </a>
+        <Route/>
       </div>
 
       <div className="flex justify-between items-center">

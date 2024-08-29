@@ -1,39 +1,49 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
+import { setLogsCompleted } from "../redux/chatActions";
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
+import { PuffLoader } from "react-spinners";
+import Highlighter from "react-highlight-words";
 
 const colors = {
   dateInfo: "#7FB7D9",
   plusInfo: "#FFFFBC",
-  default: "#FFBDFF"
+  default: "#FFBDFF",
 };
 
 export default function DeployTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [displayedData, setDisplayedData] = useState([]);
-  const [existingLines, setExistingLines] = useState(new Set());
-
+  const [, setExistingLines] = useState(new Set());
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults] = useState([]);
+  const [activeSearchIndex] = useState(0);
   const logsData = useSelector((state) => state.deployment.logsData);
   const error = useSelector((state) => state.deployment.error);
-
+  const loading = useSelector((state) => state.deployment.loading);
+  const logsCompleted = useSelector((state) => state.chat.logsCompleted);
+  const dispatch = useDispatch();
   const endOfLogRef = useRef(null);
+  const searchRef = useRef(null);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false);
+  const handleOptionClick = (option, index) => {
+    if (index <= 1) {
+      setSelectedOption(option);
+      setIsOpen(false);
+    }
   };
 
   const options = [
-    "Live tail",
+    "Live Logs",
     "Last hour",
     "Last 4 hours",
     "Last 24 hours",
@@ -49,8 +59,14 @@ export default function DeployTabSidebar() {
       const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
       setDisplayedData(lines);
       setExistingLines(new Set(lines));
+
+      if (lines.some((line) => line.includes("Deployment Complete"))) {
+        dispatch(setLogsCompleted(true));
+      } else {
+        dispatch(setLogsCompleted(false));
+      }
     }
-  }, [logsData]);
+  }, [logsData, dispatch]);
 
   useEffect(() => {
     if (endOfLogRef.current) {
@@ -58,12 +74,28 @@ export default function DeployTabSidebar() {
     }
   }, [displayedData]);
 
+  useEffect(() => {
+    if (searchResults.length > 0) {
+      scrollToActiveSearchResult();
+    }
+  });
+
+  const scrollToActiveSearchResult = () => {
+    if (searchResults.length > 0 && searchRef.current) {
+      searchRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
+  };
+
   if (error) {
     return <p className="p-10 text-white">Error: {error}</p>;
   }
 
   const getLineColor = (line) => {
-    const dateRegex = /^\d{1,4}[\/\-]\d{1,2}[\/\-]\d{1,4}/;
+    const dateRegex =  /^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}/;
     if (dateRegex.test(line)) {
       return colors.dateInfo;
     } else if (line.startsWith("[+]")) {
@@ -74,12 +106,14 @@ export default function DeployTabSidebar() {
   };
 
   return (
-    <div className="max-w-[100%] xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
-      <div className="flex gap-2 items-center">
+    <div className="max-w-[100%] max-h-[calc(100vh-462px)] max-lg:max-h-screen xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
+      <div className="flex gap-2 items-center sticky top-[-20px] bg-medium-grey-color h-[3rem]">
         <input
           className="w-full h-8 p-[10px] py-[6.5px] text-white font-normal text-tiny border-[2px] rounded-[7px] border-dark-gray bg-background"
           type="search"
           placeholder="Natural language search....."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <div className="relative max-[440px]:w-[270px] w-60 xl:w-56">
           <div
@@ -103,12 +137,15 @@ export default function DeployTabSidebar() {
               {options.map((option, index) => (
                 <div
                   key={index}
-                  className={`mt-[2px] p-2 flex justify-between items-center rounded-[7px] mx-[2px] cursor-pointer hover:bg-[#1a393d] ${
-                    selectedOption === option
-                      ? "bg-[#1a393d] rounded-[7px] mx-[2px]"
-                      : ""
+                  className={`mt-[2px] p-[4px] flex justify-between items-center rounded-[7px] mx-[2px] ${
+                    index > 1
+                      ? "cursor-not-allowed opacity-50"
+                      : "cursor-pointer hover:bg-[#1a393d]"
+                  } ${
+                    selectedOption === option &&
+                    "bg-[#1a393d] rounded-[7px] mx-[2px]"
                   }`}
-                  onClick={() => handleOptionClick(option)}
+                  onClick={() => handleOptionClick(option, index)}
                 >
                   <div className="flex gap-2">
                     <img
@@ -137,27 +174,45 @@ export default function DeployTabSidebar() {
         </div>
       </div>
 
-      <div className={`pt-[30px] bg-gray-900 font-mono overflow-y-auto h-screen scrollbar`}>
-        <pre className="text-white">
-          {displayedData.length > 0 ? (
-            displayedData.map((line, index) => (
-              <div
-                key={index}
-                className="flex gap-0 text-wrap py-1 text-[14px]"
-                style={{ color: getLineColor(line) }}
-              >
-                <span className="min-w-[30px] text-light-gray mr-2">
-                  {`${index + 1}.`}
-                </span>
-                <span>{line}</span>
-              </div>
-            ))
-          ) : (
-            <div className="text-gray-500">No logs to display.</div>
-          )}
-          <div ref={endOfLogRef} /> {/* This is the end reference */}
-        </pre>
+      <div className={`pt-[30px] bg-gray-900 font-mono`}>
+        {loading ? (
+          <div className="flex justify-center items-center h-full">
+            <PuffLoader color="#00aeff" />
+          </div>
+        ) : (
+          <>
+            <div>
+              {displayedData.map((line, index) => (
+                <div
+                  key={index}
+                  ref={
+                    searchResults.includes(index) &&
+                    index === searchResults[activeSearchIndex]
+                      ? searchRef
+                      : null
+                  }
+                  className="whitespace-pre-line text-wrap py-1 text-[14px]"
+                  style={{ color: getLineColor(line) }}
+                >
+                  <Highlighter
+                    highlightClassName="bg-yellow-500"
+                    searchWords={[searchTerm]}
+                    autoEscape={true}
+                    textToHighlight={line}
+                  />
+                </div>
+              ))}
+              <div ref={endOfLogRef} />
+            </div>
+          </>
+        )}
       </div>
+
+      {logsCompleted && (
+        <div className="bg-[#1e1e1e] mt-5 hidden text-[#40a348] font-normal text-[10px] md:text-xs lg:text-sm border-[#40a348] border-2 px-[10px] py-2 rounded-md">
+          Congratulations! Deployment Completed Successfully.
+        </div>
+      )}
     </div>
   );
 }

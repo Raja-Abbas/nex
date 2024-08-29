@@ -44,7 +44,7 @@ const StartProject = () => {
       </div>
       <div className="flex max-lg:flex-col max-lg:space-y-4 lg:space-x-4">
         <button
-          className="flex items-center justify-between px-2 py-2 md:min-w-[304px] bg-medium-gray hover:bg-blue-700 border border-light-grey-color rounded-[7px]"
+          className="items-center justify-between px-2 py-2 md:min-w-[304px] bg-medium-gray hover:bg-blue-700 border border-light-grey-color rounded-[7px] hidden"
           onClick={() => handleTemplateClick("github")}
         >
           <div className="flex text-base gap-2 items-center">
@@ -65,10 +65,8 @@ const StartProject = () => {
           className="flex gap-2 items-center justify-between px-2 py-2 md:min-w-[304px] bg-medium-gray hover:bg-blue-700 border border-light-grey-color rounded-[7px]"
           onClick={() => handleTemplateClick("template")}
         >
-          <div className="flex text-base gap-2 items-center">
             <img src={GridSvg} alt="GridSvg" />
-            Start with a Template
-          </div>
+          <p>Start with a Template</p>
           <img src={ArrowRightSvg} alt="ArrowRightSvg" />
         </button>
       </div>

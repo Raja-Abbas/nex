@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BlueSvg from "../../assets/svgs/blueSvg.svg";
-import Loading from "../common/Spinner";
+import Loading from "../common/spinner/Spinner";
 import SourceLoadingState from "../../assets/svgs/sourceLoadingState.svg";
 import BuildLoadingState from "../../assets/svgs/buildLoadingState.svg";
 import PackageLoadingState from "../../assets/svgs/packageLoadingState.svg";
@@ -9,6 +9,8 @@ import GithubLogoCard from "../../assets/svgs/githubLogoCard.svg";
 import ProjectXBox from "../../assets/svgs/projectXBox.svg";
 import NodejsTemplate from "../../assets/svgs/nodejsTemplate.svg";
 import Node from "../../assets/svgs/node.svg";
+import Route from "../../components/common/route/route";
+import { useSelector } from "react-redux";
 
 const images = {
   SourceLoadingState,
@@ -37,6 +39,10 @@ export interface Step {
   heading: string;
   subheading?: string;
   builder?: string;
+  subtext?: string;
+  subtextvalue?: string;
+  namepacetext?: string;
+  namespacetextvalue?: string;
   description?: string;
   image: ImageKey;
   text: string;
@@ -51,13 +57,27 @@ const StepComponent: React.FC<{
   index: number;
   toggleBuildPageDetails: () => void;
   disableLoading?: boolean;
-}> = ({ step, index, toggleBuildPageDetails, disableLoading = false }) => {
+  url?: string;
+  namespaceStepper?: string;
+}> = ({ step, index, toggleBuildPageDetails, disableLoading = false, url, namespaceStepper }) => {
   const [isLoading, setIsLoading] = useState(!disableLoading);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [showInProgress, setShowInProgress] = useState(false);
-  const [buildTimer, setBuildTimer] = useState<number>(10);
+  const [buildTimer, setBuildTimer] = useState<number>(0);
+  const [showDetails, setShowDetails] = useState(false);
+  const [deploymentSuccessful, setDeploymentSuccessful] = useState<boolean>(false);
 
- 
+  const logsCompleted = useSelector((state: any) => state.chat.logsCompleted);
+
+  useEffect(() => {
+    if (step.details) {
+      const detailsTimeout = setTimeout(() => {
+        setShowDetails(true);
+      }, 4000);
+
+      return () => clearTimeout(detailsTimeout);
+    }
+  }, [step.details]);
 
   useEffect(() => {
     if (index !== 0 && !disableLoading) {
@@ -76,6 +96,40 @@ const StepComponent: React.FC<{
     }
   }, [index, disableLoading]);
 
+  useEffect(() => {
+    if (step.id === 2 || step.id === 3) {
+      if (!logsCompleted) {
+        const countdown = setInterval(() => {
+          setBuildTimer((prev) => prev + 1);
+        }, 1000);
+  
+        return () => clearInterval(countdown);
+      } else {
+        setDeploymentSuccessful(true);
+      }
+    }
+  }, [step.id, logsCompleted]);
+  
+  const formatBuildTimer = (buildTimer: number): string => {
+    if (buildTimer < 60) {
+      return `0:${buildTimer < 10 ? `0${buildTimer}` : buildTimer}`;
+    } else if (buildTimer < 3600) {
+      const minutes = Math.floor(buildTimer / 60);
+      const seconds = buildTimer % 60;
+      return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+    } else {
+      const minutes = Math.floor((buildTimer % 3600) / 60);
+      return `${minutes < 10 ? `0${minutes}` : minutes}`;
+    }
+  };
+  
+
+  useEffect(() => {
+    if (logsCompleted && step.id === 3) {
+      setDeploymentSuccessful(true);
+    }
+  }, [logsCompleted, step.id]);
+
   const startElapsedTime = () => {
     const timer = setInterval(() => {
       setTimeElapsed((prevTime) => prevTime + 5);
@@ -83,15 +137,6 @@ const StepComponent: React.FC<{
 
     return () => clearInterval(timer);
   };
-
-  useEffect(() => {
-    if ((step.id === 2 || step.id === 4) && buildTimer > 0) {
-      const countdown = setTimeout(() => {
-        setBuildTimer((prev) => prev - 1);
-      }, 1000);
-      return () => clearTimeout(countdown);
-    }
-  }, [step.id, buildTimer]);
 
   const formatTimeAgo = (timeElapsed: number): string => {
     if (timeElapsed < 60) {
@@ -107,7 +152,10 @@ const StepComponent: React.FC<{
   }
 
   const Image = images[step.image];
-
+  const isDeploymentSuccessful = logsCompleted && step.id === 3 && deploymentSuccessful;
+  if (step.id === 4 && !logsCompleted) {
+    return null;
+  }
   return (
     <div className="flex gap-[12px] pb-[45px]">
       {index !== 0 && isLoading ? (
@@ -128,27 +176,34 @@ const StepComponent: React.FC<{
           }`}
         >
           <p
-            className={`font-medium leading-[150%] ${
-              step.id === 5
-                ? "text-white text-2xl"
-                : "text-description-color text-xl"
+            className={`font-medium max-w-max leading-[150%] ${
+              step.id === 4
+                ? "text-white type4 text-2xl"
+                : "text-description-color type text-xl"
             }`}
           >
             {step.heading}
           </p>
-          {step.subheading && (
-            <p className="mt-1 text-base text-description-color font-normal leading-[150%]">
-              {step.subheading}
+          {step.subtext && (
+            <p className="mt-1 flex text-base text-description-color max-w-max type2 font-normal leading-[150%]">
+              {step.subtext}
+              <p className="ml-2 text-white">{step.subtextvalue}</p>
+            </p>
+          )}
+          {step.namepacetext && (
+            <p className="mt-1 flex text-base text-description-color max-w-max type3 font-normal leading-[150%]">
+              {step.namepacetext}
+              <p className="ml-2 text-white">{namespaceStepper}</p>
             </p>
           )}
           {step.description && (
-            <p className="mt-1 text-base text-white font-[450]">
+            <p className="mt-1 text-base max-w-max type2 text-white font-[450]">
               Status:{" "}
               <span className="text-green ml-[8px]">
                 {step.id === 2 ? (
-                  buildTimer > 0 ? `Building (0:0${10 - buildTimer})` : "Build Successful"
-                ) : step.id === 4 ? (
-                  buildTimer > 0 ? "Deployment in Progress" : "Deployment Successful"
+                  buildTimer > 0 ? `Building (0:${formatBuildTimer(buildTimer)})` : "Build Successful"
+                ) : step.id === 3 ? (
+                  isDeploymentSuccessful ? "Deployment Successful" : "Deployment in Progress"
                 ) : (
                   step.description
                 )}
@@ -156,28 +211,15 @@ const StepComponent: React.FC<{
             </p>
           )}
           {step.builder && (
-            <p className="mt-[20px] text-base text-white font-[450] leading-[150%]">
+            <p className="mt-[20px] max-w-max type3 text-base text-white font-[450] leading-[150%]">
               {step.builder}
             </p>
           )}
-          {step.buttons && (
-            <div className="flex items-center gap-2 mt-2">
-              {step.buttons.map((button: any, index) => (
-                <button
-                  key={index}
-                  className="flex gap-2 items-center justify-center border rounded-lg border-dark-blue bg-medium-grey-color text-dark-blue py-1 px-3 cursor-pointer hover:shadow-2xl hover:border-opacity-50 transition-all"
-                >
-                  {button.image && <img src={button.image} alt="Button" />}
-                  <p className="text-tiny">{button.label}</p>
-                </button>
-              ))}
-            </div>
-          )}
-          {step.details && (
+          {showDetails && step.details && (
             <div
-              className={`max-md:w-auto ${
-                step.id === 5 ? "flex flex-col" : "grid grid-cols-2 grid-rows-2"
-              } sm:w-[600px] lg:w-[500px] xl:w-[600px] md:min-h-[77px] gap-y-[8px] border border-[#363838] hover:shadow-xl cardDetails cursor-pointer ${disableLoading ? "sm:w-[100vw-0px] lg:w-[700px] max-sm:w-[100vw-50px] 2xl:w-[900px]":"2xl:w-[700px]"} bg-medium-grey-color bg-opacity/50 max-md:ml-[-50px] md:ml-[-50px] z-[1000] mt-[10px] md:py-[15px] md:px-[50px] max-md:p-3 max-md:py-8 rounded-lg relative`}
+              className={`max-md:w-auto fade-in ${
+                step.id === 4 ? "flex flex-col" : "grid grid-cols-2 grid-rows-2"
+              } sm:w-[600px] lg:w-[500px] xl:w-[600px] md:min-h-[77px] gap-y-[8px] border border-[#363838] hover:shadow-xl cardDetails cursor-pointer ${disableLoading ? "sm:w-[100vw-0px] lg:w-[700px] max-sm:w-[100vw-50px] 2xl:w-[900px]":"2xl:w-[700px]"} bg-medium-grey-color bg-opacity/50 max-md:ml-[-50px] md:ml-[-50px] z-[10] mt-[10px] md:py-[15px] md:px-[50px] max-md:p-3 max-md:py-8 rounded-lg relative`}
               onClick={toggleBuildPageDetails}
             >
               <img
@@ -189,7 +231,7 @@ const StepComponent: React.FC<{
                 <div
                   key={index}
                   className={`text-description-color flex max-md:gap-[4px] md:gap-[12px] items-center mb-0 ${
-                    step.id === 5 && detail.label ? "hidden" : ""
+                    step.id === 4 && detail.label ? "hidden" : ""
                   }`}
                 >
                   {detail.image && (
@@ -197,7 +239,7 @@ const StepComponent: React.FC<{
                       src={detail.image}
                       alt={detail.label}
                       className={`ml-[0px] ${
-                        step.id === 5 ? "w-auto h-10" : "w-5 h-5"
+                        step.id === 4 ? "w-auto h-10" : "w-5 h-5"
                       }`}
                     />
                   )}
@@ -213,26 +255,22 @@ const StepComponent: React.FC<{
                     </span>
                   )}
                   {detail.label === "Time" && (
-                    <>
-                      <span className="text-description-color max-md:text-tiny md:text-base font-normal">
-                        {step.id === 2 && buildTimer > 0
-                          ? "Build in Progress"
-                          : step.id === 4 ? (
-                              showInProgress ? "Deployment in Progress" : formatTimeAgo(timeElapsed)
-                            ) : formatTimeAgo(timeElapsed)}
-                      </span>
-                    </>
+                    <span className="text-description-color max-md:text-tiny md:text-base font-normal">
+                      {step.id === 2 && buildTimer > 0
+                        ? formatTimeAgo(timeElapsed)
+                        : step.id === 3 ? (
+                            isDeploymentSuccessful ? formatTimeAgo(timeElapsed) : "Deployment in Progress"
+                          ) : formatTimeAgo(timeElapsed)}
+                    </span>
                   )}
-                   {detail.label === "Deploying" && (
-                    <>
+                  {detail.label === "Deploying" && (
                     <div className="text-white max-md:text-tiny md:text-base font-normal">
-                      { step.id === 4 ? (
-                        buildTimer > 0 ? `(0:0${10 - buildTimer})` : "Successful"
+                      {step.id === 3 ? (
+                        buildTimer > 0 ? `(0:${formatBuildTimer(buildTimer)})` : "Successful"
                       ) : (
                         step.description
                       )}
                     </div>
-                    </>
                   )}
                   <span
                     className={`${
@@ -245,16 +283,16 @@ const StepComponent: React.FC<{
                   </span>
                 </div>
               ))}
-              {step.id === 5 && (
-                <div className="flex flex-row mt-[8px] max-md:gap-[10px] md:gap-[56px]">
-                  {step.details.some((detail) => detail.label === "Feedback") && (
+              {step.id === 4 && (
+                <div className="flex flex-row mt-[8px] max-md:gap-[10px] md:gap-[26px]">
+                  {step.details.some((detail) => detail.label === "Status") && (
                     <div className="mr-4">
-                      <p className="text-description-color text-tiny leading-[24px]">
-                        Feedback
+                      <p className="text-description-color text-center text-tiny leading-[24px]">
+                        Status
                       </p>
                       <p className="border mt-[1px] text-base leading-[24px] rounded-full text-center border-dark-blue bg-medium-grey-color text-dark-blue py-[1px] px-[14px]">
                         {
-                          step.details.find((detail) => detail.label === "Feedback")
+                          step.details.find((detail) => detail.label === "Status")
                             ?.value
                         }
                       </p>
@@ -264,7 +302,7 @@ const StepComponent: React.FC<{
                     (detail) => detail.label === "Environment"
                   ) && (
                     <div className="mr-4">
-                      <p className="text-description-color text-tiny leading-[24px]">
+                      <p className="text-description-color text-center text-tiny leading-[24px]">
                         Environment
                       </p>
                       <p className="text-white mt-[1px] leading-[24px] text-lg rounded-full py-[1px]">
@@ -292,25 +330,9 @@ const StepComponent: React.FC<{
                 </div>
               )}
               {step.details.some((detail) => detail.label === "Link") && (
-                <a
-                  href={step.details.find((detail) => detail.label === "Link")?.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 flex gap-0 items-center w-fit"
-                >
-                  {step.details.some((detail) => detail.label === "Link") && (
-                    <img
-                      src={step.details.find((detail) => detail.label === "Link")?.image}
-                      alt={step.details.find((detail) => detail.label === "Link")?.label}
-                      className={`mr-2 ${
-                        step.id === 5 ? "w-4 h-4" : "w-4 h-4"
-                      }`}
-                    />
-                  )}
-                  <p className="text-dark-blue text-base">
-                    {step.details.find((detail) => detail.label === "Link")?.url}
-                  </p>
-                </a>
+                <div className="mt-4 flex gap-0 items-center w-fit">
+                  <Route/>
+                </div>
               )}
               {step.details.some((detail) => detail.label === "Docker") && (
                 <div className="mt-2 flex gap-0 items-center">
@@ -319,7 +341,7 @@ const StepComponent: React.FC<{
                       src={step.details.find((detail) => detail.label === "Docker")?.image}
                       alt={step.details.find((detail) => detail.label === "Docker")?.label}
                       className={`mr-2 ${
-                        step.id === 5 ? "w-4 h-4" : "w-4 h-4"
+                        step.id === 4 ? "w-4 h-4" : "w-4 h-4"
                       }`}
                     />
                   )}
@@ -339,5 +361,3 @@ const StepComponent: React.FC<{
 };
 
 export default StepComponent;
-
-

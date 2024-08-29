@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { setLogsCompleted } from "./chatActions";
 
 const SOCKET_SERVER_URL = "http://localhost:3003";
 
@@ -13,9 +14,8 @@ export const fetchDeploymentData = createAsyncThunk(
 
     try {
       dispatch(setFetching(true));
-
       const response = await fetch(
-        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
+        `/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -30,15 +30,15 @@ export const fetchDeploymentData = createAsyncThunk(
       }
 
       const data = await response.json();
-      
-      // Check if namespace exists in the response
+
       if (!data.namespace || !data.message) {
         throw new Error("Namespace or message is missing in the response.");
       }
 
-      // Ensure logs fetching starts after the deployment data is successfully received
-      dispatch(fetchLogsData({ namespace: data.namespace, templateID }));
+      dispatch(setNamespace(data.namespace));
+      await delay(2000);
 
+      dispatch(fetchLogsData({ namespace: data.namespace, templateID }));
       return data;
     } catch (error) {
       console.error("Error in fetchDeploymentData:", error);
@@ -54,7 +54,7 @@ export const fetchLogsData = createAsyncThunk(
   async ({ namespace, templateID }, { rejectWithValue, dispatch }) => {
     try {
       const response = await fetch(
-        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
+        `/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -71,7 +71,7 @@ export const fetchLogsData = createAsyncThunk(
       const decoder = new TextDecoder("utf-8");
 
       let done = false;
-      let previousChunks = new Set(); // Use a Set to keep track of processed chunks
+      let deploymentComplete = false;
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
@@ -80,22 +80,31 @@ export const fetchLogsData = createAsyncThunk(
           stream: !done,
         });
 
-        // Only process the chunk if it's not already processed
-        if (!previousChunks.has(chunk)) {
-          previousChunks.add(chunk);
-          await delay(1000);
-          console.log("Chunk received:", chunk);
+        console.log("Chunk received:", chunk);
+
+        if (chunk) {
           dispatch(updateLogs({ namespace, chunk }));
+
+          if (chunk.includes("Deployment Complete")) {
+            deploymentComplete = true;
+          }
         }
       }
 
-      return { namespace, completed: true };
+      if (deploymentComplete) {
+        dispatch(setLogsCompleted(true));
+      } else {
+        dispatch(setLogsCompleted(false));
+      }
+
+      return { namespace, completed: deploymentComplete };
     } catch (error) {
       console.error("Error in fetchLogsData:", error);
       return rejectWithValue(error.message);
     }
   }
 );
+
 
 const deploymentSlice = createSlice({
   name: "deployment",
@@ -119,10 +128,12 @@ const deploymentSlice = createSlice({
       state.isLogsFetched = {};
     },
     updateLogs: (state, action) => {
-      // Add the new chunk to logsData only if it's not already there
       if (!state.logsData.includes(action.payload.chunk)) {
         state.logsData.push(action.payload.chunk);
       }
+    },
+    setNamespace(state, action) {
+      state.namespace = action.payload;
     },
     setFetching: (state, action) => {
       state.isFetching = action.payload;
@@ -165,6 +176,7 @@ const deploymentSlice = createSlice({
   },
 });
 
-export const { resetDeploymentState, updateLogs, setFetching } = deploymentSlice.actions;
+export const { resetDeploymentState, updateLogs, setFetching, setNamespace } =
+  deploymentSlice.actions;
 
 export default deploymentSlice.reducer;

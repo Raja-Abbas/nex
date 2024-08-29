@@ -1,23 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage
+import storage from 'redux-persist/lib/storage';
 import deploymentReducer from './deploymentSlice';
+import chatReducer from './chatReducer';
 
-// Persist configuration
+
 const persistConfig = {
   key: 'root',
   storage,
 };
 
-// Persisted reducer
 const persistedReducer = persistReducer(persistConfig, deploymentReducer);
 
-// Store configuration
 export const store = configureStore({
   reducer: {
     deployment: persistedReducer,
+    chat: chatReducer,
   },
 });
 
-// Persistor instance
 export const persistor = persistStore(store);
