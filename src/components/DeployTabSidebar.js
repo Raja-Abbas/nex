@@ -95,7 +95,7 @@ export default function DeployTabSidebar() {
   }
 
   const getLineColor = (line) => {
-    const dateRegex =  /^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}/;
+    const dateRegex = /^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}/;
     if (dateRegex.test(line)) {
       return colors.dateInfo;
     } else if (line.startsWith("[+]")) {

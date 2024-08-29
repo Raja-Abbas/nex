@@ -59,13 +59,21 @@ const StepComponent: React.FC<{
   disableLoading?: boolean;
   url?: string;
   namespaceStepper?: string;
-}> = ({ step, index, toggleBuildPageDetails, disableLoading = false, url, namespaceStepper }) => {
+}> = ({
+  step,
+  index,
+  toggleBuildPageDetails,
+  disableLoading = false,
+  url,
+  namespaceStepper,
+}) => {
   const [isLoading, setIsLoading] = useState(!disableLoading);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
-  const [showInProgress, setShowInProgress] = useState(false);
+  const [, setShowInProgress] = useState(false);
   const [buildTimer, setBuildTimer] = useState<number>(0);
   const [showDetails, setShowDetails] = useState(false);
-  const [deploymentSuccessful, setDeploymentSuccessful] = useState<boolean>(false);
+  const [deploymentSuccessful, setDeploymentSuccessful] =
+    useState<boolean>(false);
 
   const logsCompleted = useSelector((state: any) => state.chat.logsCompleted);
 
@@ -102,14 +110,14 @@ const StepComponent: React.FC<{
         const countdown = setInterval(() => {
           setBuildTimer((prev) => prev + 1);
         }, 1000);
-  
+
         return () => clearInterval(countdown);
       } else {
         setDeploymentSuccessful(true);
       }
     }
   }, [step.id, logsCompleted]);
-  
+
   const formatBuildTimer = (buildTimer: number): string => {
     if (buildTimer < 60) {
       return `0:${buildTimer < 10 ? `0${buildTimer}` : buildTimer}`;
@@ -122,7 +130,6 @@ const StepComponent: React.FC<{
       return `${minutes < 10 ? `0${minutes}` : minutes}`;
     }
   };
-  
 
   useEffect(() => {
     if (logsCompleted && step.id === 3) {
@@ -152,7 +159,8 @@ const StepComponent: React.FC<{
   }
 
   const Image = images[step.image];
-  const isDeploymentSuccessful = logsCompleted && step.id === 3 && deploymentSuccessful;
+  const isDeploymentSuccessful =
+    logsCompleted && step.id === 3 && deploymentSuccessful;
   if (step.id === 4 && !logsCompleted) {
     return null;
   }
@@ -200,13 +208,15 @@ const StepComponent: React.FC<{
             <p className="mt-1 text-base max-w-max type2 text-white font-[450]">
               Status:{" "}
               <span className="text-green ml-[8px]">
-                {step.id === 2 ? (
-                  buildTimer > 0 ? `Building (0:${formatBuildTimer(buildTimer)})` : "Build Successful"
-                ) : step.id === 3 ? (
-                  isDeploymentSuccessful ? "Deployment Successful" : "Deployment in Progress"
-                ) : (
-                  step.description
-                )}
+                {step.id === 2
+                  ? buildTimer > 0
+                    ? `Building (0:${formatBuildTimer(buildTimer)})`
+                    : "Build Successful"
+                  : step.id === 3
+                    ? isDeploymentSuccessful
+                      ? "Deployment Successful"
+                      : "Deployment in Progress"
+                    : step.description}
               </span>
             </p>
           )}
@@ -219,7 +229,7 @@ const StepComponent: React.FC<{
             <div
               className={`max-md:w-auto fade-in ${
                 step.id === 4 ? "flex flex-col" : "grid grid-cols-2 grid-rows-2"
-              } sm:w-[600px] lg:w-[500px] xl:w-[600px] md:min-h-[77px] gap-y-[8px] border border-[#363838] hover:shadow-xl cardDetails cursor-pointer ${disableLoading ? "sm:w-[100vw-0px] lg:w-[700px] max-sm:w-[100vw-50px] 2xl:w-[900px]":"2xl:w-[700px]"} bg-medium-grey-color bg-opacity/50 max-md:ml-[-50px] md:ml-[-50px] z-[10] mt-[10px] md:py-[15px] md:px-[50px] max-md:p-3 max-md:py-8 rounded-lg relative`}
+              } sm:w-[600px] lg:w-[500px] xl:w-[600px] md:min-h-[77px] gap-y-[8px] border border-[#363838] hover:shadow-xl cardDetails cursor-pointer ${disableLoading ? "sm:w-[100vw-0px] lg:w-[700px] max-sm:w-[100vw-50px] 2xl:w-[900px]" : "2xl:w-[700px]"} bg-medium-grey-color bg-opacity/50 max-md:ml-[-50px] md:ml-[-50px] z-[10] mt-[10px] md:py-[15px] md:px-[50px] max-md:p-3 max-md:py-8 rounded-lg relative`}
               onClick={toggleBuildPageDetails}
             >
               <img
@@ -258,18 +268,20 @@ const StepComponent: React.FC<{
                     <span className="text-description-color max-md:text-tiny md:text-base font-normal">
                       {step.id === 2 && buildTimer > 0
                         ? formatTimeAgo(timeElapsed)
-                        : step.id === 3 ? (
-                            isDeploymentSuccessful ? formatTimeAgo(timeElapsed) : "Deployment in Progress"
-                          ) : formatTimeAgo(timeElapsed)}
+                        : step.id === 3
+                          ? isDeploymentSuccessful
+                            ? formatTimeAgo(timeElapsed)
+                            : "Deployment in Progress"
+                          : formatTimeAgo(timeElapsed)}
                     </span>
                   )}
                   {detail.label === "Deploying" && (
                     <div className="text-white max-md:text-tiny md:text-base font-normal">
-                      {step.id === 3 ? (
-                        buildTimer > 0 ? `(0:${formatBuildTimer(buildTimer)})` : "Successful"
-                      ) : (
-                        step.description
-                      )}
+                      {step.id === 3
+                        ? buildTimer > 0
+                          ? `(0:${formatBuildTimer(buildTimer)})`
+                          : "Successful"
+                        : step.description}
                     </div>
                   )}
                   <span
@@ -292,14 +304,15 @@ const StepComponent: React.FC<{
                       </p>
                       <p className="border mt-[1px] text-base leading-[24px] rounded-full text-center border-dark-blue bg-medium-grey-color text-dark-blue py-[1px] px-[14px]">
                         {
-                          step.details.find((detail) => detail.label === "Status")
-                            ?.value
+                          step.details.find(
+                            (detail) => detail.label === "Status",
+                          )?.value
                         }
                       </p>
                     </div>
                   )}
                   {step.details.some(
-                    (detail) => detail.label === "Environment"
+                    (detail) => detail.label === "Environment",
                   ) && (
                     <div className="mr-4">
                       <p className="text-description-color text-center text-tiny leading-[24px]">
@@ -308,21 +321,24 @@ const StepComponent: React.FC<{
                       <p className="text-white mt-[1px] leading-[24px] text-lg rounded-full py-[1px]">
                         {
                           step.details.find(
-                            (detail) => detail.label === "Environment"
+                            (detail) => detail.label === "Environment",
                           )?.value
                         }
                       </p>
                     </div>
                   )}
-                  {step.details.some((detail) => detail.label === "Cluster") && (
+                  {step.details.some(
+                    (detail) => detail.label === "Cluster",
+                  ) && (
                     <div>
                       <p className="text-description-color text-tiny leading-[24px]">
                         Cluster
                       </p>
                       <p className="text-white mt-[1px] leading-[24px] text-lg rounded-full py-[1px]">
                         {
-                          step.details.find((detail) => detail.label === "Cluster")
-                            ?.value
+                          step.details.find(
+                            (detail) => detail.label === "Cluster",
+                          )?.value
                         }
                       </p>
                     </div>
@@ -331,15 +347,21 @@ const StepComponent: React.FC<{
               )}
               {step.details.some((detail) => detail.label === "Link") && (
                 <div className="mt-4 flex gap-0 items-center w-fit">
-                  <Route/>
+                  <Route />
                 </div>
               )}
               {step.details.some((detail) => detail.label === "Docker") && (
                 <div className="mt-2 flex gap-0 items-center">
                   {step.details.some((detail) => detail.label === "Docker") && (
                     <img
-                      src={step.details.find((detail) => detail.label === "Docker")?.image}
-                      alt={step.details.find((detail) => detail.label === "Docker")?.label}
+                      src={
+                        step.details.find((detail) => detail.label === "Docker")
+                          ?.image
+                      }
+                      alt={
+                        step.details.find((detail) => detail.label === "Docker")
+                          ?.label
+                      }
                       className={`mr-2 ${
                         step.id === 4 ? "w-4 h-4" : "w-4 h-4"
                       }`}
@@ -347,7 +369,8 @@ const StepComponent: React.FC<{
                   )}
                   <p className="text-description-color text-base">
                     {
-                      step.details.find((detail) => detail.label === "Docker")?.value
+                      step.details.find((detail) => detail.label === "Docker")
+                        ?.value
                     }
                   </p>
                 </div>

@@ -23,7 +23,7 @@ export const GlowingStarsBackgroundCard = ({
       }}
       className={cn(
         "bg-background background-svg bg-cover p-0 max-h-auto relative overflow-clip h-full max-w-auto w-full rounded-lg border border-light-grey-color border-opacity-20 dark:border-neutral-600",
-        className
+        className,
       )}
     >
       <div className="flex justify-center items-center">
@@ -42,12 +42,16 @@ export const GlowingStarsDescription = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <p className={cn("text-base z-[1000] absolute top-[100px] left-[2%] md:left-[10%] 2xl:left-[6%] text-white", className)}>
+    <p
+      className={cn(
+        "text-base z-[1000] absolute top-[100px] left-[2%] md:left-[10%] 2xl:left-[6%] text-white",
+        className,
+      )}
+    >
       {children}
     </p>
   );
 };
-
 
 export const Illustration = ({ mouseEnter }: { mouseEnter: boolean }) => {
   const stars = 0;
@@ -60,7 +64,7 @@ export const Illustration = ({ mouseEnter }: { mouseEnter: boolean }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       highlightedStars.current = Array.from({ length: 5 }, () =>
-        Math.floor(Math.random() * stars)
+        Math.floor(Math.random() * stars),
       );
       setGlowingStars([...highlightedStars.current]);
     }, 3000);

@@ -1,8 +1,4 @@
 import {
-  START_TYPING_ANIMATION,
-  COMPLETE_TYPING_ANIMATION,
-  ADD_MESSAGE,
-  RESET_MESSAGES,
   TOGGLE_TYPING,
   SET_CATEGORY,
   DELETE_CATEGORY,
@@ -74,17 +70,17 @@ const chatReducer = (state = initialState, action) => {
       return {
         ...state,
         inProgressRequests: state.inProgressRequests.filter(
-          (request) => request !== action.payload
+          (request) => request !== action.payload,
         ),
       };
 
-      case 'ADD_MESSAGE':
-        return {
-          ...state,
-          messages: [...state.messages, action.payload],
-        };
+    case "ADD_MESSAGE":
+      return {
+        ...state,
+        messages: [...state.messages, action.payload],
+      };
 
-        case 'RESET_MESSAGES':
+    case "RESET_MESSAGES":
       return {
         ...state,
         messages: [],
@@ -105,7 +101,7 @@ const chatReducer = (state = initialState, action) => {
       return {
         ...state,
         categories: state.categories.filter(
-          (category) => category.id !== action.payload
+          (category) => category.id !== action.payload,
         ),
       };
 

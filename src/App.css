@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-    .prose h2:last-of-type {
-      margin-bottom: 60px;
-    }
+  .prose h2:last-of-type {
+    margin-bottom: 60px;
   }
+}

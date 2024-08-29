@@ -1,18 +1,18 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from "react";
 
 const SlugContext = createContext();
 
 export function SlugProvider({ children }) {
   const [slug, setSlug] = useState(() => {
-    const savedSlug = localStorage.getItem('slug');
+    const savedSlug = localStorage.getItem("slug");
     return savedSlug ? JSON.parse(savedSlug) : null;
   });
 
   useEffect(() => {
     if (slug !== null) {
-      localStorage.setItem('slug', JSON.stringify(slug));
+      localStorage.setItem("slug", JSON.stringify(slug));
     } else {
-      localStorage.removeItem('slug');
+      localStorage.removeItem("slug");
     }
   }, [slug]);
 
@@ -26,7 +26,7 @@ export function SlugProvider({ children }) {
 export function useSlug() {
   const context = useContext(SlugContext);
   if (context === undefined) {
-    throw new Error('useSlug must be used within a SlugProvider');
+    throw new Error("useSlug must be used within a SlugProvider");
   }
   return context;
 }

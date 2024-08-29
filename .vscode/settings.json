@@ -1,11 +1,4 @@
 {
-    "svn.ignoreMissingSvnWarning": true,
-    "cSpell.words": [
-        "Caox",
-        "mbma",
-        "mzxja",
-        "Nexlayer",
-        "noreferrer",
-        "svgs"
-    ]
+  "svn.ignoreMissingSvnWarning": true,
+  "cSpell.words": ["Caox", "mbma", "mzxja", "Nexlayer", "noreferrer", "svgs"]
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { deploymentData } from "../constants/Framework";
 import NodeJs from "../assets/svgs/node.svg";
-import Route from "../components/common/route/route"
+import Route from "../components/common/route/route";
 const DeploymentDetails = ({
   handleMenuClick,
   toggleBuildPageDetailsHide,
@@ -70,7 +70,7 @@ const DeploymentDetails = ({
             </p>
           </div>
         </div>
-        <Route/>
+        <Route />
       </div>
 
       <div className="flex justify-between items-center">

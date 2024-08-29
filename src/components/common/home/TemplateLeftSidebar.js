@@ -52,7 +52,11 @@ const TemplateLeftSidebar = ({ handleMenuClick }) => {
               onClick={() => handleButtonClick(item.key)}
             >
               {activeMenu === item.key && (
-                <img className="pb-1 hidden md:block" src={Tick} alt="Tick SVG" />
+                <img
+                  className="pb-1 hidden md:block"
+                  src={Tick}
+                  alt="Tick SVG"
+                />
               )}
               <p
                 className={`text-left font-medium text-base text-description-color ${

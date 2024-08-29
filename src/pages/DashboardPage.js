@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCardTitle } from "../context/CardTitleContext";
 import { useCredit } from "../context/CreditContext";
 import ChatBotIcon from "../components/ChatBotIcon";
-import Route from "../components/common/route/route"
+import Route from "../components/common/route/route";
 
 function DashboardPage({ selectedCard }) {
   const { cardTitle } = useCardTitle();
@@ -52,7 +52,7 @@ function DashboardPage({ selectedCard }) {
                 </a>
               </div>
             </div>
-            <Route/>
+            <Route />
             <p className="text-base text-white leading-[24px]">1 service </p>
           </div>
         </div>

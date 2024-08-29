@@ -1,29 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useSelector } from "react-redux";
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
-import { PuffLoader } from 'react-spinners';
-import Highlighter from 'react-highlight-words';
-import { useCardTitle } from '../context/CardTitleContext';
-
+import { PuffLoader } from "react-spinners";
+import Highlighter from "react-highlight-words";
+import { useCardTitle } from "../context/CardTitleContext";
 
 const colors = {
   dateInfo: "#7FB7D9",
   plusInfo: "#FFFFBC",
-  default: "#FFBDFF"
+  default: "#FFBDFF",
 };
 
 const getCurrentTime = () => {
   const now = new Date();
-  const day = now.getDate().toString().padStart(2, '0');
-  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, "0");
+  const month = (now.getMonth() + 1).toString().padStart(2, "0");
   const year = now.getFullYear().toString().slice(-2);
   return `${month}/${day}/${year}`;
 };
-
 
 export default function BuildTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +29,7 @@ export default function BuildTabSidebar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [activeSearchIndex, setActiveSearchIndex] = useState(0);
-  const { cardTitle } = useCardTitle(); 
+  const { cardTitle } = useCardTitle();
   const deploymentName = cardTitle;
   const logsData = useSelector((state) => state.deployment.logsData);
   const error = useSelector((state) => state.deployment.error);
@@ -62,12 +60,21 @@ export default function BuildTabSidebar() {
     "Last 30 days",
     "Custom",
   ];
-
   useEffect(() => {
     if (endOfLogRef.current) {
       endOfLogRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, []);
+  }, [endOfLogRef]);
+
+  const scrollToActiveSearchResult = useCallback(() => {
+    if (searchResults.length > 0 && searchRef.current) {
+      searchRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
+  }, [searchResults.length, searchRef]);
 
   useEffect(() => {
     if (searchTerm) {
@@ -82,43 +89,23 @@ export default function BuildTabSidebar() {
     } else {
       setSearchResults([]);
     }
-  }, [searchTerm, logsData]);
+  }, [searchTerm, logsData, scrollToActiveSearchResult]);
 
   useEffect(() => {
     if (searchResults.length > 0) {
       scrollToActiveSearchResult();
     }
-  }, [activeSearchIndex, searchResults]);
-
-  const scrollToActiveSearchResult = () => {
-    if (searchResults.length > 0 && searchRef.current) {
-      searchRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
-    }
-  };
+  }, [activeSearchIndex, searchResults, scrollToActiveSearchResult]);
 
   if (error) {
     return <p className="p-10 text-white">Error: {error}</p>;
   }
 
-  const handleSearchNavigation = (direction) => {
-    if (searchResults.length === 0) return;
 
-    let newIndex = activeSearchIndex + direction;
-    if (newIndex < 0) {
-      newIndex = searchResults.length - 1;
-    } else if (newIndex >= searchResults.length) {
-      newIndex = 0;
-    }
-    setActiveSearchIndex(newIndex);
-  };
 
   const logMessages = [
     `${getCurrentTime()} - Retrieving template ${deploymentName}...`,
-    `${getCurrentTime()} - Template retrieved`
+    `${getCurrentTime()} - Template retrieved`,
   ];
 
   return (
@@ -154,7 +141,9 @@ export default function BuildTabSidebar() {
                 <div
                   key={index}
                   className={`mt-[2px] p-[4px] flex justify-between items-center rounded-[7px] mx-[2px] ${
-                    index > 1 ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-[#1a393d]"
+                    index > 1
+                      ? "cursor-not-allowed opacity-50"
+                      : "cursor-pointer hover:bg-[#1a393d]"
                   } ${selectedOption === option && "bg-[#1a393d] rounded-[7px] mx-[2px]"}`}
                   onClick={() => handleOptionClick(option, index)}
                 >
@@ -196,7 +185,12 @@ export default function BuildTabSidebar() {
               logMessages.map((message, index) => (
                 <div
                   key={index}
-                  ref={searchResults.includes(index) && index === searchResults[activeSearchIndex] ? searchRef : null}
+                  ref={
+                    searchResults.includes(index) &&
+                    index === searchResults[activeSearchIndex]
+                      ? searchRef
+                      : null
+                  }
                   className="text-wrap py-1 text-[14px]"
                   style={{ color: colors.default }}
                 >

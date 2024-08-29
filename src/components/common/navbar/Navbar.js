@@ -17,18 +17,14 @@ const Navbar = () => {
       setNavbarContent(<DashboardNavbar />);
     } else if (location.pathname.startsWith("/details/")) {
       setNavbarContent(<DetailsNavbar />);
-    }else if (location.pathname.startsWith("/marketplace")) {
+    } else if (location.pathname.startsWith("/marketplace")) {
       setNavbarContent(<DetailsNavbar />);
     } else {
       setNavbarContent(<BuildNavbar />);
     }
   }, [location.pathname]);
 
-  return (
-    <div className="bg-background z-[1000]">
-      {navbarContent}
-    </div>
-  );
+  return <div className="bg-background z-[1000]">{navbarContent}</div>;
 };
 
 export default Navbar;

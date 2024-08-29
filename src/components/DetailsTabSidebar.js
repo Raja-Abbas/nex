@@ -12,7 +12,9 @@ export default function DetailsTabSidebar({ selectedCard }) {
 
   return (
     <div className="max-w-[100%] max-h-[calc(100vh-462px)] max-lg:max-h-screen xl:max-w-[100%] 2xl:max-w-[100%] p-5 overflow-y-auto scrollbar">
-      <p className="font-400 text-lg text-white">Deployed via Container Image</p>
+      <p className="font-400 text-lg text-white">
+        Deployed via Container Image
+      </p>
       <div className="mt-[15px] px-2 py-[8.5px] flex gap-[10px] items-center rounded-[7px] bg-card-color">
         <div className="flex justify-center items-center rounded-[7px] p-2 w-[38px] h-[38px] bg-background">
           <img src={cardToDisplay.logo} alt="Details Logo" />
@@ -59,9 +61,7 @@ export default function DetailsTabSidebar({ selectedCard }) {
       <p className="pt-5 font-normal text-tiny text-description-color">
         Restart Policy Max Retries
       </p>
-      <p className="pt-[5px] font-normal text-tiny text-white">
-        10
-      </p>
+      <p className="pt-[5px] font-normal text-tiny text-white">10</p>
     </div>
   );
 }

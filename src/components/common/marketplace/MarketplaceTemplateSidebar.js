@@ -11,7 +11,7 @@ const MarketPlaceTemplateSidebar = ({ handleMenuClick }) => {
     setIsSidebarVisible(false);
   };
 
- const menuItems = [
+  const menuItems = [
     { key: "All", text: "All" },
     { key: "Popular", text: "Popular" },
     { key: "Latest", text: "Latest" },
@@ -45,7 +45,11 @@ const MarketPlaceTemplateSidebar = ({ handleMenuClick }) => {
               onClick={() => handleButtonClick(item.key)}
             >
               {activeMenu === item.key && (
-                <img className="pb-1 hidden md:block w-4" src={Tick} alt="Tick SVG" />
+                <img
+                  className="pb-1 hidden md:block w-4"
+                  src={Tick}
+                  alt="Tick SVG"
+                />
               )}
               <p
                 className={`text-left font-medium text-base text-description-color ${

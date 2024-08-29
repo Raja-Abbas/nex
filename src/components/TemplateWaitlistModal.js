@@ -1,11 +1,10 @@
 import React from "react";
 import Modal from "./common/Modal";
 import githubIcon from "../assets/svgs/github.svg";
-import { useCredit } from '../context/CreditContext';
+import { useCredit } from "../context/CreditContext";
 
 const TemplateWaitlistModal = ({ isOpen, onClose, selectedCard }) => {
   const { setCredit } = useCredit();
-
 
   const handleShareIdeasClick = () => {
     setCredit(100);
@@ -33,7 +32,7 @@ const TemplateWaitlistModal = ({ isOpen, onClose, selectedCard }) => {
             <button
               className="text-gray-500 hover:text-gray-300 bg-white flex items-center gap-[10px] justify-center p-[8px] px-[20px] rounded-[5px]"
               onClick={handleShareIdeasClick}
-              >
+            >
               <img
                 src={githubIcon}
                 alt="Github logo"

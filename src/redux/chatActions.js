@@ -1,5 +1,5 @@
 export const ADD_MESSAGE = "ADD_MESSAGE";
-export const RESET_MESSAGES = 'RESET_MESSAGES';
+export const RESET_MESSAGES = "RESET_MESSAGES";
 export const TOGGLE_TYPING = "TOGGLE_TYPING";
 export const SET_CATEGORY = "SET_CATEGORY";
 export const DELETE_CATEGORY = "DELETE_CATEGORY";
@@ -45,7 +45,7 @@ export const fetchLogsData = () => async (dispatch) => {
 
     const lines = Array.isArray(data) ? data : data.split("\n");
     const logsCompleted = lines.some((line) =>
-      line.includes("Deployment Complete")
+      line.includes("Deployment Complete"),
     );
     dispatch(setLogsCompleted(logsCompleted));
   } catch (error) {
@@ -64,7 +64,7 @@ export const fetchMessages =
 
     try {
       const response = await fetch(
-        `http://34.111.99.46/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardTitle}`
+        `http://34.111.99.46/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardTitle}`,
       );
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
@@ -81,7 +81,7 @@ export const fetchMessages =
           sender: "AI",
           text: result,
           timestamp: new Date().toISOString(),
-        })
+        }),
       );
       dispatch({ type: FETCH_MESSAGES_SUCCESS, payload: requestId });
       dispatch(setLogsCompleted(true));

@@ -39,7 +39,8 @@ const StartProject = () => {
           Start your project
         </h1>
         <p className="mt-[30px] text-xl text-description-color leading-[24px]">
-          NexLayer is in limited preview release. Deploy an app to get your invitation.
+          NexLayer is in limited preview release. Deploy an app to get your
+          invitation.
         </p>
       </div>
       <div className="flex max-lg:flex-col max-lg:space-y-4 lg:space-x-4">
@@ -65,7 +66,7 @@ const StartProject = () => {
           className="flex gap-2 items-center justify-between px-2 py-2 md:min-w-[304px] bg-medium-gray hover:bg-blue-700 border border-light-grey-color rounded-[7px]"
           onClick={() => handleTemplateClick("template")}
         >
-            <img src={GridSvg} alt="GridSvg" />
+          <img src={GridSvg} alt="GridSvg" />
           <p>Start with a Template</p>
           <img src={ArrowRightSvg} alt="ArrowRightSvg" />
         </button>

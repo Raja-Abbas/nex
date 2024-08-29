@@ -1,6 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useSlug } from "../context/SlugContext";
 import Send from "../assets/svgs/send.svg";
 import StarChatbotImage from "../assets/svgs/StarChatbot.svg";
 import ThinkingIcon from "../assets/svgs/thinking";
@@ -33,13 +32,13 @@ export const highlightURLs = (text) => {
       </a>
     ) : (
       part
-    )
+    ),
   );
 };
 
 function Chatbot({ onClose }) {
   const [messages, setMessages] = useState(
-    () => JSON.parse(localStorage.getItem("chatMessages")) || []
+    () => JSON.parse(localStorage.getItem("chatMessages")) || [],
   );
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -51,20 +50,13 @@ function Chatbot({ onClose }) {
   const [showList, setShowList] = useState(false);
   const { url } = useSelector((state) => state.deployment);
   const [isSecondMessageShown, setIsSecondMessageShown] = useState(
-    () => JSON.parse(localStorage.getItem("isSecondMessageShown")) || false
+    () => JSON.parse(localStorage.getItem("isSecondMessageShown")) || false,
   );
-  const [activeConversation, setActiveConversation] = useState(false);
+  const [activeConversation, ] = useState(false);
   const isTyping = useSelector((state) => state.chat.isTyping);
   const logsCompleted = useSelector((state) => state.chat.logsCompleted);
   const categories = useSelector((state) => state.chat.categories);
 
-  useEffect(() => {
-    if (logsCompleted && !isSecondMessageShown) {
-      showSecondMessage();
-    }
-  }, [logsCompleted, isSecondMessageShown]);
-
-  const { slug } = useSlug();
 
   useEffect(() => {
     if (isOpen && !isSecondMessageShown) {
@@ -72,14 +64,7 @@ function Chatbot({ onClose }) {
     }
   }, [isOpen, isSecondMessageShown, dispatch]);
 
-  const toggleChat = useCallback(() => {
-    const finalMessages = messages.map((msg) =>
-      msg.typing ? { ...msg, typing: false } : msg
-    );
-    setMessages(finalMessages);
-    setIsOpen(!isOpen);
-    localStorage.setItem("chatMessages", JSON.stringify(finalMessages));
-  }, [isOpen, messages]);
+
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -112,15 +97,12 @@ function Chatbot({ onClose }) {
         });
       }, 2500);
     }
-  }, [
-    isSecondMessageShown,
-    dispatch,
-    namespace,
-    slug,
-    activeConversation,
-    setMessages,
-  ]);
-
+  }, [isSecondMessageShown, dispatch, activeConversation, setMessages, url]);
+  useEffect(() => {
+    if (logsCompleted && !isSecondMessageShown) {
+      showSecondMessage();
+    }
+  }, [logsCompleted,showSecondMessage, isSecondMessageShown]);
   const handleMessageSubmit = async () => {
     if (!input.trim()) return;
 
@@ -134,7 +116,7 @@ function Chatbot({ onClose }) {
     setTimeout(async () => {
       try {
         const response = await fetch(
-          `http://34.111.99.46/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardTitle}`
+          `http://34.111.99.46/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardTitle}`,
         );
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
@@ -156,7 +138,7 @@ function Chatbot({ onClose }) {
             typingMessage.text += finalResult.charAt(typingIndex);
             setMessages((prevMessages) => {
               return prevMessages.map((msg) =>
-                msg.typing ? typingMessage : msg
+                msg.typing ? typingMessage : msg,
               );
             });
             typingIndex++;
@@ -164,8 +146,8 @@ function Chatbot({ onClose }) {
           } else {
             setMessages((prevMessages) =>
               prevMessages.map((msg) =>
-                msg.typing ? { ...msg, typing: false } : msg
-              )
+                msg.typing ? { ...msg, typing: false } : msg,
+              ),
             );
             setIsLoading(false);
           }

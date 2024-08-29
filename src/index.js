@@ -32,7 +32,7 @@ root.render(
         </SlugProvider>
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 reportWebVitals();

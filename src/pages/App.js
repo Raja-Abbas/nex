@@ -18,8 +18,6 @@ import Refer from "./dashboard/refer";
 
 import { initializeTagManager } from "../gtm/gtm";
 function App() {
-
-
   useEffect(() => {
     initializeTagManager();
   }, []);
@@ -30,10 +28,10 @@ function App() {
   const backgroundClass = isMarketPlace
     ? "bg-[#031113] overflow-hidden"
     : isDynamicPage
-    ? "bg-[#031113] overflow-y-auto"
-    : isBuildPlace
-    ? "overflow-hidden background-svg bg-background"
-    : "bg-background background-svg overflow-y-auto";
+      ? "bg-[#031113] overflow-y-auto"
+      : isBuildPlace
+        ? "overflow-hidden background-svg bg-background"
+        : "bg-background background-svg overflow-y-auto";
   return (
     <div className="min-h-screen scrollbar max-h-screen flex flex-col">
       <Navbar />

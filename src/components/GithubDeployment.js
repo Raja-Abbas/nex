@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { MultiStepLoader } from "./aceternityComponents/multi-step-loader";
 import { steps } from "../constants/Framework";
 const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
@@ -63,18 +63,22 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
                 return detail;
               }),
             };
-          }
-          else if (step.subtextvalue === "Nodejs") {
+          } else if (step.subtextvalue === "Nodejs") {
             step.subtextvalue = selectedCard.title;
           }
         }
         return step;
       })
-      .filter((step, index, self) => self.findIndex((s) => s.id === step.id) === index);
+      .filter(
+        (step, index, self) =>
+          self.findIndex((s) => s.id === step.id) === index,
+      );
   }, [selectedCard]);
 
   return (
-    <div className={`w-full lg:w-[450px] xl:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}>
+    <div
+      className={`w-full lg:w-[450px] xl:w-[600px] 2xl:w-[700px] max-lg:mx-auto lg:ml-auto pt-[56px]`}
+    >
       {namespace && message && (
         <MultiStepLoader
           steps={updatedSteps}

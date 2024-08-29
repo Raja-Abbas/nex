@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 
 const WaitlistAfter = () => (
   <div className="text-center mt-[30px]">
-        <h2 className="text-light-blue text-3xl mb-[27px] font-bold leading-[150%]">
-          Thank you for joining the waitlist!
-        </h2>
-        <p className="text-white text-lg leading-[150%] mb-[45px]">
-          Your spot is secured, and we're thrilled to have you on board. {" "}
-          <br className="max-md:hidden" />
-          Keep an eye on your inbox to learn more about NexLayer.
-        </p>
+    <h2 className="text-light-blue text-3xl mb-[27px] font-bold leading-[150%]">
+      Thank you for joining the waitlist!
+    </h2>
+    <p className="text-white text-lg leading-[150%] mb-[45px]">
+      Your spot is secured, and we're thrilled to have you on board.{" "}
+      <br className="max-md:hidden" />
+      Keep an eye on your inbox to learn more about NexLayer.
+    </p>
   </div>
 );
 
@@ -46,7 +46,7 @@ const NewsletterForm = ({ isOpen, onClose }) => {
     localStorage.setItem("loops-form-timestamp", timestamp);
 
     const formBody = `userGroup=Waitlist&mailingLists=&email=${encodeURIComponent(
-      email
+      email,
     )}`;
 
     try {
@@ -58,7 +58,7 @@ const NewsletterForm = ({ isOpen, onClose }) => {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-        }
+        },
       );
       const data = await response.json();
 
@@ -89,8 +89,10 @@ const NewsletterForm = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed w-full h-full bg-[#070707] bg-opacity-75 inset-0 z-[10000] flex items-center justify-center"
-    onClick={handleOverlayClick}>
+    <div
+      className="fixed w-full h-full bg-[#070707] bg-opacity-75 inset-0 z-[10000] flex items-center justify-center"
+      onClick={handleOverlayClick}
+    >
       <div className="bg-background relative text-center bg-opacity-100 z-[1000] p-6 rounded-md shadow-xl my-[45px] mx-[55px] max-md:w-full md:w-[663px] max-md:h-auto md:h-auto">
         {showWaitlistAfter ? (
           <WaitlistAfter />

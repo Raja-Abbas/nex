@@ -9,7 +9,8 @@ const DeployComponent = () => {
   let navigate = useNavigate();
 
   const isValidGitHubUrl = (url) => {
-    const pattern = /^(https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/?)$/;
+    const pattern =
+      /^(https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/?)$/;
     return pattern.test(url);
   };
 
@@ -21,7 +22,7 @@ const DeployComponent = () => {
 
     if (!isValidGitHubUrl(repoUrl)) {
       setErrorMessage("Please enter a valid GitHub repository URL.");
-      return
+      return;
     }
 
     setErrorMessage("");
@@ -56,7 +57,9 @@ const DeployComponent = () => {
           </div>
         </label>
         {errorMessage && (
-          <div className="text-base text-dark-blue mt-2 text-center">{errorMessage}</div>
+          <div className="text-base text-dark-blue mt-2 text-center">
+            {errorMessage}
+          </div>
         )}
       </div>
     </div>

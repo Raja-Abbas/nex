@@ -31,11 +31,7 @@ const MarketplaceTemplateWaitlistModal = ({ isOpen, onClose, cardData }) => {
               className="text-gray-500 font-bold hover:text-gray-300 bg-white flex items-center gap-[10px] justify-center p-[8px] px-[20px] pr-[30px] rounded-[5px]"
               onClick={handleShareIdeasClick}
             >
-              <img
-                src={githubIcon}
-                alt="Github logo"
-                className="w-[22px]"
-              />
+              <img src={githubIcon} alt="Github logo" className="w-[22px]" />
               Sign in with Github
             </button>
           </div>

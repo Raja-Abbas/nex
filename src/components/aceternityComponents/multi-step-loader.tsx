@@ -5,7 +5,6 @@ import StepComponent, { Step } from "./StepComponent";
 import { useSelector } from "react-redux";
 import NodeJs from "../../assets/svgs/node.svg";
 import ChatBotIcon from "../ChatBotIcon";
-import TemplateWaitlistModal from "../TemplateWaitlistModal";
 import Waitlist from "../WaitlistComponent";
 
 interface MultiStepLoaderProps {
@@ -157,8 +156,8 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
                 index === 2 && !logsCompleted
                   ? ""
                   : visibleSteps.length - 1
-                  ? "bottom-0"
-                  : ""
+                    ? "bottom-0"
+                    : ""
               }`}
               style={{ display: index < 2 || logsCompleted ? "block" : "none" }}
             ></div>
