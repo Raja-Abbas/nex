@@ -41,7 +41,7 @@ export const steps = [
         text: "white",
       },
       { label: "Time", value: "" },
-      { label: "", value: "Nexlayer Builder", image: ProjectXBox },
+      { label: "", value: "NexLayer Builder", image: ProjectXBox },
     ],
   },
   // {
