@@ -70,7 +70,7 @@ export default function CardsContent({ selectedMenu }) {
                     <span className="font-normal text-description-color">
                       By{" "}
                     </span>
-                    Nexlayer
+                    NexLayer
                   </p>
                 </div>
                 <div className="flex gap-4 items-center">

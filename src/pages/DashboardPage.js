@@ -34,7 +34,7 @@ function DashboardPage({ selectedCard }) {
             onClick={handleReferFriend}
             className="z-20 text-black absolute end-1 bg-light-blue hover:bg-opacity-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md max-md:text-xs md:text-lg px-4 lg:py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            Refer a Friend
+            Tell a Friend
           </button>
         </div>
         <div className="grid max-md:grid-cols-1 max-lg:grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 pb-10">

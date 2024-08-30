@@ -81,7 +81,7 @@ const DetailsPage = () => {
         text: "white",
       },
       { label: "", value: "10 seconds ago" },
-      { label: "", value: "Nexlayer Builder", image: ProjectXBox },
+      { label: "", value: "NexLayer Builder", image: ProjectXBox },
     ],
   };
 
