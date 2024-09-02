@@ -116,7 +116,7 @@ function Chatbot({ onClose }) {
     setTimeout(async () => {
       try {
         const response = await fetch(
-          `//34.111.99.46/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardTitle}`,
+          `http://34.111.99.46/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardTitle}`,
         );
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
