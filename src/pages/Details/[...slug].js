@@ -175,7 +175,7 @@ const DetailsPage = () => {
           </div>
         </div>
         <MDXProvider>
-          <div className="max-w-[750px] 2xl:max-w-[1014px] ml-2 prose pt-20 pb-20 prose-img:w-4 prose-code:text-white prose-lg prose-h1:text-3xl prose-h2:text-[24px] prose-h2:text-white prose-h1:text-white prose-em:text-[#89888d] prose-em:text-lg prose-em:font-bold prose-strong:text-[#89888d] prose-strong:font-semibold prose-a:text-white prose-li:marker:text-[#89888d] prose-li:font-bold prose-img:my-0 prose-img:mr-1 prose-ul:text-[#89888D] prose-blockquote:text-[#fff] prose-blockquote:text-opacity-70 prose-blockquote:border-l-5 prose-blockquote:border-l-[#374151] prose-blockquote:font-extrabold prose-ul:marker:text-[#89888D] marker:text-red-500 prose-hr:border-1 prose-hr:border-[#89888d] prose-hr:border-opacity-20 prose-p:mt-0 prose-p:mb-0 prose-strong:m-0">
+          <div className="max-w-[750px] 2xl:max-w-[1014px] ml-2 prose pt-20 pb-20 prose-img:w-4 prose-img:inline-flex prose-code:text-white prose-lg prose-h1:text-3xl prose-h2:text-[24px] prose-h2:text-white prose-h1:text-white prose-em:text-[#89888d] prose-em:text-lg prose-em:font-bold prose-strong:text-[#89888d] prose-strong:font-semibold prose-a:text-white prose-li:marker:text-[#89888d] prose-li:font-bold prose-img:my-0 prose-img:mr-1 prose-ul:text-[#89888D] prose-blockquote:text-[#fff] prose-blockquote:text-opacity-70 prose-blockquote:border-l-5 prose-blockquote:border-l-[#374151] prose-blockquote:font-extrabold prose-ul:marker:text-[#89888D] marker:text-red-500 prose-hr:border-1 prose-hr:border-[#89888d] prose-hr:border-opacity-20 prose-p:mt-0 prose-p:mb-0 prose-strong:m-0">
             <Content />
           </div>
         </MDXProvider>

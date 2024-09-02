@@ -205,7 +205,7 @@ const Refer = () => {
                   </button>
                   <input
                     ref={inputRef}
-                    placeholder="https://nexlater.io/invite/r/BZybi5Qf"
+                    placeholder="https://nexlayer.io/invite/r/BZybi5Qf"
                     disabled
                     type="link"
                     name="link"
