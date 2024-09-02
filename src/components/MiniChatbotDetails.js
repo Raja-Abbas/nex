@@ -103,25 +103,27 @@ function Chatbot({ onClose }) {
       showSecondMessage();
     }
   }, [logsCompleted,showSecondMessage, isSecondMessageShown]);
+  const baseURL = process.env.REACT_APP_API_BASE_URL;
+
   const handleMessageSubmit = async () => {
     if (!input.trim()) return;
-
+  
     const userMessage = { text: input, sender: "User" };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInput("");
     setIsLoading(true);
-
+  
     dispatch(toggleTyping(true));
-
+  
     setTimeout(async () => {
       try {
         const response = await fetch(
-          `http://34.111.99.46/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardTitle}`,
+          `${baseURL}/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardTitle}`,
         );
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
         let finalResult = "";
-
+  
         while (true) {
           const { done, value } = await reader.read();
           finalResult += decoder.decode(value, { stream: true });
@@ -129,10 +131,10 @@ function Chatbot({ onClose }) {
             break;
           }
         }
-
+  
         let typingIndex = 0;
         let typingMessage = { text: "", sender: "Bot", typing: true };
-
+  
         const typeMessage = () => {
           if (typingIndex < finalResult.length) {
             typingMessage.text += finalResult.charAt(typingIndex);
@@ -152,7 +154,7 @@ function Chatbot({ onClose }) {
             setIsLoading(false);
           }
         };
-
+  
         setMessages((prevMessages) => [...prevMessages, typingMessage]);
         typeMessage();
       } catch (error) {
@@ -166,6 +168,7 @@ function Chatbot({ onClose }) {
       dispatch(toggleTyping(false));
     }, 2000);
   };
+  
 
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
