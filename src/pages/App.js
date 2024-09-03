@@ -4,6 +4,7 @@ import {
   Route,
   Routes,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import BuildPage from "./BuildPage";
 import HomePage from "./HomePage";
@@ -19,22 +20,27 @@ import Refer from "./dashboard/refer";
 import { initializeTagManager } from "../gtm/gtm";
 
 function App() {
+  const location = useLocation();
+
   useEffect(() => {
     initializeTagManager();
+
+    if (window.location.pathname === "/marketplace") {
+      window.location.replace("/#/marketplace");
+    }
   }, []);
-  
-  const location = useLocation();
+
   const isDynamicPage = location.pathname.startsWith("/details/");
   const isMarketPlace = location.pathname === "/marketplace";
   const isBuildPlace = location.pathname === "/build";
-  
+
   const backgroundClass = isMarketPlace
     ? "bg-[#031113] overflow-hidden"
     : isDynamicPage
-      ? "bg-[#031113] overflow-y-auto"
-      : isBuildPlace
-        ? "overflow-hidden background-svg bg-background"
-        : "bg-background background-svg overflow-y-auto";
+    ? "bg-[#031113] overflow-y-auto"
+    : isBuildPlace
+    ? "overflow-hidden background-svg bg-background"
+    : "bg-background background-svg overflow-y-auto";
 
   return (
     <div className="min-h-screen scrollbar max-h-screen flex flex-col">
