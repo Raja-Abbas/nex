@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Routes,
   useLocation,
@@ -17,14 +17,17 @@ import MarketPlace from "./MarketPlace";
 import Refer from "./dashboard/refer";
 
 import { initializeTagManager } from "../gtm/gtm";
+
 function App() {
   useEffect(() => {
     initializeTagManager();
   }, []);
+  
   const location = useLocation();
   const isDynamicPage = location.pathname.startsWith("/details/");
   const isMarketPlace = location.pathname === "/marketplace";
   const isBuildPlace = location.pathname === "/build";
+  
   const backgroundClass = isMarketPlace
     ? "bg-[#031113] overflow-hidden"
     : isDynamicPage
@@ -32,6 +35,7 @@ function App() {
       : isBuildPlace
         ? "overflow-hidden background-svg bg-background"
         : "bg-background background-svg overflow-y-auto";
+
   return (
     <div className="min-h-screen scrollbar max-h-screen flex flex-col">
       <Navbar />
@@ -55,7 +59,7 @@ function App() {
 
 function AppWrapper() {
   return (
-    <Router>
+    <Router basename="/">
       <App />
     </Router>
   );
