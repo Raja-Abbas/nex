@@ -32,7 +32,7 @@ export const fetchDeploymentData = createAsyncThunk(
     try {
       dispatch(setFetching(true));
       const response = await fetchWithRetry(
-        `/startTemplateDeployment/${templateID}`,
+        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -73,7 +73,7 @@ export const fetchLogsData = createAsyncThunk(
   async ({ namespace, templateID }, { rejectWithValue, dispatch }) => {
     try {
       const response = await fetchWithRetry(
-        `/getDeploymentLogs/${namespace}/${templateID}`,
+        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {
