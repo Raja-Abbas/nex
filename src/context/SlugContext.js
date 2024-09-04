@@ -7,6 +7,7 @@ export function SlugProvider({ children }) {
     const savedSlug = localStorage.getItem("slug");
     return savedSlug ? JSON.parse(savedSlug) : null;
   });
+console.log("slug picked:", slug)
 
   useEffect(() => {
     if (slug !== null) {

@@ -9,6 +9,8 @@ import WhiteStarChatbotImage from "../assets/svgs/StarImage.svg";
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import EditIcon from "../assets/svgs/editIcon.svg";
 import CrossIcon from "../assets/svgs/crossIcon.svg";
+import { useSlug } from "../context/SlugContext";
+
 import {
   addMessage,
   resetMessages,
@@ -44,7 +46,6 @@ function Chatbot({ onClose }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const dispatch = useDispatch();
-  const { cardTitle } = useCardTitle();
   const { namespace } = useSelector((state) => state.deployment);
   const messagesEndRef = useRef(null);
   const [showList, setShowList] = useState(false);
@@ -56,8 +57,7 @@ function Chatbot({ onClose }) {
   const isTyping = useSelector((state) => state.chat.isTyping);
   const logsCompleted = useSelector((state) => state.chat.logsCompleted);
   const categories = useSelector((state) => state.chat.categories);
-
-
+  const { slug: cardSlug } = useSlug();
   useEffect(() => {
     if (isOpen && !isSecondMessageShown) {
       dispatch(toggleTyping(true));
@@ -116,7 +116,7 @@ function Chatbot({ onClose }) {
     setTimeout(async () => {
       try {
         const response = await fetch(
-          `/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardTitle}`,
+          `/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardSlug}`,
         );
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
