@@ -45,7 +45,7 @@ function DashboardPage({ selectedCard }) {
               </div>
               <div>
                 <a
-                  href="/build"
+                  href="/#/build"
                   className="px-[10px] py-[4.5px] font-normal text-sm rounded-full bg-light-blue text-[black]"
                 >
                   Redeploy
