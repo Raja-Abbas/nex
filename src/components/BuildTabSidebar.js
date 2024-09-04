@@ -17,8 +17,8 @@ const colors = {
 
 const getCurrentTime = () => {
   const now = new Date();
-  const utcDate = now.toISOString(); // Get UTC time in ISO 8601 format
-  const formattedDate = utcDate.replace('T', ' ').slice(0, 19); // Format: YYYY-MM-DD HH:MM:SS
+  const utcDate = now.toISOString();
+  const formattedDate = utcDate.replace('T', ' ').slice(0, 19);
   return `${formattedDate} UTC info :`;
 };
 
