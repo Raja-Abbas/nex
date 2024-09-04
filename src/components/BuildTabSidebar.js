@@ -9,18 +9,19 @@ import { PuffLoader } from "react-spinners";
 import Highlighter from "react-highlight-words";
 import { useCardTitle } from "../context/CardTitleContext";
 
+// Colors for styling
 const colors = {
   dateInfo: "#7FB7D9",
   plusInfo: "#FFFFBC",
   default: "#FFBDFF",
 };
 
-const getCurrentTime = () => {
+// Generate and store the static timestamp
+const staticTimestamp = (() => {
   const now = new Date();
   const utcDate = now.toISOString();
-  const formattedDate = utcDate.replace('T', ' ').slice(0, 19);
-  return `${formattedDate} UTC info :`;
-};
+  return `${utcDate.replace('T', ' ').slice(0, 19)} UTC info :`;
+})();
 
 export default function BuildTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,10 +38,12 @@ export default function BuildTabSidebar() {
   const endOfLogRef = useRef(null);
   const searchRef = useRef(null);
 
+  // Handler to toggle the dropdown
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
+  // Handler to select an option from the dropdown
   const handleOptionClick = (option, index) => {
     if (index <= 1) {
       setSelectedOption(option);
@@ -48,6 +51,7 @@ export default function BuildTabSidebar() {
     }
   };
 
+  // Dropdown options
   const options = [
     "Live Logs",
     "Last hour",
@@ -59,12 +63,14 @@ export default function BuildTabSidebar() {
     "Last 30 days",
     "Custom",
   ];
+
   useEffect(() => {
     if (endOfLogRef.current) {
       endOfLogRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [endOfLogRef]);
 
+  // Scroll to the active search result
   const scrollToActiveSearchResult = useCallback(() => {
     if (searchResults.length > 0 && searchRef.current) {
       searchRef.current.scrollIntoView({
@@ -75,6 +81,7 @@ export default function BuildTabSidebar() {
     }
   }, [searchResults.length, searchRef]);
 
+  // Search functionality
   useEffect(() => {
     if (searchTerm) {
       const results = logsData
@@ -100,11 +107,10 @@ export default function BuildTabSidebar() {
     return <p className="p-10 text-white">Error: {error}</p>;
   }
 
-
-
+  // Static log messages with timestamp
   const logMessages = [
-    `${getCurrentTime()} Retrieving template ${deploymentName}...`,
-    `${getCurrentTime()} Template retrieved`,
+    `${staticTimestamp} Retrieving template ${deploymentName}...`,
+    `${staticTimestamp} Template retrieved`,
   ];
 
   return (
