@@ -17,10 +17,9 @@ const colors = {
 
 const getCurrentTime = () => {
   const now = new Date();
-  const day = now.getDate().toString().padStart(2, "0");
-  const month = (now.getMonth() + 1).toString().padStart(2, "0");
-  const year = now.getFullYear().toString().slice(-2);
-  return `${month}/${day}/${year}`;
+  const utcDate = now.toISOString(); // Get UTC time in ISO 8601 format
+  const formattedDate = utcDate.replace('T', ' ').slice(0, 19); // Format: YYYY-MM-DD HH:MM:SS
+  return `${formattedDate} UTC info :`;
 };
 
 export default function BuildTabSidebar() {
@@ -104,8 +103,8 @@ export default function BuildTabSidebar() {
 
 
   const logMessages = [
-    `${getCurrentTime()} - Retrieving template ${deploymentName}...`,
-    `${getCurrentTime()} - Template retrieved`,
+    `${getCurrentTime()} Retrieving template ${deploymentName}...`,
+    `${getCurrentTime()} Template retrieved`,
   ];
 
   return (
