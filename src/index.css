@@ -115,7 +115,7 @@ body,
   border-right: 0.15em solid transparent;
   white-space: nowrap;
   width: 0;
-  animation: typing 0.2s steps(25, end) forwards; /* 300ms */
+  animation: typing 0.2s steps(25, end) forwards;
 }
 .type2 {
   font-size: 2.5rem;
@@ -123,8 +123,8 @@ body,
   border-right: 0.15em solid transparent;
   white-space: nowrap;
   width: 0;
-  animation: typing 0.7s steps(25, end) forwards; /* 1s */
-  animation-delay: 1.4s; /* 1.5s */
+  animation: typing 0.7s steps(25, end) forwards;
+  animation-delay: 0.6s;
 }
 .type3 {
   font-size: 2.5rem;
@@ -132,8 +132,8 @@ body,
   border-right: 0.15em solid transparent;
   white-space: nowrap;
   width: 0;
-  animation: typing 0.7s steps(25, end) forwards; /* 1s */
-  animation-delay: 2.1s; /* 2s */
+  animation: typing 0.7s steps(25, end) forwards;
+  animation-delay: 1.2s;
 }
 .type4 {
   font-size: 2.5rem;

@@ -81,7 +81,7 @@ const StepComponent: React.FC<{
     if (step.details) {
       const detailsTimeout = setTimeout(() => {
         setShowDetails(true);
-      }, 4000);
+      }, 3000);
 
       return () => clearTimeout(detailsTimeout);
     }
@@ -96,7 +96,7 @@ const StepComponent: React.FC<{
           setShowInProgress(false);
           startElapsedTime();
         }, 10000);
-      }, 2000);
+      }, 1000);
 
       return () => clearTimeout(timeout);
     } else {

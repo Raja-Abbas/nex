@@ -64,8 +64,8 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
 
           const stepDuration =
             steps[index].id === 2 || steps[index].id === 3
-              ? 10000
-              : steps[index].duration || 4000;
+              ? 4000
+              : steps[index].duration || 2000;
           setTimeout(() => {
             if (steps[index].id === 3) {
               setStep4EndTime(Date.now());
