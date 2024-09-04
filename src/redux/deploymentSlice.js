@@ -1,8 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setLogsCompleted } from "./chatActions";
+
 const SOCKET_SERVER_URL = "http://localhost:3003";
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const fetchWithRetry = async (url, options, retries = 3, delayMs = 1000) => {
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    if (error.message.includes('ERR_QUIC_PROTOCOL_ERROR') && retries > 0) {
+      console.warn(`Fetch failed with ERR_QUIC_PROTOCOL_ERROR. Retrying in ${delayMs}ms...`, error);
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+      return fetchWithRetry(url, options, retries - 1, delayMs);
+    } else {
+      throw error;
+    }
+  }
+};
+
 
 // Fetch deployment data
 export const fetchDeploymentData = createAsyncThunk(
@@ -13,8 +31,8 @@ export const fetchDeploymentData = createAsyncThunk(
 
     try {
       dispatch(setFetching(true));
-      const response = await fetch(
-        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
+      const response = await fetchWithRetry(
+        `/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -24,23 +42,18 @@ export const fetchDeploymentData = createAsyncThunk(
         }
       );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
       const data = await response.json();
 
       if (!data.namespace || !data.message) {
         throw new Error("Namespace or message is missing in the response.");
       }
 
-      // Log the URL if it exists in the response
       if (data.url) {
         console.log("Deployment URL:", data.url);
       }
 
       dispatch(setNamespace(data.namespace));
-      await delay(2000);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       dispatch(fetchLogsData({ namespace: data.namespace, templateID }));
       return data;
@@ -54,12 +67,13 @@ export const fetchDeploymentData = createAsyncThunk(
 );
 
 
+// Fetch logs data
 export const fetchLogsData = createAsyncThunk(
   "/getDeploymentLogs/:namespace/:templateID",
   async ({ namespace, templateID }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await fetch(
-        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
+      const response = await fetchWithRetry(
+        `/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -67,10 +81,6 @@ export const fetchLogsData = createAsyncThunk(
           },
         }
       );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
@@ -183,7 +193,6 @@ const deploymentSlice = createSlice({
   },
 });
 
-export const { resetDeploymentState, updateLogs, setFetching, setNamespace } =
-  deploymentSlice.actions;
+export const { resetDeploymentState, updateLogs, setFetching, setNamespace } = deploymentSlice.actions;
 
 export default deploymentSlice.reducer;

@@ -227,7 +227,7 @@ const StepComponent: React.FC<{
                 {step.id === 2
                   ? buildStatus === "Building"
                     ? `Building (0:${formatBuildTimer(buildTimer)})`
-                    : `Build Complete (${formatBuildTimer(buildTimer)})`
+                    : `Build Successful (${formatBuildTimer(buildTimer)})`
                   : step.id === 3
                   ? isDeploymentSuccessful
                     ? "Deployment Successful"
