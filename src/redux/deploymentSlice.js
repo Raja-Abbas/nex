@@ -1,7 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setLogsCompleted } from "./chatActions";
+import Cookies from "js-cookie";
+import { cardsData } from "../constants/Framework";
 
 const SOCKET_SERVER_URL = "http://localhost:3003";
+
+const getSlugByTemplateID = (templateID) => {
+  const card = cardsData.find(card => card.templateID === templateID);
+  return card ? card.slug : null;
+};
 
 const fetchWithRetry = async (url, options, retries = 3, delayMs = 1000) => {
   try {
@@ -21,7 +28,6 @@ const fetchWithRetry = async (url, options, retries = 3, delayMs = 1000) => {
   }
 };
 
-
 // Fetch deployment data
 export const fetchDeploymentData = createAsyncThunk(
   "/startTemplateDeployment/:templateID",
@@ -31,8 +37,11 @@ export const fetchDeploymentData = createAsyncThunk(
 
     try {
       dispatch(setFetching(true));
+      
+      const startTime = new Date().toISOString();
+
       const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
+        `/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -55,7 +64,7 @@ export const fetchDeploymentData = createAsyncThunk(
       dispatch(setNamespace(data.namespace));
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      dispatch(fetchLogsData({ namespace: data.namespace, templateID }));
+      dispatch(fetchLogsData({ namespace: data.namespace, templateID, startTime }));
       return data;
     } catch (error) {
       console.error("Error in fetchDeploymentData:", error);
@@ -66,14 +75,13 @@ export const fetchDeploymentData = createAsyncThunk(
   }
 );
 
-
 // Fetch logs data
 export const fetchLogsData = createAsyncThunk(
   "/getDeploymentLogs/:namespace/:templateID",
-  async ({ namespace, templateID }, { rejectWithValue, dispatch }) => {
+  async ({ namespace, templateID, startTime }, { rejectWithValue, dispatch, getState }) => {
     try {
       const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
+        `/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -102,6 +110,16 @@ export const fetchLogsData = createAsyncThunk(
 
           if (chunk.includes("Deployment Complete")) {
             deploymentComplete = true;
+
+            const endTime = new Date().toISOString();
+
+            const slug = getSlugByTemplateID(templateID);
+
+            Cookies.set("templateID", templateID, { expires: 7 });
+            Cookies.set("namespace", namespace, { expires: 7 });
+            Cookies.set("startTime", startTime, { expires: 7 });
+            Cookies.set("endTime", endTime, { expires: 7 });
+            Cookies.set("slug", slug, { expires: 7 });
           }
         }
       }
@@ -119,7 +137,6 @@ export const fetchLogsData = createAsyncThunk(
     }
   }
 );
-
 
 const deploymentSlice = createSlice({
   name: "deployment",
