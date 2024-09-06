@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Logo from "../../../assets/images/logoBuild.png";
-import Avatar from "react-avatar";
+import LinearAvatar from "../../../assets/svgs/linearAvatar.svg";
 import { Link, useLocation } from "react-router-dom";
 import { useCredit } from "../../../context/CreditContext";
 import { useCardTitle } from "../../../context/CardTitleContext";
@@ -52,18 +52,18 @@ const DashboardPageNavbar = () => {
         <div className="flex gap-6 items-center">
           <Link
             to="/dashboard"
-            className={`font-normal max-md:text-base md:text-lg ${isDashboardActive ? "text-white" : "text-description-color"} xs:block cursor-pointer hover:text-opacity-75 transition-all`}
+            className={`font-normal text-base ${isDashboardActive ? "text-white" : "text-[#A1A0AB]"} xs:block cursor-pointer hover:text-opacity-75 transition-all`}
           >
             Dashboard
           </Link>
-          <a href="https://feedback.nexlayer.io" rel="noreferrer" target="_blank" className="font-normal text-lg text-description-color max-md:hidden">
+          <a href="https://feedback.nexlayer.io" rel="noreferrer" target="_blank" className="font-normal text-base cursor-pointer hover:text-opacity-75 text-[#A1A0AB] max-md:hidden">
             Feedback
           </a>
-          <p className="font-normal max-md:text-base md:text-lg border rounded-lg py-1 px-3 border-dark-blue bg-medium-gray text-dark-blue">
+          <p className="font-normal text-base border rounded-lg py-1 px-3 border-dark-blue bg-medium-gray text-dark-blue">
             NexLayer Credit <span className="text-xl font-thin">|</span> $
             {animatedCredit.toFixed(0)}
           </p>
-          <Avatar facebookId="10000" size="40" round={true} />
+          <img src={LinearAvatar} alt="LinearAvatar" className="rounded-full p-1.5 border border-dark-blue" />
         </div>
       </div>
 
