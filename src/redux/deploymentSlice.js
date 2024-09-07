@@ -6,7 +6,7 @@ import { cardsData } from "../constants/Framework";
 const SOCKET_SERVER_URL = "http://localhost:3003";
 
 const getSlugByTemplateID = (templateID) => {
-  const card = cardsData.find(card => card.templateID === templateID);
+  const card = cardsData.find((card) => card.templateID === templateID);
   return card ? card.slug : null;
 };
 
@@ -18,8 +18,11 @@ const fetchWithRetry = async (url, options, retries = 3, delayMs = 1000) => {
     }
     return response;
   } catch (error) {
-    if (error.message.includes('ERR_QUIC_PROTOCOL_ERROR') && retries > 0) {
-      console.warn(`Fetch failed with ERR_QUIC_PROTOCOL_ERROR. Retrying in ${delayMs}ms...`, error);
+    if (error.message.includes("ERR_QUIC_PROTOCOL_ERROR") && retries > 0) {
+      console.warn(
+        `Fetch failed with ERR_QUIC_PROTOCOL_ERROR. Retrying in ${delayMs}ms...`,
+        error
+      );
       await new Promise((resolve) => setTimeout(resolve, delayMs));
       return fetchWithRetry(url, options, retries - 1, delayMs);
     } else {
@@ -37,11 +40,10 @@ export const fetchDeploymentData = createAsyncThunk(
 
     try {
       dispatch(setFetching(true));
-      
       const startTime = new Date().toISOString();
 
       const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
+        `/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -64,7 +66,9 @@ export const fetchDeploymentData = createAsyncThunk(
       dispatch(setNamespace(data.namespace));
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      dispatch(fetchLogsData({ namespace: data.namespace, templateID, startTime }));
+      dispatch(
+        fetchLogsData({ namespace: data.namespace, templateID, startTime })
+      );
       return data;
     } catch (error) {
       console.error("Error in fetchDeploymentData:", error);
@@ -78,10 +82,13 @@ export const fetchDeploymentData = createAsyncThunk(
 // Fetch logs data
 export const fetchLogsData = createAsyncThunk(
   "/getDeploymentLogs/:namespace/:templateID",
-  async ({ namespace, templateID, startTime }, { rejectWithValue, dispatch, getState }) => {
+  async (
+    { namespace, templateID, startTime },
+    { rejectWithValue, dispatch, getState }
+  ) => {
     try {
       const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
+        `/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -115,11 +122,11 @@ export const fetchLogsData = createAsyncThunk(
 
             const slug = getSlugByTemplateID(templateID);
 
-            Cookies.set("templateID", templateID, { expires: 7 });
-            Cookies.set("namespace", namespace, { expires: 7 });
-            Cookies.set("startTime", startTime, { expires: 7 });
-            Cookies.set("endTime", endTime, { expires: 7 });
-            Cookies.set("slug", slug, { expires: 7 });
+            Cookies.set("templateID", templateID, { expires: 60 });
+            Cookies.set("namespace", namespace, { expires: 60 });
+            Cookies.set("startTime", startTime, { expires: 60 });
+            Cookies.set("endTime", endTime, { expires: 60 });
+            Cookies.set("slug", slug, { expires: 60 });
           }
         }
       }
@@ -210,6 +217,7 @@ const deploymentSlice = createSlice({
   },
 });
 
-export const { resetDeploymentState, updateLogs, setFetching, setNamespace } = deploymentSlice.actions;
+export const { resetDeploymentState, updateLogs, setFetching, setNamespace } =
+  deploymentSlice.actions;
 
 export default deploymentSlice.reducer;
