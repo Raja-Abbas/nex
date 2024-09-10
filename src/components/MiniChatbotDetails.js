@@ -115,7 +115,7 @@ function Chatbot({ onClose }) {
 
     setTimeout(async () => {
       try {
-        const response = await fetch(`/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardSlug}&templateID=${templateID}`, {
+        const response = await fetch(`https://app.nexlayer.io/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardSlug}&templateID=${templateID}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
