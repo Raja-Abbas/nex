@@ -43,7 +43,7 @@ export const fetchDeploymentData = createAsyncThunk(
       const startTime = new Date().toISOString();
 
       const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
+        `/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -92,7 +92,7 @@ export const fetchLogsData = createAsyncThunk(
       const previousTemplateID = Cookies.get("templateID");
 
       const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
+        `/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {

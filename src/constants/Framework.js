@@ -12,6 +12,7 @@ import SaleorCommerce from "../assets/images/saleorCommerce.png";
 import LagoImage from "../assets/images/lagoImage.png";
 import CalImage from "../assets/images/cal.png";
 import MattermostImage from "../assets/images/mattermost.png";
+import Metabase from "../assets/images/materbase.png";
 
 export const steps = [
   {
@@ -163,6 +164,20 @@ export const cardsData = [
     text: "ai-powered-document-analysis",
     Marketplacecategory: "AI/ML",
     templateID: "0006",
+    Downloads: "2K",
+  },
+  {
+    logo: Metabase,
+    title: "Metabase",
+    slug: "metabase",
+    description:
+      "Open-source business intelligence platform",
+    provider: "NexLayer",
+    category: "All",
+    tag: "true",
+    text: "ai-powered-document-analysis",
+    Marketplacecategory: "AI/ML",
+    templateID: "0007",
     Downloads: "2K",
   },
 ];
