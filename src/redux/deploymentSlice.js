@@ -43,7 +43,7 @@ export const fetchDeploymentData = createAsyncThunk(
       const startTime = new Date().toISOString();
 
       const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
+        `/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -92,7 +92,7 @@ export const fetchLogsData = createAsyncThunk(
       const previousTemplateID = Cookies.get("templateID");
 
       const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
+        `/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -115,7 +115,7 @@ export const fetchLogsData = createAsyncThunk(
         Cookies.set("namespace", null);
         Cookies.set("slug", null);
         Cookies.set("templateID", null);
-        Cookies.set("deploymentSuccess", null);
+        Cookies.set("deploymentSuccess", false);
         Cookies.set("startTime", null);
         Cookies.set("endTime", null);
         Cookies.set("deploymentUrl", null);
@@ -139,13 +139,13 @@ export const fetchLogsData = createAsyncThunk(
             const endTime = new Date().toISOString();
             const slug = getSlugByTemplateID(templateID);
             
-            Cookies.set("templateID", templateID, { expires: 60 });
-            Cookies.set("namespace", namespace, { expires: 60 });
-            Cookies.set("startTime", startTime, { expires: 60 });
-            Cookies.set("endTime", endTime, { expires: 60 });
-            Cookies.set("slug", slug, { expires: 60 });
-            Cookies.set("deploymentSuccess", deploymentComplete, { expires: 60 });
-            Cookies.set("deploymentUrl", url, { expires: 60 });
+            Cookies.set("templateID", templateID);
+            Cookies.set("namespace", namespace);
+            Cookies.set("startTime", startTime);
+            Cookies.set("endTime", endTime);
+            Cookies.set("slug", slug);
+            Cookies.set("deploymentSuccess", deploymentComplete);
+            Cookies.set("deploymentUrl", url);
           }
         }
       }

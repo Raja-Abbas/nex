@@ -46,7 +46,7 @@ function Chatbot({ onClose }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const dispatch = useDispatch();
-  const { namespace } = useSelector((state) => state.deployment);
+  const { namespace, templateID } = useSelector((state) => state.deployment);
   const messagesEndRef = useRef(null);
   const [showList, setShowList] = useState(false);
   const { url } = useSelector((state) => state.deployment);
@@ -115,13 +115,23 @@ function Chatbot({ onClose }) {
 
     setTimeout(async () => {
       try {
-        const response = await fetch(
-          `/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardSlug}`,
-        );
+        const response = await fetch(`/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardSlug}&templateID=${templateID}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt: input,
+            namespace: namespace,
+            deploymentName: cardSlug,
+            templateID: templateID,
+          }),
+        });
+    
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
         let finalResult = "";
-
+    
         while (true) {
           const { done, value } = await reader.read();
           finalResult += decoder.decode(value, { stream: true });
@@ -129,30 +139,28 @@ function Chatbot({ onClose }) {
             break;
           }
         }
-
+    
         let typingIndex = 0;
         let typingMessage = { text: "", sender: "Bot", typing: true };
-
+    
         const typeMessage = () => {
           if (typingIndex < finalResult.length) {
             typingMessage.text += finalResult.charAt(typingIndex);
             setMessages((prevMessages) => {
-              return prevMessages.map((msg) =>
-                msg.typing ? typingMessage : msg,
-              );
+              return prevMessages.map((msg) => (msg.typing ? typingMessage : msg));
             });
             typingIndex++;
             setTimeout(typeMessage, 25);
           } else {
             setMessages((prevMessages) =>
               prevMessages.map((msg) =>
-                msg.typing ? { ...msg, typing: false } : msg,
-              ),
+                msg.typing ? { ...msg, typing: false } : msg
+              )
             );
             setIsLoading(false);
           }
         };
-
+    
         setMessages((prevMessages) => [...prevMessages, typingMessage]);
         typeMessage();
       } catch (error) {
@@ -165,6 +173,7 @@ function Chatbot({ onClose }) {
       }
       dispatch(toggleTyping(false));
     }, 2000);
+    
   };
 
   const handleToggle = () => {
