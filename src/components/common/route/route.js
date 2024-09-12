@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 import Globe from "../../../assets/svgs/globe.svg";
 import ThinkingIcon from "../../../assets/svgs/thinking";
 const SomeOtherComponent = () => {
-  // Read the URL from cookies
   const url = Cookies.get("deploymentUrl");
 
   return (

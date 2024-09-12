@@ -33,7 +33,7 @@ const fetchWithRetry = async (url, options, retries = 3, delayMs = 1000) => {
 export const fetchDeploymentStatus = createAsyncThunk(
   "deployment/fetchStatus",
   async (
-    { namespace, templateID, deploymentName, startTime },
+    { namespace, templateID, deploymentName, startTime, url },
     { rejectWithValue, dispatch }
   ) => {
     try {
@@ -58,7 +58,7 @@ export const fetchDeploymentStatus = createAsyncThunk(
       if (deploymentData.message === "ready") {
         const endTime = new Date().toISOString();
         const slug = getSlugByTemplateID(templateID);
-        const url = deploymentData.url || "";
+        const URL = url || "";
         deploymentComplete = true;
         Cookies.set("templateID", templateID);
         Cookies.set("namespace", namespace);
@@ -66,7 +66,7 @@ export const fetchDeploymentStatus = createAsyncThunk(
         Cookies.set("endTime", endTime);
         Cookies.set("slug", slug);
         Cookies.set("deploymentSuccess", deploymentComplete);
-        Cookies.set("deploymentUrl", url);
+        Cookies.set("deploymentUrl", URL);
 
         return { deploymentStatus: "complete" };
       }
@@ -136,7 +136,7 @@ export const fetchDeploymentData = createAsyncThunk(
 export const fetchLogsData = createAsyncThunk(
   "/getDeploymentLogs/:namespace/:templateID",
   async (
-    { namespace, templateID, startTime },
+    { namespace, templateID, startTime, url },
     { rejectWithValue, dispatch, getState }
   ) => {
     try {
@@ -203,6 +203,7 @@ export const fetchLogsData = createAsyncThunk(
           namespace,
           templateID,
           deploymentName: getSlugByTemplateID(templateID),
+          url,
         })
       );
 
