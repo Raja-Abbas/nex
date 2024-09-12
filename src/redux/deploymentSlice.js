@@ -38,7 +38,7 @@ export const fetchDeploymentStatus = createAsyncThunk(
   ) => {
     try {
       const response = await fetch(
-        `/checkSiteStatus/${namespace}/${deploymentName}`,
+        `${API_SERVER_URL}/checkSiteStatus/${namespace}/${deploymentName}`,
         {
           method: "GET",
           headers: {
@@ -91,7 +91,7 @@ export const fetchDeploymentData = createAsyncThunk(
       const startTime = new Date().toISOString();
 
       const response = await fetchWithRetry(
-        `/startTemplateDeployment/${templateID}`,
+        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -159,12 +159,8 @@ export const fetchLogsData = createAsyncThunk(
       }
 
 
-      // This needs to be bybassed completely during start deployment process
-      // I commented this out because it is still trying to validate deployment
-      // success using text. This logic needs to be relocated so that when a user
-      // clicks on logs it does this same process
-      /*const response = await fetch(
-        `/getDeploymentLogs/${namespace}/${templateID}`,
+      const response = await fetch(
+        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -183,7 +179,6 @@ export const fetchLogsData = createAsyncThunk(
       const decoder = new TextDecoder("utf-8");
 
       let done = false;
-      let deploymentComplete = false;
 
       while (!done) {
         const { value, done: streamDone } = await reader.read();
@@ -195,13 +190,8 @@ export const fetchLogsData = createAsyncThunk(
 
         if (chunk) {
           dispatch(updateLogs({ namespace, chunk }));
-
-          if (chunk.includes("Deployment Complete")) {
-            deploymentComplete = true;
-
-          }
         }
-      }*/
+      }
 
       const deploymentCompleteStatus = await dispatch(
         fetchDeploymentStatus({
@@ -216,12 +206,8 @@ export const fetchLogsData = createAsyncThunk(
         throw new Error("Deployment is not complete yet.");
       }
 
-      // I am forcing this to true to bypass this log logic
-      //dispatch(setLogsCompleted(deploymentComplete));
       dispatch(setLogsCompleted(true));
 
-      // This too
-      //return { namespace, completed: deploymentComplete, logsData: true };
       return { namespace, completed: true, logsData: true };
     } catch (error) {
       console.error("Error in fetchLogsData:", error);
