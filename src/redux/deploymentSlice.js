@@ -220,7 +220,9 @@ export const fetchLogsData = createAsyncThunk(
       //dispatch(setLogsCompleted(deploymentComplete));
       dispatch(setLogsCompleted(true));
 
-      return { namespace, completed: deploymentComplete, logsData: true };
+      // This too
+      //return { namespace, completed: deploymentComplete, logsData: true };
+      return { namespace, completed: true, logsData: true };
     } catch (error) {
       console.error("Error in fetchLogsData:", error);
       return rejectWithValue(error.message);
