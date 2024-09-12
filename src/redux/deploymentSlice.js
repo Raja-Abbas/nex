@@ -158,7 +158,12 @@ export const fetchLogsData = createAsyncThunk(
         Cookies.set("deploymentUrl", null);
       }
 
-      const response = await fetch(
+
+      // This needs to be bybassed completely during start deployment process
+      // I commented this out because it is still trying to validate deployment
+      // success using text. This logic needs to be relocated so that when a user
+      // clicks on logs it does this same process
+      /*const response = await fetch(
         `/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
@@ -196,7 +201,7 @@ export const fetchLogsData = createAsyncThunk(
 
           }
         }
-      }
+      }*/
 
       const deploymentCompleteStatus = await dispatch(
         fetchDeploymentStatus({
@@ -211,7 +216,9 @@ export const fetchLogsData = createAsyncThunk(
         throw new Error("Deployment is not complete yet.");
       }
 
-      dispatch(setLogsCompleted(deploymentComplete));
+      // I am forcing this to true to bypass this log logic
+      //dispatch(setLogsCompleted(deploymentComplete));
+      dispatch(setLogsCompleted(true));
 
       return { namespace, completed: deploymentComplete, logsData: true };
     } catch (error) {
