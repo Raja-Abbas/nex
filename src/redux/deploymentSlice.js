@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { cardsData } from "../constants/Framework";
 
 const SOCKET_SERVER_URL = "http://localhost:3003";
-
+const API_SERVER_URL = "http://app.nexlayer.io";
 const getSlugByTemplateID = (templateID) => {
   const card = cardsData.find((card) => card.templateID === templateID);
   return card ? card.slug : null;
@@ -30,6 +30,54 @@ const fetchWithRetry = async (url, options, retries = 3, delayMs = 1000) => {
     }
   }
 };
+export const fetchDeploymentStatus = createAsyncThunk(
+  "deployment/fetchStatus",
+  async (
+    { namespace, templateID, deploymentName, startTime },
+    { rejectWithValue, dispatch }
+  ) => {
+    try {
+      const response = await fetch(
+        `/checkSiteStatus/${namespace}/${deploymentName}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Error fetching deployment status. Status: ${response.status}`
+        );
+      }
+      const startTime = new Date().toISOString();
+      const deploymentData = await response.json();
+      let deploymentComplete = false;
+      if (deploymentData.message === "ready") {
+        const endTime = new Date().toISOString();
+        const slug = getSlugByTemplateID(templateID);
+        const url = deploymentData.url || "";
+        deploymentComplete = true;
+        Cookies.set("templateID", templateID);
+        Cookies.set("namespace", namespace);
+        Cookies.set("startTime", startTime);
+        Cookies.set("endTime", endTime);
+        Cookies.set("slug", slug);
+        Cookies.set("deploymentSuccess", deploymentComplete);
+        Cookies.set("deploymentUrl", url);
+
+        return { deploymentStatus: "complete" };
+      }
+
+      return { deploymentStatus: "in_progress" };
+    } catch (error) {
+      console.error("Error in fetchDeploymentStatus:", error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 // Fetch deployment data
 export const fetchDeploymentData = createAsyncThunk(
@@ -43,7 +91,7 @@ export const fetchDeploymentData = createAsyncThunk(
       const startTime = new Date().toISOString();
 
       const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
+        `/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -67,7 +115,12 @@ export const fetchDeploymentData = createAsyncThunk(
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       dispatch(
-        fetchLogsData({ namespace: data.namespace, templateID, startTime, url: data.url })
+        fetchLogsData({
+          namespace: data.namespace,
+          templateID,
+          startTime,
+          url: data.url,
+        })
       );
       return data;
     } catch (error) {
@@ -83,7 +136,7 @@ export const fetchDeploymentData = createAsyncThunk(
 export const fetchLogsData = createAsyncThunk(
   "/getDeploymentLogs/:namespace/:templateID",
   async (
-    { namespace, templateID, startTime, url },
+    { namespace, templateID, startTime },
     { rejectWithValue, dispatch, getState }
   ) => {
     try {
@@ -91,24 +144,8 @@ export const fetchLogsData = createAsyncThunk(
       const previousSlug = Cookies.get("slug");
       const previousTemplateID = Cookies.get("templateID");
 
-      const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder("utf-8");
-
-      let done = false;
-      let deploymentComplete = false;
-
       if (
-        previousNamespace !== namespace || 
+        previousNamespace !== namespace ||
         previousSlug !== getSlugByTemplateID(templateID) ||
         previousTemplateID !== templateID
       ) {
@@ -121,14 +158,35 @@ export const fetchLogsData = createAsyncThunk(
         Cookies.set("deploymentUrl", null);
       }
 
+      const response = await fetch(
+        `/getDeploymentLogs/${namespace}/${templateID}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Error fetching deployment logs. Status: ${response.status}`
+        );
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+
+      let done = false;
+      let deploymentComplete = false;
+
       while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
+        const { value, done: streamDone } = await reader.read();
+        done = streamDone;
+
         const chunk = decoder.decode(value || new Uint8Array(), {
           stream: !done,
         });
-
-        console.log("Chunk received:", chunk);
 
         if (chunk) {
           dispatch(updateLogs({ namespace, chunk }));
@@ -136,35 +194,31 @@ export const fetchLogsData = createAsyncThunk(
           if (chunk.includes("Deployment Complete")) {
             deploymentComplete = true;
 
-            const endTime = new Date().toISOString();
-            const slug = getSlugByTemplateID(templateID);
-            
-            Cookies.set("templateID", templateID);
-            Cookies.set("namespace", namespace);
-            Cookies.set("startTime", startTime);
-            Cookies.set("endTime", endTime);
-            Cookies.set("slug", slug);
-            Cookies.set("deploymentSuccess", deploymentComplete);
-            Cookies.set("deploymentUrl", url);
           }
         }
       }
 
-      if (deploymentComplete) {
-        dispatch(setLogsCompleted(true));
-      } else {
-        dispatch(setLogsCompleted(false));
+      const deploymentCompleteStatus = await dispatch(
+        fetchDeploymentStatus({
+          namespace,
+          templateID,
+          deploymentName: getSlugByTemplateID(templateID),
+        })
+      );
+
+      if (!deploymentCompleteStatus) {
+        throw new Error("Deployment is not complete yet.");
       }
 
-      return { namespace, completed: deploymentComplete };
+      dispatch(setLogsCompleted(deploymentComplete));
+
+      return { namespace, completed: deploymentComplete, logsData: true };
     } catch (error) {
       console.error("Error in fetchLogsData:", error);
       return rejectWithValue(error.message);
     }
   }
 );
-
-
 
 const deploymentSlice = createSlice({
   name: "deployment",

@@ -22,13 +22,13 @@ import { initializeTagManager } from "../gtm/gtm";
 function App() {
   const location = useLocation();
 
-  useEffect(() => {
-    initializeTagManager();
+  // useEffect(() => {
+  //   initializeTagManager();
 
-    if (window.location.pathname === "/marketplace") {
-      window.location.replace("/#/marketplace");
-    }
-  }, []);
+  //   if (window.location.pathname === "/marketplace") {
+  //     window.location.replace("/#/marketplace");
+  //   }
+  // }, []);
 
   const isDynamicPage = location.pathname.startsWith("/details/");
   const isMarketPlace = location.pathname === "/marketplace";
