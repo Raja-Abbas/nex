@@ -37,7 +37,7 @@ export const fetchDeploymentStatus = createAsyncThunk(
   ) => {
     try {
       const response = await fetch(
-        `${API_SERVER_URL}/checkSiteStatus/${namespace}/${deploymentName}`,
+        `/checkSiteStatus/${namespace}/${deploymentName}`,
         {
           method: "GET",
           headers: {
@@ -88,7 +88,7 @@ export const fetchDeploymentData = createAsyncThunk(
       dispatch(setFetching(true));
 
       const response = await fetchWithRetry(
-        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
+        `/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -125,7 +125,7 @@ export const fetchLogsData = createAsyncThunk(
   ) => {
     try {
       const response = await fetch(
-        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
+        `/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {
