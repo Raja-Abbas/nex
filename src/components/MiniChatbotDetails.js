@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import Send from "../assets/svgs/send.svg";
 import StarChatbotImage from "../assets/svgs/StarChatbot.svg";
 import ThinkingIcon from "../assets/svgs/thinking";
-import { useCardTitle } from "../context/CardTitleContext";
 import CategoryList from "./chatbot/CategoryList";
 import WhiteStarChatbotImage from "../assets/svgs/StarImage.svg";
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
@@ -34,13 +33,13 @@ export const highlightURLs = (text) => {
       </a>
     ) : (
       part
-    ),
+    )
   );
 };
 
 function Chatbot({ onClose }) {
   const [messages, setMessages] = useState(
-    () => JSON.parse(localStorage.getItem("chatMessages")) || [],
+    () => JSON.parse(localStorage.getItem("chatMessages")) || []
   );
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -49,13 +48,15 @@ function Chatbot({ onClose }) {
   const { namespace, templateID } = useSelector((state) => state.deployment);
   const messagesEndRef = useRef(null);
   const [showList, setShowList] = useState(false);
-  const { url } = useSelector((state) => state.deployment);
+  const url = useSelector((state) => state.deployment.url);
   const [isSecondMessageShown, setIsSecondMessageShown] = useState(
-    () => JSON.parse(localStorage.getItem("isSecondMessageShown")) || false,
+    () => JSON.parse(localStorage.getItem("isSecondMessageShown")) || false
   );
-  const [activeConversation, ] = useState(false);
+  const [activeConversation] = useState(false);
   const isTyping = useSelector((state) => state.chat.isTyping);
-  const logsCompleted = useSelector((state) => state.chat.logsCompleted);
+  const deploymentMessage = useSelector(
+    (state) => state.deployment.message
+  );
   const categories = useSelector((state) => state.chat.categories);
   const { slug: cardSlug } = useSlug();
   useEffect(() => {
@@ -63,8 +64,6 @@ function Chatbot({ onClose }) {
       dispatch(toggleTyping(true));
     }
   }, [isOpen, isSecondMessageShown, dispatch]);
-
-
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -99,10 +98,10 @@ function Chatbot({ onClose }) {
     }
   }, [isSecondMessageShown, dispatch, activeConversation, setMessages, url]);
   useEffect(() => {
-    if (logsCompleted && !isSecondMessageShown) {
+    if (deploymentMessage && !isSecondMessageShown) {
       showSecondMessage();
     }
-  }, [logsCompleted,showSecondMessage, isSecondMessageShown]);
+  }, [deploymentMessage, showSecondMessage, isSecondMessageShown]);
   const handleMessageSubmit = async () => {
     if (!input.trim()) return;
 
@@ -115,23 +114,26 @@ function Chatbot({ onClose }) {
 
     setTimeout(async () => {
       try {
-        const response = await fetch(`/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardSlug}&templateID=${templateID}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: input,
-            namespace: namespace,
-            deploymentName: cardSlug,
-            templateID: templateID,
-          }),
-        });
-    
+        const response = await fetch(
+          `/chat?prompt=${input}&namespace=${namespace}&deploymentName=${cardSlug}&templateID=${templateID}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: input,
+              namespace: namespace,
+              deploymentName: cardSlug,
+              templateID: templateID,
+            }),
+          }
+        );
+
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
         let finalResult = "";
-    
+
         while (true) {
           const { done, value } = await reader.read();
           finalResult += decoder.decode(value, { stream: true });
@@ -139,15 +141,17 @@ function Chatbot({ onClose }) {
             break;
           }
         }
-    
+
         let typingIndex = 0;
         let typingMessage = { text: "", sender: "Bot", typing: true };
-    
+
         const typeMessage = () => {
           if (typingIndex < finalResult.length) {
             typingMessage.text += finalResult.charAt(typingIndex);
             setMessages((prevMessages) => {
-              return prevMessages.map((msg) => (msg.typing ? typingMessage : msg));
+              return prevMessages.map((msg) =>
+                msg.typing ? typingMessage : msg
+              );
             });
             typingIndex++;
             setTimeout(typeMessage, 25);
@@ -160,7 +164,7 @@ function Chatbot({ onClose }) {
             setIsLoading(false);
           }
         };
-    
+
         setMessages((prevMessages) => [...prevMessages, typingMessage]);
         typeMessage();
       } catch (error) {
@@ -173,7 +177,6 @@ function Chatbot({ onClose }) {
       }
       dispatch(toggleTyping(false));
     }, 2000);
-    
   };
 
   const handleToggle = () => {

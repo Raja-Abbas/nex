@@ -31,8 +31,9 @@ const HomeNavbar = () => {
             Currently in stealth mode 🔒—alpha preview active! Expect wild
             glitches ⚠️ and surprises ahead 🎢🤪.
           </p>
-          <p className="max-sm:mr-[10px] font-normal text-xl text-description-color cursor-pointer"
-          onClick={() => handleDeployClick()}
+          <p
+            className="max-sm:mr-[10px] font-normal text-xl text-description-color cursor-pointer"
+            onClick={() => handleDeployClick()}
           >
             Signup
           </p>
@@ -44,10 +45,7 @@ const HomeNavbar = () => {
           onClick={handleOverlayClick}
         >
           <div className="bg-background max-md:mx-6 max-md:w-full max-md:h-fit max-md:my-10 text-black rounded-[10px] relative z-50">
-            <SignupModal
-              isOpen={isModalVisible}
-              onClose={handleCloseModal}
-            />
+            <SignupModal isOpen={isModalVisible} onClose={handleCloseModal} />
           </div>
         </div>
       )}

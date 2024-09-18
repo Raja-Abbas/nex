@@ -6,10 +6,6 @@ const GithubDeployment = ({ toggleBuildPageDetails, selectedCard }) => {
   const { message } = useSelector((state) => state.deployment);
   const { namespace } = useSelector((state) => state.deployment);
 
-  useEffect(() => {
-    console.log("Namespace:", namespace);
-    console.log("Message:", message);
-  }, [namespace, message]);
   const updatedSteps = useMemo(() => {
     const processedStepIds = new Set();
     return steps

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCardTitle } from "../context/CardTitleContext";
 import { useCredit } from "../context/CreditContext";
 import ChatBotIcon from "../components/ChatBotIcon";
-import Route from "../components/common/route/route";
+import Route from "../components/common/deploymenturl/deploymentUrl";
 
 function DashboardPage({ selectedCard }) {
   const { cardTitle } = useCardTitle();

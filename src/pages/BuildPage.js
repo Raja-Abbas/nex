@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import GithubDeployment from "../components/GithubDeployment";
 import DeploymentDetailsLayout from "../components/layouts/DeploymentDetailsLayout";
+import DeploymentStatusPolling from "../components/DeploymentStatusPolling";
 
 export default function BuildPage() {
   const [showDeploymentDetails, setShowDeploymentDetails] = useState(false);
@@ -25,6 +26,7 @@ export default function BuildPage() {
           : "max-lg:grid-cols-1 max-lg:grid-rows-2 h-auto"
       }`}
     >
+      <DeploymentStatusPolling />
       <div
         className={`${
           showDeploymentDetails

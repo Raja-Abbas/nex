@@ -20,7 +20,7 @@ const colors = {
 const staticTimestamp = (() => {
   const now = new Date();
   const utcDate = now.toISOString();
-  return `${utcDate.replace('T', ' ').slice(0, 19)} UTC info :`;
+  return `${utcDate.replace("T", " ").slice(0, 19)} UTC info :`;
 })();
 
 export default function BuildTabSidebar() {
@@ -85,8 +85,10 @@ export default function BuildTabSidebar() {
   useEffect(() => {
     if (searchTerm) {
       const results = logsData
-        .map((line, index) => (line.toLowerCase().includes(searchTerm.toLowerCase()) ? index : -1))
-        .filter(index => index !== -1);
+        .map((line, index) =>
+          line.toLowerCase().includes(searchTerm.toLowerCase()) ? index : -1,
+        )
+        .filter((index) => index !== -1);
       setSearchResults(results);
       if (results.length > 0) {
         setActiveSearchIndex(0);

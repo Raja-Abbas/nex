@@ -6,7 +6,8 @@ import chatReducer from "./chatReducer";
 import Cookies from "js-cookie";
 
 const generateRandom13DigitNumber = (length = 16) => {
-  const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const charset =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let password = "";
 
   for (let i = 0; i < length; i++) {
@@ -18,10 +19,10 @@ const generateRandom13DigitNumber = (length = 16) => {
   return password;
 };
 
-let sessionID = Cookies.get('sessionID');
+let sessionID = Cookies.get("sessionID");
 if (!sessionID) {
   sessionID = generateRandom13DigitNumber();
-  Cookies.set('sessionID', sessionID, { expires: 60 });
+  Cookies.set("sessionID", sessionID, { expires: 60 });
 }
 
 const persistConfig = {

@@ -9,7 +9,7 @@ import GithubLogoCard from "../../assets/svgs/githubLogoCard.svg";
 import ProjectXBox from "../../assets/svgs/projectXBox.svg";
 import NodejsTemplate from "../../assets/svgs/nodejsTemplate.svg";
 import Node from "../../assets/svgs/node.svg";
-import Route from "../../components/common/route/route";
+import Route from "../common/deploymenturl/deploymentUrl";
 import { useSelector } from "react-redux";
 
 const images = {
@@ -74,8 +74,9 @@ const StepComponent: React.FC<{
   const [showDetails, setShowDetails] = useState(false);
   const [deploymentSuccessful, setDeploymentSuccessful] =
     useState<boolean>(false);
-
-  const logsCompleted = useSelector((state: any) => state.chat.logsCompleted);
+  const deploymentMessage = useSelector(
+    (state: any) => state.deployment.message,
+  );
   const [buildStatus, setBuildStatus] = useState<string>("");
 
   useEffect(() => {
@@ -122,7 +123,7 @@ const StepComponent: React.FC<{
 
   useEffect(() => {
     if (step.id === 3) {
-      if (!logsCompleted) {
+      if (!deploymentMessage) {
         const countdown = setInterval(() => {
           setBuildTimer((prev) => prev + 1);
         }, 1000);
@@ -132,7 +133,7 @@ const StepComponent: React.FC<{
         setDeploymentSuccessful(true);
       }
     }
-  }, [step.id, logsCompleted]);
+  }, [step.id, deploymentMessage]);
 
   const formatBuildTimer = (buildTimer: number): string => {
     if (buildTimer < 60) {
@@ -148,10 +149,10 @@ const StepComponent: React.FC<{
   };
 
   useEffect(() => {
-    if (logsCompleted && step.id === 3) {
+    if (deploymentMessage && step.id === 3) {
       setDeploymentSuccessful(true);
     }
-  }, [logsCompleted, step.id]);
+  }, [deploymentMessage, step.id]);
 
   const startElapsedTime = () => {
     const timer = setInterval(() => {
@@ -176,8 +177,8 @@ const StepComponent: React.FC<{
 
   const Image = images[step.image];
   const isDeploymentSuccessful =
-    logsCompleted && step.id === 3 && deploymentSuccessful;
-  if (step.id === 4 && !logsCompleted) {
+    deploymentMessage && step.id === 3 && deploymentSuccessful;
+  if (step.id === 4 && !deploymentMessage) {
     return null;
   }
   return (
@@ -211,13 +212,13 @@ const StepComponent: React.FC<{
           {step.subtext && (
             <p className="mt-1 flex text-base text-description-color max-w-max type2 font-normal leading-[150%]">
               {step.subtext}
-              <p className="ml-2 text-white">{step.subtextvalue}</p>
+              <span className="ml-2 text-white">{step.subtextvalue}</span>
             </p>
           )}
           {step.namepacetext && (
             <p className="mt-1 flex text-base text-description-color max-w-max type3 font-normal leading-[150%]">
               {step.namepacetext}
-              <p className="ml-2 text-white">{namespaceStepper}</p>
+              <span className="ml-2 text-white">{namespaceStepper}</span>
             </p>
           )}
           {step.description && (
@@ -229,10 +230,10 @@ const StepComponent: React.FC<{
                     ? `Building (0:${formatBuildTimer(buildTimer)})`
                     : `Build Successful (${formatBuildTimer(buildTimer)})`
                   : step.id === 3
-                  ? isDeploymentSuccessful
-                    ? "Deployment Successful"
-                    : "Deployment in Progress"
-                  : step.description}
+                    ? isDeploymentSuccessful
+                      ? "Deployment Successful"
+                      : "Deployment in Progress"
+                    : step.description}
               </span>
             </p>
           )}
@@ -289,10 +290,10 @@ const StepComponent: React.FC<{
                       {step.id === 2 && buildTimer > 0
                         ? formatTimeAgo(timeElapsed)
                         : step.id === 3
-                        ? isDeploymentSuccessful
-                          ? formatTimeAgo(timeElapsed)
-                          : "Deployment in Progress"
-                        : formatTimeAgo(timeElapsed)}
+                          ? isDeploymentSuccessful
+                            ? formatTimeAgo(timeElapsed)
+                            : "Deployment in Progress"
+                          : formatTimeAgo(timeElapsed)}
                     </span>
                   )}
                   {detail.label === "Deploying" && (
@@ -325,14 +326,14 @@ const StepComponent: React.FC<{
                       <p className="border mt-[1px] text-base leading-[24px] rounded-full text-center border-dark-blue bg-medium-grey-color text-dark-blue py-[1px] px-[14px]">
                         {
                           step.details.find(
-                            (detail) => detail.label === "Status"
+                            (detail) => detail.label === "Status",
                           )?.value
                         }
                       </p>
                     </div>
                   )}
                   {step.details.some(
-                    (detail) => detail.label === "Environment"
+                    (detail) => detail.label === "Environment",
                   ) && (
                     <div className="mr-4">
                       <p className="text-description-color text-center text-tiny leading-[24px]">
@@ -341,14 +342,14 @@ const StepComponent: React.FC<{
                       <p className="text-white mt-[1px] leading-[24px] text-lg rounded-full py-[1px]">
                         {
                           step.details.find(
-                            (detail) => detail.label === "Environment"
+                            (detail) => detail.label === "Environment",
                           )?.value
                         }
                       </p>
                     </div>
                   )}
                   {step.details.some(
-                    (detail) => detail.label === "Cluster"
+                    (detail) => detail.label === "Cluster",
                   ) && (
                     <div>
                       <p className="text-description-color text-tiny leading-[24px]">
@@ -357,7 +358,7 @@ const StepComponent: React.FC<{
                       <p className="text-white mt-[1px] leading-[24px] text-lg rounded-full py-[1px]">
                         {
                           step.details.find(
-                            (detail) => detail.label === "Cluster"
+                            (detail) => detail.label === "Cluster",
                           )?.value
                         }
                       </p>

@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setLogsCompleted } from "../redux/chatActions";
+import { fetchLogsData, setLogsCompleted } from "../redux/deploymentSlice";
 import DropDownAngle from "../assets/svgs/dropDownAngle.svg";
 import LiveLogsLogo from "../assets/svgs/liveLogsLogo.svg";
 import ClockIcon from "../assets/svgs/clockIcon.svg";
 import Tick from "../assets/svgs/tick.svg";
 import DoubleArrow from "../assets/svgs/doubleArrow.svg";
-import { PuffLoader } from "react-spinners";
 import Highlighter from "react-highlight-words";
 
 const colors = {
@@ -17,16 +16,20 @@ const colors = {
 
 export default function DeployTabSidebar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [displayedData, setDisplayedData] = useState([]);
-  const [, setExistingLines] = useState(new Set());
+  const [selectedOption, setSelectedOption] = useState("Live Logs");
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
   const [activeSearchIndex] = useState(0);
+
   const logsData = useSelector((state) => state.deployment.logsData);
-  const error = useSelector((state) => state.deployment.error);
-  const loading = useSelector((state) => state.deployment.loading);
+  const deploymentMessage = useSelector((state) => state.deployment.message);
+  const namespace = useSelector((state) => state.deployment.namespace);
+  const templateID = useSelector((state) => state.deployment.templateID);
+  const url = useSelector((state) => state.deployment.url);
   const logsCompleted = useSelector((state) => state.chat.logsCompleted);
+  const error = useSelector((state) => state.deployment.error);
+
   const dispatch = useDispatch();
   const endOfLogRef = useRef(null);
   const searchRef = useRef(null);
@@ -54,19 +57,37 @@ export default function DeployTabSidebar() {
     "Custom",
   ];
 
+  const fetchLogs = useCallback(() => {
+    const startTime = new Date().toISOString();
+    dispatch(
+      fetchLogsData({
+        namespace,
+        templateID,
+        startTime,
+        url,
+      }),
+    );
+  }, [namespace, templateID, url, dispatch]);
+
+  useEffect(() => {
+    if (namespace && templateID) {
+      fetchLogs();
+    }
+  }, [namespace, templateID, fetchLogs]);
+
   useEffect(() => {
     if (logsData) {
-      const lines = Array.isArray(logsData) ? logsData : logsData.split("\n");
+      const lines =
+        typeof logsData === "string" ? logsData.split("\n") : logsData;
       setDisplayedData(lines);
-      setExistingLines(new Set(lines));
-
+      setSearchResults(lines.map((line, index) => index));
       if (lines.some((line) => line.includes("Deployment Complete"))) {
         dispatch(setLogsCompleted(true));
       } else {
         dispatch(setLogsCompleted(false));
       }
     }
-  }, [logsData, dispatch]);
+  }, [dispatch, logsData]);
 
   useEffect(() => {
     if (endOfLogRef.current) {
@@ -89,6 +110,12 @@ export default function DeployTabSidebar() {
       });
     }
   };
+
+  useEffect(() => {
+    if (deploymentMessage) {
+      console.log("Deployment Status Message:", deploymentMessage);
+    }
+  }, [deploymentMessage]);
 
   if (error) {
     return <p className="p-10 text-white">Error: {error}</p>;
@@ -125,9 +152,7 @@ export default function DeployTabSidebar() {
               <span className="font-normal text-tiny">{selectedOption}</span>
             </div>
             <img
-              className={`transform transition-transform duration-300 ${
-                isOpen ? "rotate-180" : ""
-              }`}
+              className={`transform transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
               src={DropDownAngle}
               alt="Drop Down Angle"
             />
@@ -173,41 +198,34 @@ export default function DeployTabSidebar() {
           <img src={DoubleArrow} alt="Double Arrow" />
         </div>
       </div>
-
-      <div className={`pt-[30px] bg-gray-900 font-mono`}>
-        {loading ? (
-          <div className="flex justify-center items-center h-full">
-            <PuffLoader color="#00aeff" />
-          </div>
-        ) : (
-          <>
-            <div>
-              {displayedData.map((line, index) => (
-                <div
-                  key={index}
-                  ref={
-                    searchResults.includes(index) &&
-                    index === searchResults[activeSearchIndex]
-                      ? searchRef
-                      : null
-                  }
-                  className="whitespace-pre-line text-wrap py-1 text-[14px]"
-                  style={{ color: getLineColor(line) }}
-                >
-                  <Highlighter
-                    highlightClassName="bg-yellow-500"
-                    searchWords={[searchTerm]}
-                    autoEscape={true}
-                    textToHighlight={line}
-                  />
-                </div>
-              ))}
-              <div ref={endOfLogRef} />
-            </div>
-          </>
-        )}
+      <div className="pt-[30px] bg-gray-900 font-mono">
+        {logsData &&
+          (typeof logsData === "string" ? logsData.split("\n") : logsData)
+            .filter((line) =>
+              line.toLowerCase().includes(searchTerm.toLowerCase()),
+            )
+            .map((line, index) => (
+              <div
+                key={index}
+                ref={
+                  searchResults.includes(index) &&
+                  index === searchResults[activeSearchIndex]
+                    ? searchRef
+                    : null
+                }
+                className="whitespace-pre-line text-wrap py-1 text-[14px]"
+                style={{ color: getLineColor(line) }}
+              >
+                <Highlighter
+                  highlightClassName="highlight"
+                  searchWords={[searchTerm]}
+                  autoEscape={true}
+                  textToHighlight={line}
+                />
+              </div>
+            ))}
+        <div ref={endOfLogRef} />
       </div>
-
       {logsCompleted && (
         <div className="bg-[#1e1e1e] mt-5 hidden text-[#40a348] font-normal text-[10px] md:text-xs lg:text-sm border-[#40a348] border-2 px-[10px] py-2 rounded-md">
           Congratulations! Deployment Completed Successfully.

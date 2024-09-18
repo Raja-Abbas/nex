@@ -1,13 +1,17 @@
 import React from "react";
-import Cookies from "js-cookie";
 import Globe from "../../../assets/svgs/globe.svg";
 import ThinkingIcon from "../../../assets/svgs/thinking";
-const SomeOtherComponent = () => {
-  const url = Cookies.get("deploymentUrl");
+import { useSelector } from "react-redux";
+
+const DeploymentUrl = () => {
+  const deploymentMessage = useSelector((state) => state.deployment.message);
+  const url = useSelector((state) => state.deployment.url);
+
+  console.log(deploymentMessage, url, "---deploymentMessage");
 
   return (
     <div>
-      {url && url !== "null" ? (
+      {deploymentMessage === "ready" && url && url !== "null" ? (
         <a
           href={url}
           target="_blank"
@@ -32,4 +36,4 @@ const SomeOtherComponent = () => {
   );
 };
 
-export default SomeOtherComponent;
+export default DeploymentUrl;

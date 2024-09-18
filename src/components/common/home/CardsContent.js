@@ -30,7 +30,6 @@ export default function CardsContent({ selectedMenu, onCardSelect }) {
     }
     if (!isFetching) {
       dispatch(fetchDeploymentData(item.templateID));
-      console.log("Template ID is defined. Deployment can proceed.");
       if (onCardSelect) onCardSelect(item);
 
       setSlug(item.slug);

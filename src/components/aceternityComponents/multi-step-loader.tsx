@@ -37,8 +37,10 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
   const [modalAlertTime, setModalAlertTime] = useState<string>("");
   const [showChatBotIcon, setShowChatBotIcon] = useState<boolean>(false);
   const { namespace } = useSelector((state: RootState) => state.deployment);
-  const logsCompleted = useSelector((state: any) => state.chat.logsCompleted);
   const isStep5Visible = visibleSteps.some((step) => step.id === 4);
+  const deploymentMessage = useSelector(
+    (state: any) => state.deployment.message,
+  );
 
   useEffect(() => {
     if (loading) {
@@ -88,7 +90,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
     if (
       visibleSteps.length === steps.length &&
       !hasModalAlertShown &&
-      logsCompleted
+      deploymentMessage
     ) {
       setTimeout(() => {
         if (step4EndTime) {
@@ -104,7 +106,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
     steps.length,
     hasModalAlertShown,
     step4EndTime,
-    logsCompleted,
+    deploymentMessage,
   ]);
 
   useEffect(() => {
@@ -153,13 +155,15 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
           {index < visibleSteps.length - 1 && (
             <div
               className={`z-10 absolute left-[15px] top-0 bottom-0 border border-custom-color animate-fill transition-all duration-[500ms] ${
-                index === 2 && !logsCompleted
+                index === 2 && !deploymentMessage
                   ? ""
                   : visibleSteps.length - 1
                     ? "bottom-0"
                     : ""
               }`}
-              style={{ display: index < 2 || logsCompleted ? "block" : "none" }}
+              style={{
+                display: index < 2 || deploymentMessage ? "block" : "none",
+              }}
             ></div>
           )}
           <div
@@ -177,7 +181,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
           </div>
         </div>
       ))}
-      {showModalAlert && logsCompleted && (
+      {showModalAlert && deploymentMessage && (
         <ModalAlert
           isOpen={showModalAlert}
           message="Deployment Successful"
@@ -215,7 +219,7 @@ export const MultiStepLoader: React.FC<MultiStepLoaderProps> = ({
           animation: fade-in 0.5s forwards;
         }
       `}</style>
-      {logsCompleted && (
+      {deploymentMessage && (
         <Waitlist isOpen={showModal} onClose={closeSelectedCardModal} />
       )}
       {showChatBotIcon && <ChatBotIcon isStep5Visible={isStep5Visible} />}

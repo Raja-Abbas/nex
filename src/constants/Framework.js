@@ -170,8 +170,7 @@ export const cardsData = [
     logo: Metabase,
     title: "Metabase",
     slug: "metabase",
-    description:
-      "Open-source business intelligence platform",
+    description: "Open-source business intelligence platform",
     provider: "NexLayer",
     category: "All",
     tag: "true",

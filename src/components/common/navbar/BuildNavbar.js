@@ -56,14 +56,23 @@ const BuildNavbar = () => {
           >
             Dashboard
           </Link>
-          <a href="https://feedback.nexlayer.io" rel="noreferrer" target="_blank" className="font-normal text-base cursor-pointer hover:text-opacity-75 text-[#A1A0AB] max-md:hidden">
+          <a
+            href="https://feedback.nexlayer.io"
+            rel="noreferrer"
+            target="_blank"
+            className="font-normal text-base cursor-pointer hover:text-opacity-75 text-[#A1A0AB] max-md:hidden"
+          >
             Feedback
           </a>
           <p className="font-normal text-base border rounded-lg py-1 px-3 border-dark-blue bg-medium-gray text-dark-blue">
             NexLayer Credit <span className="text-xl font-thin">|</span> $
             {animatedCredit.toFixed(0)}
           </p>
-          <img src={LinearAvatar} alt="LinearAvatar" className="rounded-full p-1.5 border border-dark-blue" />
+          <img
+            src={LinearAvatar}
+            alt="LinearAvatar"
+            className="rounded-full p-1.5 border border-dark-blue"
+          />
         </div>
       </div>
 

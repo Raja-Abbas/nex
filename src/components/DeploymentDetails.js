@@ -1,7 +1,7 @@
 import React from "react";
 import { deploymentData } from "../constants/Framework";
 import NodeJs from "../assets/svgs/node.svg";
-import Route from "../components/common/route/route";
+import Route from "./common/deploymenturl/deploymentUrl";
 const DeploymentDetails = ({
   handleMenuClick,
   toggleBuildPageDetailsHide,
