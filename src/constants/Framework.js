@@ -13,7 +13,7 @@ import LagoImage from "../assets/images/lagoImage.png";
 import CalImage from "../assets/images/cal.png";
 import MattermostImage from "../assets/images/mattermost.png";
 import Metabase from "../assets/images/materbase.png";
-
+import HuggingChat from "../assets/images/images.png"
 export const steps = [
   {
     id: 1,
@@ -29,9 +29,8 @@ export const steps = [
   {
     id: 2,
     type: "step",
-    heading: "Build",
+    heading: "Setup",
     description: "Success",
-    builder: "Builder",
     image: "BuildLoadingState",
     details: [
       { label: "Project Name", value: "Nodejs", text: "white" },
@@ -177,6 +176,19 @@ export const cardsData = [
     text: "ai-powered-document-analysis",
     Marketplacecategory: "AI/ML",
     templateID: "0007",
+    Downloads: "2K",
+  },
+  {
+    logo: HuggingChat,
+    title: "HuggingChat",
+    slug: "hugging-chat",
+    description: "HuggingFace's chat interface to prompt the open-source microsoft/Phi-3-mini-4k-instruct-q4 model",
+    provider: "NexLayer",
+    category: "All",
+    tag: "true",
+    text: "ai-powered-document-analysis",
+    Marketplacecategory: "AI/ML",
+    templateID: "0008",
     Downloads: "2K",
   },
 ];
