@@ -83,7 +83,7 @@ const StepComponent: React.FC<{
     if (step.details) {
       const detailsTimeout = setTimeout(() => {
         setShowDetails(true);
-      }, 3000);
+      }, 0);
 
       return () => clearTimeout(detailsTimeout);
     }
@@ -115,7 +115,7 @@ const StepComponent: React.FC<{
       setTimeout(() => {
         clearInterval(countdown);
         setBuildStatus("Build Successful");
-      }, 5000);
+      }, 3000);
 
       return () => clearInterval(countdown);
     }
@@ -222,7 +222,7 @@ const StepComponent: React.FC<{
             </p>
           )}
           {step.description && (
-            <p className="mt-1 text-base max-w-max type2 text-white font-[450]">
+            <p className="mt-1 text-base max-w-max text-white font-[450]">
               Status:{" "}
               <span className="text-green ml-[8px]">
                 {step.id === 2
@@ -238,7 +238,7 @@ const StepComponent: React.FC<{
             </p>
           )}
           {step.builder && (
-            <p className="mt-[20px] max-w-max type3 text-base text-white font-[450] leading-[150%]">
+            <p className="mt-[20px] max-w-max text-base text-white font-[450] leading-[150%]">
               {step.builder}
             </p>
           )}
