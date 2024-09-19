@@ -9,7 +9,7 @@ const getSlugByTemplateID = (templateID) => {
   return card ? card.slug : null;
 };
 
-const fetchWithRetry = async (url, options, retries = 3, delayMs = 1000) => {
+const fetchWithRetry = async (url, options, retries = 3, delayMs = 3000) => {
   try {
     const response = await fetch(url, options);
     if (!response.ok) {
