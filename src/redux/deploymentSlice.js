@@ -2,9 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { cardsData } from "../constants/Framework";
 
-// Use environment variables for URLs
-const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:3003";
-const API_SERVER_URL = process.env.NEXT_PUBLIC_API_SERVER_URL || "https://app.nexlayer.io";
+const SOCKET_SERVER_URL = "http://localhost:3003";
+const API_SERVER_URL = "http://app.staging.nexlayer.io";
+
 
 const getSlugByTemplateID = (templateID) => {
   const card = cardsData.find((card) => card.templateID === templateID);
@@ -33,6 +33,7 @@ export const fetchDeploymentStatus = createAsyncThunk(
   "deployment/fetchStatus",
   async ({ namespace, templateID, deploymentName, url }, { rejectWithValue, dispatch }) => {
     try {
+
       const response = await fetch(`${API_SERVER_URL}/checkSiteStatus/${namespace}/${deploymentName}`, {
         method: "GET",
         headers: {
@@ -117,10 +118,13 @@ export const fetchLogsData = createAsyncThunk(
   "/getDeploymentLogs/:namespace/:templateID",
   async ({ namespace, templateID, startTime, url }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await fetch(`${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
       });
 
