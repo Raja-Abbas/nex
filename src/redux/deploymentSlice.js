@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { cardsData } from "../constants/Framework";
 
 const SOCKET_SERVER_URL = "http://localhost:3003";
-const API_SERVER_URL = "https://app.nexlayer.io";
+const API_SERVER_URL = "http://app.staging.nexlayer.io";
 const getSlugByTemplateID = (templateID) => {
   const card = cardsData.find((card) => card.templateID === templateID);
   return card ? card.slug : null;
@@ -37,7 +37,7 @@ export const fetchDeploymentStatus = createAsyncThunk(
   ) => {
     try {
       const response = await fetch(
-        `/checkSiteStatus/${namespace}/${deploymentName}`,
+        `${API_SERVER_URL}/checkSiteStatus/${namespace}/${deploymentName}`,
         {
           method: "GET",
           headers: {
@@ -88,7 +88,7 @@ export const fetchDeploymentData = createAsyncThunk(
       dispatch(setFetching(true));
 
       const response = await fetchWithRetry(
-        `/startTemplateDeployment/${templateID}`,
+        `${SOCKET_SERVER_URL}/startTemplateDeployment/${templateID}`,
         {
           method: "POST",
           headers: {
@@ -125,7 +125,7 @@ export const fetchLogsData = createAsyncThunk(
   ) => {
     try {
       const response = await fetch(
-        `/getDeploymentLogs/${namespace}/${templateID}`,
+        `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
         {
           method: "POST",
           headers: {
