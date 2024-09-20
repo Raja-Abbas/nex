@@ -4,6 +4,8 @@ import { cardsData } from "../constants/Framework";
 
 const SOCKET_SERVER_URL = "http://localhost:3003";
 const API_SERVER_URL = "http://app.staging.nexlayer.io";
+
+
 const getSlugByTemplateID = (templateID) => {
   const card = cardsData.find((card) => card.templateID === templateID);
   return card ? card.slug : null;
@@ -18,10 +20,7 @@ const fetchWithRetry = async (url, options, retries = 3, delayMs = 3000) => {
     return response;
   } catch (error) {
     if (error.message.includes("ERR_QUIC_PROTOCOL_ERROR") && retries > 0) {
-      console.warn(
-        `Fetch failed with ERR_QUIC_PROTOCOL_ERROR. Retrying in ${delayMs}ms...`,
-        error,
-      );
+      console.warn(`Fetch failed with ERR_QUIC_PROTOCOL_ERROR. Retrying in ${delayMs}ms...`, error);
       await new Promise((resolve) => setTimeout(resolve, delayMs));
       return fetchWithRetry(url, options, retries - 1, delayMs);
     } else {
@@ -29,37 +28,34 @@ const fetchWithRetry = async (url, options, retries = 3, delayMs = 3000) => {
     }
   }
 };
+
 export const fetchDeploymentStatus = createAsyncThunk(
   "deployment/fetchStatus",
-  async (
-    { namespace, templateID, deploymentName, url },
-    { rejectWithValue, dispatch },
-  ) => {
+  async ({ namespace, templateID, deploymentName, url }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await fetch(
-        `${API_SERVER_URL}/checkSiteStatus/${namespace}/${deploymentName}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+
+      const response = await fetch(`${API_SERVER_URL}/checkSiteStatus/${namespace}/${deploymentName}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+      });
 
       if (!response.ok) {
-        throw new Error(
-          `Error fetching deployment status. Status: ${response.status}`,
-        );
+        throw new Error(`Error fetching deployment status. Status: ${response.status}`);
       }
 
       const deploymentData = await response.json();
       const startTime = new Date().toISOString();
       let deploymentComplete = false;
+
       if (deploymentData.message === "ready") {
         dispatch(setDeploymentMessage(deploymentData.message));
         const endTime = new Date().toISOString();
         const slug = getSlugByTemplateID(templateID);
         deploymentComplete = true;
+
+        // Set cookies
         Cookies.set("templateID", templateID);
         Cookies.set("namespace", namespace);
         Cookies.set("startTime", startTime);
@@ -103,6 +99,7 @@ export const fetchDeploymentData = createAsyncThunk(
       if (!data.namespace || !data.message) {
         throw new Error("Namespace or message is missing in the response.");
       }
+
       dispatch(setNamespace(data.namespace));
       dispatch(setDeploymentMessage("ready"));
       dispatch(setUrl(data.url));
@@ -119,10 +116,7 @@ export const fetchDeploymentData = createAsyncThunk(
 // Fetch logs data
 export const fetchLogsData = createAsyncThunk(
   "/getDeploymentLogs/:namespace/:templateID",
-  async (
-    { namespace, templateID, startTime, url },
-    { rejectWithValue, dispatch },
-  ) => {
+  async ({ namespace, templateID, startTime, url }, { rejectWithValue, dispatch }) => {
     try {
       const response = await fetch(
         `${SOCKET_SERVER_URL}/getDeploymentLogs/${namespace}/${templateID}`,
@@ -132,12 +126,10 @@ export const fetchLogsData = createAsyncThunk(
             "Content-Type": "application/json",
           },
         },
-      );
+      });
 
       if (!response.ok) {
-        throw new Error(
-          `Error fetching deployment logs. Status: ${response.status}`,
-        );
+        throw new Error(`Error fetching deployment logs. Status: ${response.status}`);
       }
 
       const reader = response.body.getReader();
@@ -261,4 +253,3 @@ export const {
 } = deploymentSlice.actions;
 
 export default deploymentSlice.reducer;
-
